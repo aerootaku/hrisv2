@@ -86,7 +86,7 @@
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            @foreach($holidays as $row)
+                                            @foreach($data as $row)
                                                 <tr>
                                                     <td>{{ $row->event_name }}</td>
                                                     <td>{{ $row->is_published == 0? "Published":"Un Published" }}</td>
@@ -116,7 +116,7 @@
         </div>
     </div>
 
-    @foreach($holidays as $row):
+    @foreach($data as $row):
     <div class="modal fade" id="edit{{ $row->id }}" role="dialog">
         <div class="modal-dialog modal-md" role="document">
             <div class="modal-content">
@@ -175,7 +175,7 @@
     </div>
     @endforeach
 
-    @foreach($holidays as $row)
+    @foreach($data as $row)
         <div class="modal fade" id="delete{{ $row->id }}" tabindex="-1" role="dialog">
             <div class="modal-dialog modal-sm" role="document">
                 <div class="modal-content">
@@ -203,7 +203,7 @@
 @endsection
 
 @section('script')
-    <script src="{{ asset('app-assets') }}/js/scripts/tables/datatables-extensions/datatable-responsive.min.js"></script>
+    <script src="{{ asset('assets') }}/app/custom/general/crud/datatables/extensions/responsive.js" type="text/javascript"></script>
     <script>
         $("#company_list").select2();
     </script>

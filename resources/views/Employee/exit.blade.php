@@ -1,83 +1,90 @@
 @extends('layout.app')
 
 @section('content')
-    <div class="app-content content">
-        <div class="content-wrapper">
-            <div class="content-header row">
-                <div class="content-header-left col-md-6 col-12 mb-2 breadcrumb-new">
-                    <h3 class="content-header-title mb-0 d-inline-block">Employee Exit List</h3>
-                </div>
-                <div class="content-header-right col-md-6 col-12">
-                    <div class="btn-group float-md-right">
-                        <button class="btn btn-info dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>
-                        <div class="dropdown-menu arrow"><a class="dropdown-item" href="#"><i class="fa fa-calendar-check mr-1"></i> Calender</a><a class="dropdown-item" href="#"><i class="fa fa-cart-plus mr-1"></i> Cart</a><a class="dropdown-item" href="#"><i class="fa fa-life-ring mr-1"></i> Support</a>
-                            <div class="dropdown-divider"></div><a class="dropdown-item" href="#"><i class="fa fa-cog mr-1"></i> Settings</a>
+    <div class="kt-content  kt-grid__item kt-grid__item--fluid" id="kt_content">
+
+        <!--Begin::Dashboard 1-->
+        <div class="row">
+            <div class="col-12">
+                <div class="kt-portlet kt-portlet--mobile">
+                    <div class="kt-portlet__head kt-portlet__head--lg">
+                        <div class="kt-portlet__head-label">
+                            <h3 class="kt-portlet__head-title">
+                                Employee Exit List
+                            </h3>
                         </div>
-                    </div>
-                </div>
-            </div>
-            <div class="content-body"><!-- Configuration option table -->
-
-                <section id="configuration">
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h4 class="card-title">Employee Exit List</h4>
-
-                                </div>
-                                <div class="card-content collapse show">
-                                    <div class="card-body card-dashboard">
-                                        <table class="table table-striped table-bordered dataex-res-configuration">
-                                            <thead>
-                                            <tr>
-                                                <th>Employee ID</th>
-                                                <th>Employee Name</th>
-                                                <th>Exit Type</th>
-                                                <th>Exit Date</th>
-                                                <th>Exit Interview</th>
-                                                <th>Inactivate Account</th>
-                                                <th>Reason</th>
-                                                <th width="13%">Actions</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            @foreach($data as $row)
-                                                <tr>
-                                                    <td>{{ $row->employee_no }}</td>
-                                                    <td>{{ $row->firstname . " " . $row->lastname }}</td>
-                                                    <td>{{ $row->exit_type }}</td>
-                                                    <td>{{ $row->exit_date }}</td>
-                                                    <td>{{ $row->exit_interview }}</td>
-                                                    <td>{{ $row->is_inactivate_account }}</td>
-                                                    <td>{{ $row->reason }}</td>
-                                                    <td>
-                                                        <div class="buttons-group">
-                                                            <button class="btn btn-group btn-warning btn-xs" data-toggle="modal" data-target="#edit{{ $row->id }}"><i class="la la-edit"></i> </button>
-                                                            <button class="btn btn-group btn-danger btn-xs" data-toggle="modal" data-target="#delete{{ $row->id }}"><i class="la la-trash"></i> </button>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            @endforeach
-                                            </tbody>
-                                        </table>
-                                    </div>
+                        <div class="kt-portlet__head-toolbar">
+                            <div class="kt-portlet__head-wrapper">
+                                <div class="kt-portlet__head-actions">&nbsp;
+                                    <a  href="#" data-toggle="modal" data-target="#create" class="btn btn-brand btn-elevate btn-icon-sm">
+                                        <i class="la la-plus"></i>
+                                        New Record
+                                    </a>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </section>
-                <!--/ Configuration option table -->
+                    <div class="kt-portlet__body">
+                        <!--begin: Search Form -->
+                        <!--begin: Datatable -->
+                        <table class="table table-striped- table-bordered table-hover table-checkable responsive no-wrap" id="customTable">
+                            <thead>
+                            <tr>
+                                <th>Employee ID</th>
+                                <th>Employee Name</th>
+                                <th>Exit Type</th>
+                                <th>Exit Date</th>
+                                <th>Exit Interview</th>
+                                <th>Inactivate Account</th>
+                                <th>Reason</th>
+                                <th>Actions</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @foreach($data as $row)
+                                <tr>
+                                    <td>{{ $row->employee_no }}</td>
+                                    <td>{{ $row->firstname . " " . $row->lastname }}</td>
+                                    <td>{{ $row->exit_type }}</td>
+                                    <td>{{ $row->exit_date }}</td>
+                                    <td>{{ $row->exit_interview }}</td>
+                                    <td>{{ $row->is_inactivate_account }}</td>
+                                    <td>{{ $row->reason }}</td>
+                                    <td>
+                                        <span class="dropdown">
+                                            <a href="#" class="btn btn-sm btn btn-info btn-elevate btn-elevate-air btn-icon btn-icon-md" data-toggle="dropdown" aria-expanded="true">
+                                              <i class="la la-ellipsis-h"></i>
+                                            </a>
+                                            <div class="dropdown-menu dropdown-menu-right">
+                                                <a class="dropdown-item" href="#" data-toggle="modal" data-title="Edit" data-target="#edit{{ $row->id }}"><i class="la la-edit"></i> Edit Details</a>
+                                                <a class="dropdown-item" href="#" data-toggle="modal" data-title="Delete" data-target="#delete{{ $row->id }}"><i class="la la-trash"></i> Delete Record</a>
+                                            </div>
+                                        </span>
+                                    </td>
+                                </tr>
+                            @endforeach
+                            </tbody>
+                            <tfoot>
+                            <tr>
+                                <th>Employee ID</th>
+                                <th>Employee Name</th>
+                                <th>Exit Type</th>
+                                <th>Exit Date</th>
+                                <th>Exit Interview</th>
+                                <th>Inactivate Account</th>
+                                <th>Reason</th>
+                                <th>Actions</th>
+                            </tr>
+                            </tfoot>
+                        </table>
+                        <!--end: Datatable -->
+                    </div>
+                </div>
             </div>
         </div>
+        <!--End::Dashboard 1-->
     </div>
 
-    <div class="menu pmd-floating-action" role="navigation">
-        <a href="#" data-toggle="modal" data-target="#create" class="pmd-floating-action-btn btn pmd-btn-fab pmd-btn-raised pmd-ripple-effect btn-success" data-title="Create">
-            <span class="pmd-floating-hidden">Primary</span>
-            <i class="la la-plus-circle"></i>
-        </a>
-    </div>
 
     <div class="modal fade" id="create" role="dialog">
         <div class="modal-dialog modal-md" role="document">
@@ -136,7 +143,7 @@
                             <div class="form-group row">
                                 <div class="col-md-12">
                                     <label>Description</label>
-                                    <textarea  class="form-control" name="reason" required></textarea>
+                                    <textarea  class="form-control" name="reason" data-provide="markdown" rows="3" required></textarea>
                                 </div>
                             </div>
 
@@ -183,7 +190,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <label>Type of Exit</label>
-                                        <select name="exit_type_id" class="form-control" id="exit_type_id"  required  >
+                                        <select name="exit_type_id" class="form-control" id="exit_type_idU"  required  >
                                             @foreach($exit_type as $exit_types):
                                             <option value="{{ $exit_types->id }}" {{ $exit_types->id == $row->exit_type_id? "Selected": "" }}>{{  $exit_types->value }}</option>
                                             @endforeach
@@ -194,7 +201,7 @@
                                 <div class="form-group row">
                                     <div class="col-md-6">
                                         <label>Conducted Exit Interview</label>
-                                        <select name="exit_interview" class="form-control" id="exit_interview"  required  >
+                                        <select name="exit_interview" class="form-control" id="exit_interviewU"  required  >
                                             @foreach($yes_no as $yes_nos):
                                             <option value="{{ $yes_nos->value }}"  {{ $yes_nos->id == $row->exit_interview? "Selected": "" }}>{{  $yes_nos->value }}</option>
                                             @endforeach
@@ -202,7 +209,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <label>Inactive Employee Account</label>
-                                        <select name="is_inactivate_account" class="form-control" id="is_inactivate_account"  required  >
+                                        <select name="is_inactivate_account" class="form-control" id="is_inactivate_accountU"  required  >
                                             @foreach($yes_no as $yes_nos):
                                             <option value="{{ $yes_nos->value }} "  {{ $yes_nos->id == $row->is_inactivate_account? "Selected": "" }}>{{  $yes_nos->value }}</option>
                                             @endforeach
@@ -212,7 +219,7 @@
                                 <div class="form-group row">
                                     <div class="col-md-12">
                                         <label>Description</label>
-                                        <textarea  class="form-control" name="reason" required>{{$row->reason}}</textarea>
+                                        <textarea  class="form-control" name="reason" data-provide="markdown" rows="3" required>{{$row->reason}}</textarea>
                                     </div>
                                 </div>
 
@@ -263,7 +270,7 @@
             placeholder: "Select",
             maximumSelectionSize: 1
         });
-        $("#exit_type_idU, #employee_idU,#is_inactivate_account,#exit_interview").select2({
+        $("#exit_type_idU, #employee_idU,#is_inactivate_accountU,#exit_interviewU").select2({
             width:"100%",
             placeholder: "Select",
             maximumSelectionSize: 1

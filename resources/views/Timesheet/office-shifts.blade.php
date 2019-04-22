@@ -1,87 +1,93 @@
 @extends('layout.app')
 
 @section('content')
-    <div class="app-content content">
-        <div class="content-wrapper">
-            <div class="content-header row">
-                <div class="content-header-left col-md-6 col-12 mb-2 breadcrumb-new">
-                    <h3 class="content-header-title mb-0 d-inline-block">Office Shifts</h3>
-                </div>
-                <div class="content-header-right col-md-6 col-12">
-                    <div class="btn-group float-md-right">
-                        <button class="btn btn-info dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>
-                        <div class="dropdown-menu arrow"><a class="dropdown-item" href="#"><i class="fa fa-calendar-check mr-1"></i> Calender</a><a class="dropdown-item" href="#"><i class="fa fa-cart-plus mr-1"></i> Cart</a><a class="dropdown-item" href="#"><i class="fa fa-life-ring mr-1"></i> Support</a>
-                            <div class="dropdown-divider"></div><a class="dropdown-item" href="#"><i class="fa fa-cog mr-1"></i> Settings</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="content-body"><!-- Configuration option table -->
+    <div class="kt-content  kt-grid__item kt-grid__item--fluid" id="kt_content">
 
-                <section id="configuration">
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h4 class="card-title">Office Shifts</h4>
-                                </div>
-                                <div class="card-content collapse show">
-                                    <div class="card-body card-dashboard">
-                                        <table class="table table-striped table-bordered dataex-res-configuration">
-                                            <thead>
-                                            <tr>
-                                                <th>Shift Name</th>
-                                                <th>Monday</th>
-                                                <th>Tuesday</th>
-                                                <th>Wednesday</th>
-                                                <th>Thursday</th>
-                                                <th>Friday</th>
-                                                <th>Saturday</th>
-                                                <th>Sunday</th>
-                                                <th width="13%">Actions</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            @foreach($shifts as $row)
-                                            <tr>
-                                                <td>{{ $row->shift_name }}</td>
-                                                <td>{{ $row->monday_in_time  . " - " . $row->monday_out_time }}</td>
-                                                <td>{{ $row->tuesday_in_time  . " - " . $row->tuesday_out_time }}</td>
-                                                <td>{{ $row->wednesday_in_time  . " - " . $row->wednesday_out_time }}</td>
-                                                <td>{{ $row->thursday_in_time  . " - " . $row->thursday_out_time }}</td>
-                                                <td>{{ $row->friday_in_time  . " - " . $row->friday_out_time }}</td>
-                                                <td>{{ $row->saturday_in_time  . " - " . $row->saturday_out_time }}</td>
-                                                <td>{{ $row->sunday_in_time  . " - " . $row->sunday_out_time }}</td>
-                                                <td>
-                                                    <div class="btn-group mr-1 mb-1">
-                                                        <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="false" aria-expanded="false"><i class="la la-bars"></i></button>
-                                                        <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 44px, 0px);">
-                                                            <a class="dropdown-item" href="#" data-toggle="modal" data-title="Edit" data-target="#edit{{ $row->id }}">Edit</a>
-                                                            <a class="dropdown-item" href="#" data-toggle="modal" data-title="Delete" data-target="#delete{{ $row->id }}">Delete</a>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            @endforeach
-                                            </tbody>
-                                        </table>
-                                    </div>
+        <!--Begin::Dashboard 1-->
+        <div class="row">
+            <div class="col-12">
+                <div class="kt-portlet kt-portlet--mobile">
+                    <div class="kt-portlet__head kt-portlet__head--lg">
+                        <div class="kt-portlet__head-label">
+                            <h3 class="kt-portlet__head-title">
+                                Employee List
+                            </h3>
+                        </div>
+                        <div class="kt-portlet__head-toolbar">
+                            <div class="kt-portlet__head-wrapper">
+                                <div class="kt-portlet__head-actions">&nbsp;
+                                    <a  href="#" data-toggle="modal" data-target="#create" class="btn btn-brand btn-elevate btn-icon-sm">
+                                        <i class="la la-plus"></i>
+                                        New Record
+                                    </a>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </section>
-                <!--/ Configuration option table -->
+                    <div class="kt-portlet__body">
+                        <!--begin: Search Form -->
+                        <!--begin: Datatable -->
+                        <table class="table table-striped- table-bordered table-hover table-checkable responsive no-wrap" id="customTable">
+                            <thead>
+                            <tr>
+                                <th>Shift Name</th>
+                                <th>Monday</th>
+                                <th>Tuesday</th>
+                                <th>Wednesday</th>
+                                <th>Thursday</th>
+                                <th>Friday</th>
+                                <th>Saturday</th>
+                                <th>Sunday</th>
+                                <th>Actions</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @foreach($data as $row)
+                                <tr>
+                                    <td>{{ $row->shift_name }}</td>
+                                    <td>{{ $row->monday_in_time  . " - " . $row->monday_out_time }}</td>
+                                    <td>{{ $row->tuesday_in_time  . " - " . $row->tuesday_out_time }}</td>
+                                    <td>{{ $row->wednesday_in_time  . " - " . $row->wednesday_out_time }}</td>
+                                    <td>{{ $row->thursday_in_time  . " - " . $row->thursday_out_time }}</td>
+                                    <td>{{ $row->friday_in_time  . " - " . $row->friday_out_time }}</td>
+                                    <td>{{ $row->saturday_in_time  . " - " . $row->saturday_out_time }}</td>
+                                    <td>{{ $row->sunday_in_time  . " - " . $row->sunday_out_time }}</td>
+                                    <td>
+                                        <span class="dropdown">
+                                            <a href="#" class="btn btn-sm btn btn-info btn-elevate btn-elevate-air btn-icon btn-icon-md" data-toggle="dropdown" aria-expanded="true">
+                                              <i class="la la-ellipsis-h"></i>
+                                            </a>
+                                            <div class="dropdown-menu dropdown-menu-right">
+                                                <a class="dropdown-item" href="#" data-toggle="modal" data-title="Edit" data-target="#edit{{ $row->id }}"><i class="la la-edit"></i> Edit Details</a>
+                                                <a class="dropdown-item" href="#" data-toggle="modal" data-title="Delete" data-target="#delete{{ $row->id }}"><i class="la la-trash"></i> Delete Record</a>
+                                            </div>
+                                        </span>
+                                    </td>
+                                </tr>
+                            @endforeach
+                            </tbody>
+                            <tfoot>
+                            <tr>
+                                <th>Shift Name</th>
+                                <th>Monday</th>
+                                <th>Tuesday</th>
+                                <th>Wednesday</th>
+                                <th>Thursday</th>
+                                <th>Friday</th>
+                                <th>Saturday</th>
+                                <th>Sunday</th>
+                                <th>Actions</th>
+                            </tr>
+                            </tfoot>
+                        </table>
+                        <!--end: Datatable -->
+                    </div>
+                </div>
             </div>
         </div>
+        <!--End::Dashboard 1-->
     </div>
 
-    <div class="menu pmd-floating-action" role="navigation">
-        <a href="#" data-toggle="modal" data-target="#create" class="pmd-floating-action-btn btn pmd-btn-fab pmd-btn-raised pmd-ripple-effect btn-success" data-title="Create">
-            <span class="pmd-floating-hidden">Primary</span>
-            <i class="la la-plus-circle"></i>
-        </a>
-    </div>
 
     <div class="modal fade" id="create" role="dialog">
         <div class="modal-dialog modal-md" role="document">
@@ -93,9 +99,11 @@
                     <div class="modal-body">
                         @csrf
                         <div class="col-md-12">
-                            <div class="form-group">
-                                <label>Shift Name</label>
-                                <input type="text" name="shift_name" class="form-control" />
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>Shift Name</label>
+                                    <input type="text" name="shift_name" class="form-control" />
+                                </div>
                             </div>
                             <div class="col-md-12">
                                 <div class="form-group row">
@@ -193,7 +201,7 @@
     </div>
 
 
-    @foreach($shifts as $row):
+    @foreach($data as $row):
     <div class="modal fade" id="edit{{ $row->id }}" role="dialog">
         <div class="modal-dialog modal-md" role="document">
             <div class="modal-content">
@@ -206,9 +214,11 @@
                         @method('PATCH')
 
                         <div class="col-md-12">
-                            <div class="form-group">
-                                <label>Shift Name</label>
-                                <input type="text" name="shift_name" class="form-control"  value="{{$row->shift_name}}" />
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>Shift Name</label>
+                                    <input type="text" name="shift_name" class="form-control"  value="{{$row->shift_name}}" />
+                                </div>
                             </div>
                             <div class="col-md-12">
                                 <div class="form-group row">
@@ -307,7 +317,7 @@
     </div>
     @endforeach
 
-    @foreach($shifts as $row)
+    @foreach($data as $row)
     <div class="modal fade" id="delete{{ $row->id }}" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-sm" role="document">
             <div class="modal-content">
@@ -335,7 +345,7 @@
 @endsection
 
 @section('script')
-    <script src="{{ asset('app-assets') }}/js/scripts/tables/datatables-extensions/datatable-responsive.min.js"></script>
+    <script src="{{ asset('assets') }}/app/custom/general/crud/datatables/extensions/responsive.js" type="text/javascript"></script>
     <script>
 
     </script>
