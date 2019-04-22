@@ -1,79 +1,83 @@
 @extends('layout.app')
 
 @section('content')
-    <div class="app-content content">
-        <div class="content-wrapper">
-            <div class="content-header row">
-                <div class="content-header-left col-md-6 col-12 mb-2 breadcrumb-new">
-                    <h3 class="content-header-title mb-0 d-inline-block">Employee Promotion List</h3>
-                </div>
-                <div class="content-header-right col-md-6 col-12">
-                    <div class="btn-group float-md-right">
-                        <button class="btn btn-info dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>
-                        <div class="dropdown-menu arrow"><a class="dropdown-item" href="#"><i class="fa fa-calendar-check mr-1"></i> Calender</a><a class="dropdown-item" href="#"><i class="fa fa-cart-plus mr-1"></i> Cart</a><a class="dropdown-item" href="#"><i class="fa fa-life-ring mr-1"></i> Support</a>
-                            <div class="dropdown-divider"></div><a class="dropdown-item" href="#"><i class="fa fa-cog mr-1"></i> Settings</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="content-body"><!-- Configuration option table -->
+    <div class="kt-content  kt-grid__item kt-grid__item--fluid" id="kt_content">
 
-                <section id="configuration">
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h4 class="card-title">Employee Promotion List</h4>
-                                </div>
-                                <div class="card-content collapse show">
-                                    <div class="card-body card-dashboard">
-                                        <table class="table table-striped table-bordered dataex-res-configuration">
-                                            <thead>
-                                            <tr>
-                                                <th>Employee ID</th>
-                                                <th>Employee Name</th>
-                                                <th>Promotion Title</th>
-                                                <th>Promotion Date</th>
-                                                <th>Description</th>
-                                                <th width="13%">Actions</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            @foreach($data as $row)
-                                                <tr>
-                                                    <td>{{ $row->employee_no }}</td>
-                                                    <td>{{ $row->firstname . " " . $row->lastname }}</td>
-                                                    <td>{{ $row->title }}</td>
-                                                    <td>{{ $row->promotion_date }}</td>
-                                                    <td>{{ $row->description }}</td>
-                                                    <td>
-                                                        <div class="buttons-group">
-                                                            <button class="btn btn-group btn-warning btn-xs" data-toggle="modal" data-target="#edit{{ $row->id }}"><i class="la la-edit"></i> </button>
-                                                            <button class="btn btn-group btn-danger btn-xs" data-toggle="modal" data-target="#delete{{ $row->id }}"><i class="la la-trash"></i> </button>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            @endforeach
-                                            </tbody>
-                                        </table>
-                                    </div>
+        <!--Begin::Dashboard 1-->
+        <div class="row">
+            <div class="col-12">
+                <div class="kt-portlet kt-portlet--mobile">
+                    <div class="kt-portlet__head kt-portlet__head--lg">
+                        <div class="kt-portlet__head-label">
+                            <h3 class="kt-portlet__head-title">
+                                Employee Promotion List
+                            </h3>
+                        </div>
+                        <div class="kt-portlet__head-toolbar">
+                            <div class="kt-portlet__head-wrapper">
+                                <div class="kt-portlet__head-actions">&nbsp;
+                                    <a  href="#" data-toggle="modal" data-target="#create" class="btn btn-brand btn-elevate btn-icon-sm">
+                                        <i class="la la-plus"></i>
+                                        New Record
+                                    </a>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </section>
-                <!--/ Configuration option table -->
+                    <div class="kt-portlet__body">
+                        <!--begin: Search Form -->
+                        <!--begin: Datatable -->
+                        <table class="table table-striped- table-bordered table-hover table-checkable responsive no-wrap" id="customTable">
+                            <thead>
+                            <tr>
+                                <th>Employee ID</th>
+                                <th>Employee Name</th>
+                                <th>Promotion Title</th>
+                                <th>Promotion Date</th>
+                                <th>Description</th>
+                                <th>Actions</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @foreach($data as $row)
+                                <tr>
+                                    <td>{{ $row->employee_no }}</td>
+                                    <td>{{ $row->firstname . " " . $row->lastname }}</td>
+                                    <td>{{ $row->title }}</td>
+                                    <td>{{ $row->promotion_date }}</td>
+                                    <td>{{ $row->description }}</td>
+                                    <td>
+                                        <span class="dropdown">
+                                            <a href="#" class="btn btn-sm btn btn-info btn-elevate btn-elevate-air btn-icon btn-icon-md" data-toggle="dropdown" aria-expanded="true">
+                                              <i class="la la-ellipsis-h"></i>
+                                            </a>
+                                            <div class="dropdown-menu dropdown-menu-right">
+                                                <a class="dropdown-item" href="#" data-toggle="modal" data-title="Edit" data-target="#edit{{ $row->id }}"><i class="la la-edit"></i> Edit</a>
+                                                <a class="dropdown-item" href="#" data-toggle="modal" data-title="Delete" data-target="#delete{{ $row->id }}"><i class="la la-trash"></i> Delete</a>
+                                            </div>
+                                        </span>
+                                    </td>
+                                </tr>
+                            @endforeach
+                            </tbody>
+                            <tfoot>
+                            <tr>
+                                <th>Employee ID</th>
+                                <th>Employee Name</th>
+                                <th>Promotion Title</th>
+                                <th>Promotion Date</th>
+                                <th>Description</th>
+                                <th>Actions</th>
+                            </tr>
+                            </tfoot>
+                        </table>
+                        <!--end: Datatable -->
+                    </div>
+                </div>
             </div>
         </div>
+        <!--End::Dashboard 1-->
     </div>
-
-    <div class="menu pmd-floating-action" role="navigation">
-        <a href="#" data-toggle="modal" data-target="#create" class="pmd-floating-action-btn btn pmd-btn-fab pmd-btn-raised pmd-ripple-effect btn-success" data-title="Create">
-            <span class="pmd-floating-hidden">Primary</span>
-            <i class="la la-plus-circle"></i>
-        </a>
-    </div>
-
 
     <div class="modal fade" id="create" role="dialog">
         <div class="modal-dialog modal-md" role="document">
@@ -89,7 +93,7 @@
                             <div class="form-group row">
                                 <div class="col-md-12">
                                     <label>Employee</label>
-                                    <select name="employee_id" class="form-control" id="employee_idU"  required >
+                                    <select name="employee_id" class="form-control" id="employee_id"  required >
                                         @foreach($employee as $employees):
                                         <option value="{{ $employees->id }}" >{{  $employees->firstname . " " . $employees->lastname }}</option>
                                         @endforeach
@@ -111,7 +115,7 @@
                             <div class="form-group row">
                                 <div class="col-md-12">
                                     <label>Description</label>
-                                    <textarea  class="form-control" name="description"   required></textarea>
+                                    <textarea  class="form-control" name="description"  data-provide="markdown" rows="3" r required></textarea>
                                 </div>
                             </div>
 
@@ -164,7 +168,7 @@
                                 <div class="form-group row">
                                     <div class="col-md-12">
                                         <label>Description</label>
-                                        <textarea  class="form-control" name="description"   required> {{$row->description}}</textarea>
+                                        <textarea  class="form-control" name="description"  data-provide="markdown" rows="3" r  required> {{$row->description}}</textarea>
                                     </div>
                                 </div>
 
@@ -208,7 +212,7 @@
 @endsection
 
 @section('script')
-    <script src="{{ asset('app-assets') }}/js/scripts/tables/datatables-extensions/datatable-responsive.min.js"></script>
+    <script src="{{ asset('assets') }}/app/custom/general/crud/datatables/extensions/responsive.js" type="text/javascript"></script>
     <script>
         $("#award_type_id, #employee_id").select2({
             width:"100%",

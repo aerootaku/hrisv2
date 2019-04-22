@@ -72,6 +72,7 @@
 @endsection
 
 @section('script')
+    <script src="{{ asset('assets') }}/app/custom/general/crud/datatables/extensions/responsive.js" type="text/javascript"></script>
 
     <script>
         $("#cut_off_id, #employee_id").select2({

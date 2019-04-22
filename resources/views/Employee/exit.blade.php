@@ -256,7 +256,7 @@
 @endsection
 
 @section('script')
-    <script src="{{ asset('app-assets') }}/js/scripts/tables/datatables-extensions/datatable-responsive.min.js"></script>
+    <script src="{{ asset('assets') }}/app/custom/general/crud/datatables/extensions/responsive.js" type="text/javascript"></script>
     <script>
         $("#exit_type_id, #employee_id,#is_inactivate_account,#exit_interview").select2({
             width:"100%",

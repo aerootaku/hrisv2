@@ -1804,7 +1804,7 @@
 
 
 @section('script')
-    <script src="{{ asset('app-assets') }}/js/scripts/tables/datatables-extensions/datatable-responsive.min.js"></script>
+    <script src="{{ asset('assets') }}/app/custom/general/crud/datatables/extensions/responsive.js" type="text/javascript"></script>
     <script>
         $("#education_level, #employee_id").select2({
             width: "100%",

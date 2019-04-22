@@ -268,6 +268,7 @@
 @endsection
 
 @section('script')
+    <script src="{{ asset('assets') }}/app/custom/general/crud/datatables/extensions/responsive.js" type="text/javascript"></script>
    <script>
         $("#award_type_id, #employee_id").select2({
             width:"100%",

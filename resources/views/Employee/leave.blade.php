@@ -315,7 +315,7 @@
 @endsection
 
 @section('script')
-    <script src="{{ asset('app-assets') }}/js/scripts/tables/datatables-extensions/datatable-responsive.min.js"></script>
+    <script src="{{ asset('assets') }}/app/custom/general/crud/datatables/extensions/responsive.js" type="text/javascript"></script>
     <script>
         $("#leave_type_id, #employee_id").select2({
             width: "100%",
