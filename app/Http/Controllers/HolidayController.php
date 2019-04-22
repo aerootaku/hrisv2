@@ -18,9 +18,9 @@ class HolidayController extends Controller
     {
         //
         $company = Company::all()->sortByDesc('id');
-        $holidays = holiday::all()->sortByDesc('id');
+        $data = holiday::all()->sortByDesc('id');
 
-        return view('Timesheet.holiday-list', compact('holidays', 'company'));
+        return view('Timesheet.holiday-list', compact('data', 'company'));
     }
 
     /**

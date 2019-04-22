@@ -17,9 +17,9 @@ class OfficeShiftController extends Controller
     {
         //
 
-        $shifts = OfficeShift::all()->sortByDesc('id');
+        $data = OfficeShift::all()->sortByDesc('id');
 
-        return view('Timesheet.office-shifts', compact('shifts'));
+        return view('Timesheet.office-shifts', compact('data'));
     }
 
     /**
