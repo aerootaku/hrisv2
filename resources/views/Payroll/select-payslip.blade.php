@@ -34,7 +34,7 @@
                                         <label>Select Employee</label>
                                         <select name="employee_id" class="form-control" id="employee_id"  required >
                                             @foreach($employee as $employees):
-                                            <option value="{{ $employees->id }}">{{  $employees->firstname . " " . $employees->lastname }}</option>
+                                            <option value="{{ $employees->id }}">{{  $employees->id . " " . $employees->lastname }}</option>
                                             @endforeach
                                         </select>
                                     </div>
