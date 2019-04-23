@@ -1,120 +1,194 @@
 @extends('layout.app')
 
-@section('content')
-    <div class="app-content content">
-        <div class="content-wrapper">
-            <div class="content-header row">
-                <div class="content-header-left col-md-6 col-12 mb-2 breadcrumb-new">
-                    <h3 class="content-header-title mb-0 d-inline-block">Holiday Event</h3>
-                </div>
-                <div class="content-header-right col-md-6 col-12">
-                    <div class="btn-group float-md-right">
-                        <button class="btn btn-info dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>
-                        <div class="dropdown-menu arrow"><a class="dropdown-item" href="#"><i class="fa fa-calendar-check mr-1"></i> Calender</a><a class="dropdown-item" href="#"><i class="fa fa-cart-plus mr-1"></i> Cart</a><a class="dropdown-item" href="#"><i class="fa fa-life-ring mr-1"></i> Support</a>
-                            <div class="dropdown-divider"></div><a class="dropdown-item" href="#"><i class="fa fa-cog mr-1"></i> Settings</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="content-body"><!-- Configuration option table -->
 
-                <section id="configuration">
-                    <div class="row">
-                        <div class="col-md-5">
-                            <div class="card">
-                                <div class="card-header">
-                                    Add Holiday Event
-                                </div>
-                                <div class="card-body">
-                                    <form action="/holidays" method="POST">
-                                        @csrf
-                                        <div class="form-group">
-                                            <label>Company List</label>
-                                            <select name="company_id" class="form-control" id="company_list">
-                                                @foreach($company as $row)
-                                                    <option value="{{ $row->id }}">{{ $row->name }}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Event Name</label>
-                                            <input type="text" name="event_name" class="form-control" />
-                                        </div>
-                                        <div class="form-group row">
-                                            <div class="col-md-6">
-                                                <label>Start Date</label>
-                                                <input type="date" class="form-control" name="start_date" />
-                                            </div>
-                                            <div class="col-md-6">
-                                                <label>End Date</label>
-                                                <input type="date" class="form-control" name="end_date" />
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Description</label>
-                                            <textarea name="description" class="form-control" rows="4"></textarea>
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Status</label>
-                                            <select name="is_publish" class="form-control">
-                                                <option value="0">Publshed</option>
-                                                <option value="1">Un Published</option>
-                                            </select>
-                                        </div>
-                                        <div class="form-group">
-                                            <button class="btn btn-info btn-block" type="submit">Save</button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
+
+@section('content')
+
+    <div class="kt-content  kt-grid__item kt-grid__item--fluid" id="kt_content">
+
+        <!--Begin::Dashboard 1-->
+        <div class="row">
+            <div class="col-12">
+                <div class="kt-portlet kt-portlet--mobile">
+                    <div class="kt-portlet__head kt-portlet__head--lg">
+                        <div class="kt-portlet__head-label">
+                            <h3 class="kt-portlet__head-title">
+                                Holiday List
+                            </h3>
                         </div>
-                        <div class="col-md-7">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h4 class="card-title">Holiday Event</h4>
-                                </div>
-                                <div class="card-content collapse show">
-                                    <div class="card-body card-dashboard">
-                                        <table class="table table-striped table-bordered dataex-res-configuration">
-                                            <thead>
-                                            <tr>
-                                                <th>Event Name</th>
-                                                <th>Status</th>
-                                                <th>Start Date</th>
-                                                <th>End Date</th>
-                                                <th width="13%">Actions</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            @foreach($data as $row)
-                                                <tr>
-                                                    <td>{{ $row->event_name }}</td>
-                                                    <td>{{ $row->is_published == 0? "Published":"Un Published" }}</td>
-                                                    <td>{{ $row->start_date }}</td>
-                                                    <td>{{ $row->end_date }}</td>
-                                                    <td>
-                                                        <div class="btn-group mr-1 mb-1">
-                                                            <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="false" aria-expanded="false"><i class="la la-bars"></i></button>
-                                                            <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 44px, 0px);">
-                                                                <a class="dropdown-item" href="#" data-toggle="modal" data-title="Edit" data-target="#edit{{ $row->id }}">Edit</a>
-                                                                <a class="dropdown-item" href="#" data-toggle="modal" data-title="Delete" data-target="#delete{{ $row->id }}">Delete</a>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            @endforeach
-                                            </tbody>
-                                        </table>
-                                    </div>
+                        <div class="kt-portlet__head-toolbar">
+                            <div class="kt-portlet__head-wrapper">
+                                <div class="kt-portlet__head-actions">&nbsp;
+                                    <a  href="#" data-toggle="modal" data-target="#create" class="btn btn-brand btn-elevate btn-icon-sm">
+                                        <i class="la la-plus"></i>
+                                        New Record
+                                    </a>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </section>
-                <!--/ Configuration option table -->
+                    <div class="kt-portlet__body">
+                        <!--begin: Search Form -->
+                        <!--begin: Datatable -->
+                        <table class="table table-striped- table-bordered table-hover table-checkable responsive no-wrap" id="customTable">
+                            <thead>
+                            <tr>
+                                <th>Event Name</th>
+                                <th>Status</th>
+                                <th>Start Date</th>
+                                <th>End Date</th>
+                                <th>Actions</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @foreach($data as $row)
+                                <tr>
+                                    <td>{{ $row->event_name }}</td>
+                                    <td>{{ $row->is_publish == 0? "Published":"Un Published" }}</td>
+                                    <td>{{ $row->start_date }}</td>
+                                    <td>{{ $row->end_date }}</td>
+                                    <td>
+                                        <span class="dropdown">
+                                            <a href="#" class="btn btn-sm btn btn-info btn-elevate btn-elevate-air btn-icon btn-icon-md" data-toggle="dropdown" aria-expanded="true">
+                                              <i class="la la-ellipsis-h"></i>
+                                            </a>
+                                            <div class="dropdown-menu dropdown-menu-right">
+                                                <a class="dropdown-item" href="#" data-toggle="modal" data-title="Edit" data-target="#edit{{ $row->id }}"><i class="la la-edit"></i> Edit Details</a>
+                                                <a class="dropdown-item" href="#" data-toggle="modal" data-title="Delete" data-target="#delete{{ $row->id }}"><i class="la la-trash"></i> Delete Record</a>
+                                            </div>
+                                        </span>
+                                    </td>
+                                </tr>
+                            @endforeach
+                            </tbody>
+                            <tfoot>
+                            <tr>
+                                <th>Event Name</th>
+                                <th>Status</th>
+                                <th>Start Date</th>
+                                <th>End Date</th>
+                                <th>Actions</th>
+                            </tr>
+                            </tfoot>
+                        </table>
+                        <!--end: Datatable -->
+                    </div>
+                </div>
             </div>
         </div>
+        <!--End::Dashboard 1-->
     </div>
+
+
+
+    <div class="modal fade" id="create" role="dialog">
+        <div class="modal-dialog modal-md" role="document">
+
+            <div class="modal-content">
+
+                <form action="/holidays" method="POST" enctype="multipart/form-data">
+
+                    <div class="modal-header">
+
+                        <h4 class="title" id="defaultModalLabel">New Holiday Record</h4>
+
+                    </div>
+
+                    <div class="modal-body">
+
+                        @csrf
+                        <div class="col-md-12">
+
+                            <div class="form-group row">
+
+                                <div class="col-md-12">
+
+                                    <label>Company List</label>
+                                    <select name="company_id" class="form-control" id="company_list">
+                                        @foreach($company as $row)
+                                            <option value="{{ $row->id }}">{{ $row->name }}</option>
+                                        @endforeach
+                                    </select>
+
+                                </div>
+
+                            </div>
+
+                            <div class="form-group row">
+
+                                <div class="col-md-6">
+
+                                    <label>Event Name</label>
+                                    <input type="text" name="event_name" class="form-control" />
+
+                                </div>
+
+                                <div class="col-md-6">
+
+                                    <label>Start Date</label>
+                                    <input type="date" class="form-control" name="start_date" />
+                                </div>
+
+                            </div>
+
+                            <div class="form-group row">
+
+                                <div class="col-md-12">
+
+                                    <label>End Date</label>
+                                    <input type="date" class="form-control" name="end_date" />
+
+                                </div>
+
+                            </div>
+
+                            <div class="form-group row">
+
+                                <div class="col-md-12">
+
+                                    <label>Description</label>
+                                    <textarea name="description" class="form-control" data-provide="markdown" rows="4"></textarea>
+
+                                </div>
+
+                            </div>
+
+                            <div class="form-group row">
+
+                                <div class="col-md-12">
+
+                                    <label>Status</label>
+                                    <select name="is_publish" class="form-control">
+                                        <option value="0">Published</option>
+                                        <option value="1">Un Published</option>
+                                    </select>
+
+                                </div>
+
+                            </div>
+
+
+
+                        </div>
+
+                    </div>
+
+                    <div class="modal-footer">
+
+                        <button class="btn btn-danger" data-dismiss="modal" type="button">Cancel</button>
+
+                        <button type="submit" class="btn btn-info">Save Record</button>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
 
     @foreach($data as $row):
     <div class="modal fade" id="edit{{ $row->id }}" role="dialog">
@@ -153,13 +227,13 @@
                             </div>
                             <div class="form-group">
                                 <label>Description</label>
-                                <textarea name="description" class="form-control" rows="4">{{ $row->description }}</textarea>
+                                <textarea name="description" class="form-control" data-provide="markdown" rows="4">{{ $row->description }}</textarea>
                             </div>
                             <div class="form-group">
                                 <label>Status</label>
                                 <select name="is_publish" class="form-control">
-                                    <option value="0" {{ $row->is_published == 0? "Selected": "" }}>Published</option>
-                                    <option value="1"  {{ $row->is_published == 1? "Selected": "" }}>Un Published</option>
+                                    <option value="0" {{ $row->is_publish == 0? "Selected": "" }}>Published</option>
+                                    <option value="1"  {{ $row->is_publish == 1? "Selected": "" }}>Un Published</option>
                                 </select>
                             </div>
                         </div>
@@ -200,11 +274,28 @@
     @endforeach
 
 
+
 @endsection
 
+
+
 @section('script')
+
     <script src="{{ asset('assets') }}/app/custom/general/crud/datatables/extensions/responsive.js" type="text/javascript"></script>
+
     <script>
-        $("#company_list").select2();
+
+        $("#company_list").select2({
+
+            width:"100%",
+
+            placeholder: "Select",
+
+            maximumSelectionSize: 1
+
+        });
+
     </script>
+
 @endsection
+

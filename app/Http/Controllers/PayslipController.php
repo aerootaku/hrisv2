@@ -45,7 +45,7 @@ class PayslipController extends Controller
 
 
         $employee_id = $request->get('employee_id');
-        $cutoff_id = $request->get('cut_off_id');
+        $cutoff_id = $request->get('cutoff_id');
 
         $employee = DB::table('employee')->where('id',$employee_id)->get();
         $employee_rate = DB::table('employee_employment as ee')
@@ -143,7 +143,7 @@ class PayslipController extends Controller
             ->where('employee_id',$employee_id)
             ->where('balance','<>','0.00')
             ->get();
-
+//dd($loan);
         return view('Payroll.payslip', compact(
             'data','employee','employee_attendance','attendance_time','loan','regular_work_hrs',
             'rate_name','monthly','basic_pay','per_day','per_hour',
@@ -161,9 +161,9 @@ class PayslipController extends Controller
 
     public function savePayslip(Request $request)
     {
-        $this->validate(request(), [
-
-        ]);
+//        $this->validate(request(), [
+//
+//        ]);
 
         $cutoff_id = $request->input('cutoff_id');
         $loan_paid = $request->input('loan_paid');
@@ -189,15 +189,15 @@ class PayslipController extends Controller
         return redirect('payslip')->with($notification); //'selec-cutoff'
     }
 
-    Public function minusLoan($amnt, $loanId, $cutoff)
+    Public function minusLoan($amnt, $loan_id, $cutoff_id)
     {
-        $query = DB::select("select * from employee_loan where id=$loanId");
+        $query = DB::select("select * from employee_loan where id=$loan_id");
         foreach ($query as $row) {
             $new_balance = $row->balance - $amnt;
             $paid_amount = $row->paid_amount + $amnt;
-            DB::update("update employee_loan set paid_amount='$paid_amount',balance='$new_balance' where  id=$loanId");
+            DB::update("update employee_loan set paid_amount='$paid_amount',balance='$new_balance' where  id=$loan_id");
 
-            DB::insert("insert into employee_loan_payment (employee_loan_id,cutoff_id,paid_amount,previews_balance,new_balance)values($loanId,$cutoff,$amnt,'$row->balance','$new_balance')");
+            DB::insert("insert into employee_loan_payment (employee_loan_id,cutoff_id,paid_amount,previews_balance,new_balance)values($loan_id,$cutoff_id,$amnt,'$row->balance','$new_balance')");
         }
     }
 

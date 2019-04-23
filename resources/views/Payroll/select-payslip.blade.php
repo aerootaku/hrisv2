@@ -42,7 +42,7 @@
                                 <div class="form-group row">
                                     <div class="col-md-12">
                                         <label>Cut off</label>
-                                        <select name="cut_off_id" class="form-control" id="cut_off_id"  required >
+                                        <select name="cutoff_id" class="form-control" id="cutoff_id"  required >
                                             @foreach($cutoff as $cut):
                                             <option value="{{ $cut->id }}">{{  $cut->cutoff_name . " " .$cut->cutoff_from . " " . $cut->cutoff_to }}</option>
                                             @endforeach
@@ -71,7 +71,7 @@
     <script src="{{ asset('assets') }}/app/custom/general/crud/datatables/extensions/responsive.js" type="text/javascript"></script>
 
     <script>
-        $("#cut_off_id, #employee_id").select2({
+        $("#cutoff_id, #employee_id").select2({
             width:"100%",
             placeholder: "Select",
             maximumSelectionSize: 1
