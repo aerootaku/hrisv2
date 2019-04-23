@@ -264,14 +264,19 @@
                     </div>
                     <div class="info">
                         <div class="title">
-                            <a target="_blank">Kio Hoviera</a>
+                            <a target="_blank">{{ $personal_info->firstname . " " . $personal_info->lastname }}</a>
                         </div>
-                        <div class="desc">Position</div>
+                        <div class="desc">{{ $employment_info->designation_name }}</div>
                     </div>
                     <div class="bottom">
                         <div class="kt-section kt-section__content">
                             <button class="btn btn-outline-warning btn-elevated">Reset Password</button>
                             <button class="btn btn-outline-danger btn-elevated">Disable Account</button>
+                        </div>
+                        <div class="divider"></div>
+                        <div class="kt-section kt-section__content kt-separator--border-solid" style="border: 2px">
+                                <h5 class="font-weight-bold">Last Login</h5>
+                                <span class="text-muted">22-Apr-2019 11:56 AM from 130.105.22.31</span>
                         </div>
                     </div>
                 </div>
@@ -288,19 +293,19 @@
                         <div class="kt-portlet__head-toolbar">
                             <ul class="nav nav-tabs nav-tabs-bold nav-tabs-line nav-tabs-line-right nav-tabs-line-brand" role="tablist">
                                 <li class="nav-item">
-                                    <a class="nav-link" data-toggle="tab" href="#kt_portlet_tab_2_1" role="tab" aria-selected="false">
+                                    <a class="nav-link active" data-toggle="tab" href="#personalInfo" role="tab" aria-selected="false">
                                         <i class="la la-user"></i>
                                         Personal Information
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" data-toggle="tab" href="#kt_portlet_tab_2_1" role="tab" aria-selected="false">
+                                    <a class="nav-link" data-toggle="tab" href="#salary" role="tab" aria-selected="false">
                                         <i class="la la-usd"></i>
                                         Salary
                                     </a>
                                 </li>
                                 <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle active" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><i class="la la-cogs"></i> More</a>
+                                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><i class="la la-cogs"></i> More</a>
                                     <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(87px, 49px, 0px);">
                                         <a class="dropdown-item" data-toggle="tab" href="#kt_portlet_tab_2_2" aria-expanded="true">Contact Details</a>
                                         <a class="dropdown-item" data-toggle="tab" href="#kt_portlet_tab_2_2" aria-expanded="true">Social Media Details</a>
@@ -317,10 +322,255 @@
                     </div>
                     <div class="kt-portlet__body">
                         <div class="tab-content">
-                            <div class="tab-pane" id="kt_portlet_tab_2_1">
-                                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled.
+                            <div class="tab-pane active" id="personalInfo">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="row">
+                                            <div class="form-group col-md-6 mb-2">
+                                                <label>First
+                                                    Name</label>
+                                                <input type="text"
+                                                       class="form-control"
+                                                       placeholder="First Name"
+                                                       name="firstname"
+                                                       value="{{ $personal_info->firstname }}">
+                                            </div>
+                                            <div class="form-group col-md-6 mb-2">
+                                                <label>Last
+                                                    Name</label>
+                                                <input type="text"
+                                                       class="form-control"
+                                                       placeholder="Last Name"
+                                                       name="lastname"
+                                                       value="{{ $personal_info->lastname }}">
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="form-group col-md-4 mb-2">
+                                                <label>Middle
+                                                    Name</label>
+                                                <input type="text"
+                                                       class="form-control"
+                                                       placeholder="Middle Name"
+                                                       name="middlename"
+                                                       value="{{ $personal_info->middlename }}">
+                                            </div>
+                                            <div class="form-group col-md-2 mb-2">
+                                                <label>MI</label>
+                                                <input type="text"
+                                                       class="form-control"
+                                                       placeholder="MI"
+                                                       name="mi"
+                                                       value="{{ $personal_info->mi }}">
+                                            </div>
+                                            <div class="form-group col-md-3 mb-2">
+                                                <label>Suffix</label>
+                                                <input type="text"
+                                                       class="form-control"
+                                                       placeholder="Suffix"
+                                                       name="suffix"
+                                                       value="{{ $personal_info->suffix }}">
+                                            </div>
+                                            <div class="form-group col-md-3 mb-2">
+                                                <label>Nick
+                                                    Name</label>
+                                                <input type="text"
+                                                       class="form-control"
+                                                       placeholder="Nick Name"
+                                                       name="nickname"
+                                                       value="{{ $personal_info->nickname }}">
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="form-group col-md-8 mb-2">
+                                                <label>Current
+                                                    Address</label>
+                                                <textarea type="text"
+                                                          class="form-control"
+                                                          placeholder="Current Address"
+                                                          name="current_address" rows="4">{{ $personal_info->current_address }}</textarea>
+                                            </div>
+                                            <div class="form-group col-md-4 mb-2">
+                                                <label>Current
+                                                    City</label>
+                                                <input type="text"
+                                                       class="form-control"
+                                                       placeholder="Current City"
+                                                       name="current_city"
+                                                       value="{{ $personal_info->current_city }}">
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="form-group col-md-8 mb-2">
+                                                <label>Permanent
+                                                    Address</label>
+                                                <textarea type="text"
+                                                          class="form-control"
+                                                          placeholder="Permanent Address"
+                                                          name="permanent_address" rows="4">{{ $personal_info->permanent_address }}</textarea>
+                                            </div>
+                                            <div class="form-group col-md-4 mb-2">
+                                                <label>Permanent
+                                                    city</label>
+                                                <input type="text"
+                                                       class="form-control"
+                                                       placeholder="Permanent city"
+                                                       name="permanent_city" value="{{ $personal_info->permanent_city }}">
+
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="form-group col-md-12 mb-2">
+                                                <label>Provincial
+                                                    Address</label>
+                                                <textarea type="text"
+                                                          class="form-control"
+                                                          placeholder="Provincial Address"
+                                                          name="province" rows="4">{{ $personal_info->province }}</textarea>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="form-group col-md-3 mb-2">
+                                                <label>Gender</label>
+                                                <select class="form-control"
+                                                        name="gender">
+                                                    <option>{{ $personal_info->gender }}</option>
+                                                    <option>
+                                                        Male
+                                                    </option>
+                                                    <option>
+                                                        Female
+                                                    </option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group col-md-3 mb-2">
+                                                <label>Civil
+                                                    Status</label>
+                                                <input type="text"
+                                                       class="form-control"
+                                                       placeholder="civil Status"
+                                                       name="civil_status"
+                                                       value="{{ $personal_info->civil_status }}">
+                                            </div>
+                                            <div class="form-group col-md-3 mb-2">
+                                                <label>Nationality</label>
+                                                <input type="text"
+                                                       class="form-control"
+                                                       placeholder="nationality"
+                                                       name="nationality"
+                                                       value="{{ $personal_info->nationality }}">
+                                            </div>
+                                            <div class="form-group col-md-3 mb-2">
+                                                <label>Religion</label>
+                                                <select name="blood_type" class="form-control">
+                                                    @foreach($constant as $constants)
+                                                        @if($constants->type == 'Religion')
+                                                            <option value="{{ $constants->value }}" {{ $constants->value == $personal_info->religion? "Selected": "" }}>{{ $constants->value }}</option>
+                                                        @endif;
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="form-group col-md-4 mb-2">
+                                                <label>Birthdate</label>
+                                                <input type="text"
+                                                       class="form-control"
+                                                       placeholder="Birthdate"
+                                                       name="birthdate"
+                                                       value="{{ $personal_info->birthdate }}">
+                                            </div>
+                                            <div class="form-group col-md-8 mb-2">
+                                                <label>Birthplace</label>
+                                                <input type="text"
+                                                       class="form-control"
+                                                       placeholder="Birthplace"
+                                                       name="birthplace"
+                                                       value="{{ $personal_info->birthplace }}">
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="form-group col-md-3 mb-2">
+                                                <label>Height
+                                                    (cm)</label>
+                                                <input type="number"
+                                                       class="form-control"
+                                                       placeholder="Height"
+                                                       name="height"
+                                                       value="{{ $personal_info->height }}">
+                                            </div>
+                                            <div class="form-group col-md-3 mb-2">
+                                                <label>Weight
+                                                    (lbs)</label>
+                                                <input type="number"
+                                                       class="form-control"
+                                                       placeholder="Weight"
+                                                       name="weight"
+                                                       value="{{ $personal_info->weight }}">
+                                            </div>
+                                            <div class="form-group col-md-3 mb-2">
+                                                <label>Blood
+                                                    Type</label>
+                                                <select name="blood_type" class="form-control">
+                                                    @foreach($constant as $constants)
+                                                        @if($constants->type == 'Blood Type')
+                                                            <option value="{{ $constants->value }}" {{ $constants->value == $personal_info->blood_type? "Selected": "" }}>{{ $constants->value }}</option>
+                                                        @endif;
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                            <div class="form-group col-md-3 mb-2">
+                                                <label>Region</label>
+                                                <input type="text"
+                                                       class="form-control"
+                                                       placeholder="Region"
+                                                       name="region"
+                                                       value="{{ $personal_info->region }}">
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="form-group col-md-6 mb-2">
+                                                <label>SSS
+                                                    Number</label>
+                                                <input type="text"
+                                                       class="form-control"
+                                                       placeholder="SSS Number"
+                                                       name="sss_no"
+                                                       value="{{ $personal_info->sss_no }}">
+                                            </div>
+                                            <div class="form-group col-md-6 mb-2">
+                                                <label>Philhealth
+                                                    Number</label>
+                                                <input type="text"
+                                                       class="form-control"
+                                                       placeholder="Philhealth Number"
+                                                       name="philhealth_no"
+                                                       value="{{ $personal_info->philhealth_no }}">
+                                            </div>
+                                            <div class="form-group col-md-6 mb-2">
+                                                <label>Pagibig
+                                                    Number</label>
+                                                <input type="text"
+                                                       class="form-control"
+                                                       placeholder="Pagibig Number"
+                                                       name="pagibig_no"
+                                                       value="{{ $personal_info->pagibig_no }}">
+                                            </div>
+                                            <div class="form-group col-md-6 mb-2">
+                                                <label>TIN
+                                                    Number</label>
+                                                <input type="text"
+                                                       class="form-control"
+                                                       placeholder="TIN Number"
+                                                       name="tin_no"
+                                                       value="{{ $personal_info->tin_no }}">
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="tab-pane active" id="kt_portlet_tab_2_2">
+                            <div class="tab-pane" id="salary">
                                 Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled.
                             </div>
                             <div class="tab-pane" id="kt_portlet_tab_2_3">

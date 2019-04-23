@@ -45,25 +45,62 @@ class EmployeeProfileController extends Controller
     {
         //
         $employee_id=$id;
-        $employee_documents = EmployeeDocument::all();
-        $data_document = DB::table('employee_documents')
-            ->select('settings_constants.value as document_type','employee_documents.id as id','document_type_id','employee.employee_no','employee_documents.employee_id','date_of_expiry','title','notification_email','is_alert','description','document_file')
-            ->rightJoin('settings_constants', 'employee_documents.document_type_id', '=', 'settings_constants.id')
-            ->rightJoin('employee', 'employee_documents.employee_id', '=', 'employee.id')
-            ->whereNull('employee_documents.deleted_at')
-            ->where('employee.id', $employee_id)
-            ->get();
 
-        $data_announcement = DB::table('announcements as a')
-            ->select('a.id as id','ee.employee_id','a.department','published_by','location','summary','title','start_date','end_date','description')
-            ->rightJoin('company_department as cd', 'a.department', '=', 'cd.id')
-            ->rightJoin('employee_employment as ee', 'ee.department', '=', 'cd.id')
-            ->whereNull('a.deleted_at')
-            //   ->groupBy('a.id')
-            //  ->where('employee_employment.id', '$employee_id')
-            ->get();
+//        $employee_documents = EmployeeDocument::all();
+//        $data_document = DB::table('employee_documents')
+//            ->select('settings_constants.value as document_type','employee_documents.id as id','document_type_id','employee.employee_no','employee_documents.employee_id','date_of_expiry','title','notification_email','is_alert','description','document_file')
+//            ->rightJoin('settings_constants', 'employee_documents.document_type_id', '=', 'settings_constants.id')
+//            ->rightJoin('employee', 'employee_documents.employee_id', '=', 'employee.id')
+//            ->whereNull('employee_documents.deleted_at')
+//            ->where('employee.id', $employee_id)
+//            ->get();
+//
+//        $data_announcement = DB::table('announcements as a')
+//            ->select('a.id as id','ee.employee_id','a.department','published_by','location','summary','title','start_date','end_date','description')
+//            ->rightJoin('company_department as cd', 'a.department', '=', 'cd.id')
+//            ->rightJoin('employee_employment as ee', 'ee.department', '=', 'cd.id')
+//            ->whereNull('a.deleted_at')
+//            //   ->groupBy('a.id')
+//            //  ->where('employee_employment.id', '$employee_id')
+//            ->get();
+//
+//        $data_employment=  DB::table('employee_employment as employment')
+//            ->select('employment.id as employment_id', 'employment.employee_id as emp_id', 'employment.date_hired', 'employment.date_resign',
+//                'employment.contract_start', 'employment.contract_end', 'employment.branch', 'employment.department', 'employment.designation',
+//                'employment.employment_status', 'employment.schedule_type', 'employment.employment_status', 'employment.employee_type', 'employment.position', 'company_branch.id as branch_id', 'company_branch.location_name',
+//                'company_department.branch_id', 'company_department.id as department_id', 'company_department.department_name', 'company_designation.id as designation_id', 'company_designation.department_id',
+//                'company_designation.designation_name','rate_template.id as rate_id')
+//            ->rightJoin('company_branch', 'company_branch.id', '=', 'employment.branch')
+//            ->rightJoin('company_department', 'company_department.id', '=', 'employment.department')
+//            ->rightJoin('company_designation', 'company_designation.id', '=', 'employment.designation')
+//            ->rightJoin('office_shifts', 'office_shifts.id', '=', 'employment.schedule_type')
+//            ->join('rate_template', 'rate_template.id', '=', 'employment.rate_id')
+//            ->where('employment.employee_id' ,'=', $employee_id)
+//            ->get();
+//
+//        $data_leave = DB::table('employee_leave_applications')
+//            ->select('leave_type.id', 'leave_type.type_name as leave_type', 'leave_type.days_per_year','employee_leave_applications.id as id','leave_type_id',
+//                'firstname','lastname','employee_leave_applications.employee_id','employee.employee_no','from_date',
+//                'to_date','reason','remarks','employee_leave_applications.created_at as created_at','employee_leave_applications.status as status')
+//            ->join('employee', 'employee_leave_applications.employee_id', '=', 'employee.id')
+//            ->join('leave_type', 'employee_leave_applications.leave_type_id', '=', 'leave_type.id')
+//            ->whereNull('employee_leave_applications.deleted_at')
+//            ->get();
+//
+//        $leave_type = LeaveType::all()->sortByDesc('id');
+//        $document_type = SettingsConstants::all()->where('type', 'Document Type')->sortByDesc('value');
+//        $data_employee=  Employee::all()->where('id', $id);
+//        $data_education = EmployeeEducation::all()->where('employee_id', $employee_id);
+//        $data_work_experience = EmployeeWorkExperience::all()->where('employee_id', $employee_id);
+//        $education_level = SettingsConstants::all()->where('type', 'Education Level')->sortByDesc('value');
+//        $constant = SettingsConstants::all();
+//        $branch = Branch::all();
+//        $department = department::all();
+//        $rate= RateTemplate::all();
+//        $designation = designation::all();
 
-        $data_employment=  DB::table('employee_employment as employment')
+        $personal_info = DB::table('employee')->where('id', '=', $employee_id)->first();
+        $employment_info =  $data_employment=  DB::table('employee_employment as employment')
             ->select('employment.id as employment_id', 'employment.employee_id as emp_id', 'employment.date_hired', 'employment.date_resign',
                 'employment.contract_start', 'employment.contract_end', 'employment.branch', 'employment.department', 'employment.designation',
                 'employment.employment_status', 'employment.schedule_type', 'employment.employment_status', 'employment.employee_type', 'employment.position', 'company_branch.id as branch_id', 'company_branch.location_name',
@@ -75,47 +112,12 @@ class EmployeeProfileController extends Controller
             ->rightJoin('office_shifts', 'office_shifts.id', '=', 'employment.schedule_type')
             ->join('rate_template', 'rate_template.id', '=', 'employment.rate_id')
             ->where('employment.employee_id' ,'=', $employee_id)
-            ->get();
-
-        $data_leave = DB::table('employee_leave_applications')
-            ->select('leave_type.id', 'leave_type.type_name as leave_type', 'leave_type.days_per_year','employee_leave_applications.id as id','leave_type_id',
-                'firstname','lastname','employee_leave_applications.employee_id','employee.employee_no','from_date',
-                'to_date','reason','remarks','employee_leave_applications.created_at as created_at','employee_leave_applications.status as status')
-            ->join('employee', 'employee_leave_applications.employee_id', '=', 'employee.id')
-            ->join('leave_type', 'employee_leave_applications.leave_type_id', '=', 'leave_type.id')
-            ->whereNull('employee_leave_applications.deleted_at')
-            ->get();
-
-        $leave_type = LeaveType::all()->sortByDesc('id');
-        $document_type = SettingsConstants::all()->where('type', 'Document Type')->sortByDesc('value');
-        $data_employee=  Employee::all()->where('id', $id);
-        $data_education = EmployeeEducation::all()->where('employee_id', $employee_id);
-        $data_work_experience = EmployeeWorkExperience::all()->where('employee_id', $employee_id);
-        $education_level = SettingsConstants::all()->where('type', 'Education Level')->sortByDesc('value');
-        $constant = SettingsConstants::all();
-        $branch = Branch::all();
-        $department = department::all();
-        $rate= RateTemplate::all();
-        $designation = designation::all();
+            ->first();
 
         $data = array(
-            'employee_id'=>$employee_id,
-            'employee_documents'=>$employee_documents,
-            'data_employee'=>$data_employee,
-            'data_employment'=>$data_employment,
-            'leave_type'=>$leave_type,
-            'document_type'=>$document_type,
-            'data_education'=>$data_education,
-            'data_work_experience'=>$data_work_experience,
-            'education_level'=>$education_level,
-            'constant'=>$constant,
-            'branch'=>$branch,
-            'department'=>$department,
-            'rate'=>$rate,
-            'designation'=>$designation,
-            'data_leave'=>$data_leave,
-            'data_document'=>$data_document
-
+            "constant"=>SettingsConstants::all(),
+            "personal_info"=>$personal_info,
+            "employment_info"=>$employment_info
         );
 
         return view('Employee.profile', $data);
