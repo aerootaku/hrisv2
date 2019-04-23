@@ -23,8 +23,10 @@ use Illuminate\Support\Facades\DB;
 
 class EmployeeProfileController extends Controller
 {
-    public function index($id)
+    public function index()
     {
+
+        return view('Employee.profile');
 
     }
 

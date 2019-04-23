@@ -74,6 +74,10 @@
 
     <!--end::Layout Skins -->
     <link rel="shortcut icon" href="{{ asset('assets') }}/media/logos/favicon.ico" />
+
+    @yield( 'style')
+
+
 </head>
 
 <!-- end::Head -->
