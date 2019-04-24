@@ -106,18 +106,31 @@ class EmployeeProfileController extends Controller
                 'employment.employment_status', 'employment.schedule_type', 'employment.employment_status', 'employment.employee_type', 'employment.position', 'company_branch.id as branch_id', 'company_branch.location_name',
                 'company_department.branch_id', 'company_department.id as department_id', 'company_department.department_name', 'company_designation.id as designation_id', 'company_designation.department_id',
                 'company_designation.designation_name','rate_template.id as rate_id')
-            ->rightJoin('company_branch', 'company_branch.id', '=', 'employment.branch')
-            ->rightJoin('company_department', 'company_department.id', '=', 'employment.department')
-            ->rightJoin('company_designation', 'company_designation.id', '=', 'employment.designation')
-            ->rightJoin('office_shifts', 'office_shifts.id', '=', 'employment.schedule_type')
+            ->join('company_branch', 'company_branch.id', '=', 'employment.branch')
+            ->join('company_department', 'company_department.id', '=', 'employment.department')
+            ->join('company_designation', 'company_designation.id', '=', 'employment.designation')
+            ->join('office_shifts', 'office_shifts.id', '=', 'employment.schedule_type')
             ->join('rate_template', 'rate_template.id', '=', 'employment.rate_id')
             ->where('employment.employee_id' ,'=', $employee_id)
             ->first();
 
+        $employee_contacts = EmployeeContact::all()->where('employee_id', $employee_id);
+        $employee_educations = DB::table('settings_constants')
+            ->join('employee_educations', 'employee_educations.education_level', '=', 'settings_constants.id')
+            ->whereNull('employee_educations.deleted_at')
+            ->where('employee_educations.employee_id', $employee_id)
+            ->orderByDesc('employee_educations.id')
+            ->get();
+        $education_constants = SettingsConstants::all()->where('type', 'Education Level');
+
+
         $data = array(
             "constant"=>SettingsConstants::all(),
             "personal_info"=>$personal_info,
-            "employment_info"=>$employment_info
+            "employment_info"=>$employment_info,
+            "employee_contacts"=>$employee_contacts,
+            "employee_educations"=>$employee_educations,
+            "education_constants"=>$education_constants
         );
 
         return view('Employee.profile', $data);

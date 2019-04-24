@@ -7,7 +7,7 @@
         .card {
             padding-top: 20px;
             margin: 10px 0 20px 0;
-            background-color: rgba(214, 224, 226, 0.2);
+            background-color: white;
             border-top-width: 0;
             border-bottom-width: 2px;
             -webkit-border-radius: 3px;
@@ -29,8 +29,8 @@
         .card .card-heading.simple {
             font-size: 20px;
             font-weight: 300;
-            color: #d8d8d8;
-            border-bottom: 1px solid #e5e5e5;
+            color: #ffffff;
+            border-bottom: 1px solid #ffffff;
         }
 
         .card .card-heading.image img {
@@ -59,7 +59,7 @@
 
         .card .card-heading.image .card-heading-header span {
             font-size: 12px;
-            color: #999999;
+            color: #ffffff;
         }
 
         .card .card-body {
@@ -99,7 +99,7 @@
             padding-right: 5px;
             overflow: hidden;
             font-size: 12px;
-            color: #999;
+            color: #ffffff;
             text-overflow: ellipsis;
             white-space: nowrap;
         }
@@ -171,7 +171,7 @@
             overflow: hidden;
             font-size: 12px;
             line-height: 16px;
-            color: #737373;
+            color: white;
             text-overflow: ellipsis;
         }
 
@@ -194,7 +194,7 @@
             padding-top: 0;
             overflow: hidden;
             text-align: center;
-            background-color: rgba(214, 224, 226, 0.2);
+            background-color: white;
         }
 
         .card.hovercard .cardheader {
@@ -217,7 +217,7 @@
             -webkit-border-radius: 50%;
             -moz-border-radius: 50%;
             border-radius: 50%;
-            border: 5px solid rgba(255,255,255,0.5);
+            border: 3px solid rgb(255, 255, 255);
         }
 
         .card.hovercard .info {
@@ -236,7 +236,7 @@
             overflow: hidden;
             font-size: 12px;
             line-height: 20px;
-            color: #737373;
+            color:black;
             text-overflow: ellipsis;
         }
 
@@ -307,11 +307,11 @@
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><i class="la la-cogs"></i> More</a>
                                     <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(87px, 49px, 0px);">
-                                        <a class="dropdown-item" data-toggle="tab" href="#kt_portlet_tab_2_2" aria-expanded="true">Contact Details</a>
-                                        <a class="dropdown-item" data-toggle="tab" href="#kt_portlet_tab_2_2" aria-expanded="true">Social Media Details</a>
-                                        <a class="dropdown-item" data-toggle="tab" href="#kt_portlet_tab_2_2" aria-expanded="true">Emergency Contact</a>
-                                        <a class="dropdown-item" data-toggle="tab" href="#kt_portlet_tab_2_2" aria-expanded="true">Dependents</a>
-                                        <a class="dropdown-item" data-toggle="tab" href="#kt_portlet_tab_2_3" aria-expanded="true">Educational Background</a>
+                                        <a class="dropdown-item" data-toggle="tab" href="#contactDetails" aria-expanded="true">Contact Details</a>
+                                        {{--<a class="dropdown-item" data-toggle="tab" href="#kt_portlet_tab_2_2" aria-expanded="true">Social Media Details</a>--}}
+                                        {{--<a class="dropdown-item" data-toggle="tab" href="#kt_portlet_tab_2_2" aria-expanded="true">Emergency Contact</a>--}}
+                                        {{--<a class="dropdown-item" data-toggle="tab" href="#kt_portlet_tab_2_2" aria-expanded="true">Dependents</a>--}}
+                                        <a class="dropdown-item" data-toggle="tab" href="#educationalBackground" aria-expanded="true">Educational Background</a>
                                         <a class="dropdown-item" data-toggle="tab" href="#kt_portlet_tab_2_3" aria-expanded="true">Work Experience</a>
                                         <a class="dropdown-item" data-toggle="tab" href="#kt_portlet_tab_2_3" aria-expanded="true">Office Shift</a>
                                         <a class="dropdown-item" data-toggle="tab" href="#kt_portlet_tab_2_1" aria-expanded="true">Report to</a>
@@ -324,257 +324,604 @@
                         <div class="tab-content">
                             <div class="tab-pane active" id="personalInfo">
                                 <div class="row">
-                                    <div class="col-12">
-                                        <div class="row">
-                                            <div class="form-group col-md-6 mb-2">
-                                                <label>First
-                                                    Name</label>
-                                                <input type="text"
-                                                       class="form-control"
-                                                       placeholder="First Name"
-                                                       name="firstname"
-                                                       value="{{ $personal_info->firstname }}">
+                                    <form action="/employee/{{ $personal_info->id }}" method="POST">
+                                        @csrf
+                                        @method('PATCH')
+                                        <div class="col-md-12">
+                                            <div class="row">
+                                                <div class="form-group col-md-6 mb-2">
+                                                    <label>First
+                                                        Name</label>
+                                                    <input type="text"
+                                                           class="form-control"
+                                                           placeholder="First Name"
+                                                           name="firstname"
+                                                           value="{{ $personal_info->firstname }}">
+                                                </div>
+                                                <div class="form-group col-md-6 mb-2">
+                                                    <label>Last
+                                                        Name</label>
+                                                    <input type="text"
+                                                           class="form-control"
+                                                           placeholder="Last Name"
+                                                           name="lastname"
+                                                           value="{{ $personal_info->lastname }}">
+                                                </div>
                                             </div>
-                                            <div class="form-group col-md-6 mb-2">
-                                                <label>Last
-                                                    Name</label>
-                                                <input type="text"
-                                                       class="form-control"
-                                                       placeholder="Last Name"
-                                                       name="lastname"
-                                                       value="{{ $personal_info->lastname }}">
+                                            <div class="row">
+                                                <div class="form-group col-md-4 mb-2">
+                                                    <label>Middle
+                                                        Name</label>
+                                                    <input type="text"
+                                                           class="form-control"
+                                                           placeholder="Middle Name"
+                                                           name="middlename"
+                                                           value="{{ $personal_info->middlename }}">
+                                                </div>
+                                                <div class="form-group col-md-2 mb-2">
+                                                    <label>MI</label>
+                                                    <input type="text"
+                                                           class="form-control"
+                                                           placeholder="MI"
+                                                           name="mi"
+                                                           value="{{ $personal_info->mi }}">
+                                                </div>
+                                                <div class="form-group col-md-3 mb-2">
+                                                    <label>Suffix</label>
+                                                    <input type="text"
+                                                           class="form-control"
+                                                           placeholder="Suffix"
+                                                           name="suffix"
+                                                           value="{{ $personal_info->suffix }}">
+                                                </div>
+                                                <div class="form-group col-md-3 mb-2">
+                                                    <label>Nick
+                                                        Name</label>
+                                                    <input type="text"
+                                                           class="form-control"
+                                                           placeholder="Nick Name"
+                                                           name="nickname"
+                                                           value="{{ $personal_info->nickname }}">
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="form-group col-md-4 mb-2">
-                                                <label>Middle
-                                                    Name</label>
-                                                <input type="text"
-                                                       class="form-control"
-                                                       placeholder="Middle Name"
-                                                       name="middlename"
-                                                       value="{{ $personal_info->middlename }}">
+                                            <div class="row">
+                                                <div class="form-group col-md-8 mb-2">
+                                                    <label>Current
+                                                        Address</label>
+                                                    <textarea type="text"
+                                                              class="form-control"
+                                                              placeholder="Current Address"
+                                                              name="current_address" rows="4">{{ $personal_info->current_address }}</textarea>
+                                                </div>
+                                                <div class="form-group col-md-4 mb-2">
+                                                    <label>Current
+                                                        City</label>
+                                                    <input type="text"
+                                                           class="form-control"
+                                                           placeholder="Current City"
+                                                           name="current_city"
+                                                           value="{{ $personal_info->current_city }}">
+                                                </div>
                                             </div>
-                                            <div class="form-group col-md-2 mb-2">
-                                                <label>MI</label>
-                                                <input type="text"
-                                                       class="form-control"
-                                                       placeholder="MI"
-                                                       name="mi"
-                                                       value="{{ $personal_info->mi }}">
-                                            </div>
-                                            <div class="form-group col-md-3 mb-2">
-                                                <label>Suffix</label>
-                                                <input type="text"
-                                                       class="form-control"
-                                                       placeholder="Suffix"
-                                                       name="suffix"
-                                                       value="{{ $personal_info->suffix }}">
-                                            </div>
-                                            <div class="form-group col-md-3 mb-2">
-                                                <label>Nick
-                                                    Name</label>
-                                                <input type="text"
-                                                       class="form-control"
-                                                       placeholder="Nick Name"
-                                                       name="nickname"
-                                                       value="{{ $personal_info->nickname }}">
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="form-group col-md-8 mb-2">
-                                                <label>Current
-                                                    Address</label>
-                                                <textarea type="text"
-                                                          class="form-control"
-                                                          placeholder="Current Address"
-                                                          name="current_address" rows="4">{{ $personal_info->current_address }}</textarea>
-                                            </div>
-                                            <div class="form-group col-md-4 mb-2">
-                                                <label>Current
-                                                    City</label>
-                                                <input type="text"
-                                                       class="form-control"
-                                                       placeholder="Current City"
-                                                       name="current_city"
-                                                       value="{{ $personal_info->current_city }}">
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="form-group col-md-8 mb-2">
-                                                <label>Permanent
-                                                    Address</label>
-                                                <textarea type="text"
-                                                          class="form-control"
-                                                          placeholder="Permanent Address"
-                                                          name="permanent_address" rows="4">{{ $personal_info->permanent_address }}</textarea>
-                                            </div>
-                                            <div class="form-group col-md-4 mb-2">
-                                                <label>Permanent
-                                                    city</label>
-                                                <input type="text"
-                                                       class="form-control"
-                                                       placeholder="Permanent city"
-                                                       name="permanent_city" value="{{ $personal_info->permanent_city }}">
+                                            <div class="row">
+                                                <div class="form-group col-md-8 mb-2">
+                                                    <label>Permanent
+                                                        Address</label>
+                                                    <textarea type="text"
+                                                              class="form-control"
+                                                              placeholder="Permanent Address"
+                                                              name="permanent_address" rows="4">{{ $personal_info->permanent_address }}</textarea>
+                                                </div>
+                                                <div class="form-group col-md-4 mb-2">
+                                                    <label>Permanent
+                                                        city</label>
+                                                    <input type="text"
+                                                           class="form-control"
+                                                           placeholder="Permanent city"
+                                                           name="permanent_city" value="{{ $personal_info->permanent_city }}">
 
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="form-group col-md-12 mb-2">
-                                                <label>Provincial
-                                                    Address</label>
-                                                <textarea type="text"
-                                                          class="form-control"
-                                                          placeholder="Provincial Address"
-                                                          name="province" rows="4">{{ $personal_info->province }}</textarea>
+                                            <div class="row">
+                                                <div class="form-group col-md-12 mb-2">
+                                                    <label>Provincial
+                                                        Address</label>
+                                                    <textarea type="text"
+                                                              class="form-control"
+                                                              placeholder="Provincial Address"
+                                                              name="province" rows="4">{{ $personal_info->province }}</textarea>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="form-group col-md-3 mb-2">
-                                                <label>Gender</label>
-                                                <select class="form-control"
-                                                        name="gender">
-                                                    <option>{{ $personal_info->gender }}</option>
-                                                    <option>
-                                                        Male
-                                                    </option>
-                                                    <option>
-                                                        Female
-                                                    </option>
-                                                </select>
+                                            <div class="row">
+                                                <div class="form-group col-md-3 mb-2">
+                                                    <label>Gender</label>
+                                                    <select class="form-control"
+                                                            name="gender">
+                                                        <option>{{ $personal_info->gender }}</option>
+                                                        <option>
+                                                            Male
+                                                        </option>
+                                                        <option>
+                                                            Female
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group col-md-3 mb-2">
+                                                    <label>Civil
+                                                        Status</label>
+                                                    <input type="text"
+                                                           class="form-control"
+                                                           placeholder="civil Status"
+                                                           name="civil_status"
+                                                           value="{{ $personal_info->civil_status }}">
+                                                </div>
+                                                <div class="form-group col-md-3 mb-2">
+                                                    <label>Nationality</label>
+                                                    <input type="text"
+                                                           class="form-control"
+                                                           placeholder="nationality"
+                                                           name="nationality"
+                                                           value="{{ $personal_info->nationality }}">
+                                                </div>
+                                                <div class="form-group col-md-3 mb-2">
+                                                    <label>Religion</label>
+                                                    <select name="blood_type" class="form-control">
+                                                        @foreach($constant as $constants)
+                                                            @if($constants->type == 'Religion')
+                                                                <option value="{{ $constants->value }}" {{ $constants->value == $personal_info->religion? "Selected": "" }}>{{ $constants->value }}</option>
+                                                            @endif;
+                                                        @endforeach
+                                                    </select>
+                                                </div>
                                             </div>
-                                            <div class="form-group col-md-3 mb-2">
-                                                <label>Civil
-                                                    Status</label>
-                                                <input type="text"
-                                                       class="form-control"
-                                                       placeholder="civil Status"
-                                                       name="civil_status"
-                                                       value="{{ $personal_info->civil_status }}">
+                                            <div class="row">
+                                                <div class="form-group col-md-4 mb-2">
+                                                    <label>Birthdate</label>
+                                                    <input type="text"
+                                                           class="form-control"
+                                                           placeholder="Birthdate"
+                                                           name="birthdate"
+                                                           value="{{ $personal_info->birthdate }}">
+                                                </div>
+                                                <div class="form-group col-md-8 mb-2">
+                                                    <label>Birthplace</label>
+                                                    <input type="text"
+                                                           class="form-control"
+                                                           placeholder="Birthplace"
+                                                           name="birthplace"
+                                                           value="{{ $personal_info->birthplace }}">
+                                                </div>
                                             </div>
-                                            <div class="form-group col-md-3 mb-2">
-                                                <label>Nationality</label>
-                                                <input type="text"
-                                                       class="form-control"
-                                                       placeholder="nationality"
-                                                       name="nationality"
-                                                       value="{{ $personal_info->nationality }}">
+                                            <div class="row">
+                                                <div class="form-group col-md-3 mb-2">
+                                                    <label>Height
+                                                        (cm)</label>
+                                                    <input type="number"
+                                                           class="form-control"
+                                                           placeholder="Height"
+                                                           name="height"
+                                                           value="{{ $personal_info->height }}">
+                                                </div>
+                                                <div class="form-group col-md-3 mb-2">
+                                                    <label>Weight
+                                                        (lbs)</label>
+                                                    <input type="number"
+                                                           class="form-control"
+                                                           placeholder="Weight"
+                                                           name="weight"
+                                                           value="{{ $personal_info->weight }}">
+                                                </div>
+                                                <div class="form-group col-md-3 mb-2">
+                                                    <label>Blood
+                                                        Type</label>
+                                                    <select name="blood_type" class="form-control">
+                                                        @foreach($constant as $constants)
+                                                            @if($constants->type == 'Blood Type')
+                                                                <option value="{{ $constants->value }}" {{ $constants->value == $personal_info->blood_type? "Selected": "" }}>{{ $constants->value }}</option>
+                                                            @endif;
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                                <div class="form-group col-md-3 mb-2">
+                                                    <label>Region</label>
+                                                    <input type="text"
+                                                           class="form-control"
+                                                           placeholder="Region"
+                                                           name="region"
+                                                           value="{{ $personal_info->region }}">
+                                                </div>
                                             </div>
-                                            <div class="form-group col-md-3 mb-2">
-                                                <label>Religion</label>
-                                                <select name="blood_type" class="form-control">
-                                                    @foreach($constant as $constants)
-                                                        @if($constants->type == 'Religion')
-                                                            <option value="{{ $constants->value }}" {{ $constants->value == $personal_info->religion? "Selected": "" }}>{{ $constants->value }}</option>
-                                                        @endif;
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="form-group col-md-4 mb-2">
-                                                <label>Birthdate</label>
-                                                <input type="text"
-                                                       class="form-control"
-                                                       placeholder="Birthdate"
-                                                       name="birthdate"
-                                                       value="{{ $personal_info->birthdate }}">
-                                            </div>
-                                            <div class="form-group col-md-8 mb-2">
-                                                <label>Birthplace</label>
-                                                <input type="text"
-                                                       class="form-control"
-                                                       placeholder="Birthplace"
-                                                       name="birthplace"
-                                                       value="{{ $personal_info->birthplace }}">
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="form-group col-md-3 mb-2">
-                                                <label>Height
-                                                    (cm)</label>
-                                                <input type="number"
-                                                       class="form-control"
-                                                       placeholder="Height"
-                                                       name="height"
-                                                       value="{{ $personal_info->height }}">
-                                            </div>
-                                            <div class="form-group col-md-3 mb-2">
-                                                <label>Weight
-                                                    (lbs)</label>
-                                                <input type="number"
-                                                       class="form-control"
-                                                       placeholder="Weight"
-                                                       name="weight"
-                                                       value="{{ $personal_info->weight }}">
-                                            </div>
-                                            <div class="form-group col-md-3 mb-2">
-                                                <label>Blood
-                                                    Type</label>
-                                                <select name="blood_type" class="form-control">
-                                                    @foreach($constant as $constants)
-                                                        @if($constants->type == 'Blood Type')
-                                                            <option value="{{ $constants->value }}" {{ $constants->value == $personal_info->blood_type? "Selected": "" }}>{{ $constants->value }}</option>
-                                                        @endif;
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                            <div class="form-group col-md-3 mb-2">
-                                                <label>Region</label>
-                                                <input type="text"
-                                                       class="form-control"
-                                                       placeholder="Region"
-                                                       name="region"
-                                                       value="{{ $personal_info->region }}">
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="form-group col-md-6 mb-2">
-                                                <label>SSS
-                                                    Number</label>
-                                                <input type="text"
-                                                       class="form-control"
-                                                       placeholder="SSS Number"
-                                                       name="sss_no"
-                                                       value="{{ $personal_info->sss_no }}">
-                                            </div>
-                                            <div class="form-group col-md-6 mb-2">
-                                                <label>Philhealth
-                                                    Number</label>
-                                                <input type="text"
-                                                       class="form-control"
-                                                       placeholder="Philhealth Number"
-                                                       name="philhealth_no"
-                                                       value="{{ $personal_info->philhealth_no }}">
-                                            </div>
-                                            <div class="form-group col-md-6 mb-2">
-                                                <label>Pagibig
-                                                    Number</label>
-                                                <input type="text"
-                                                       class="form-control"
-                                                       placeholder="Pagibig Number"
-                                                       name="pagibig_no"
-                                                       value="{{ $personal_info->pagibig_no }}">
-                                            </div>
-                                            <div class="form-group col-md-6 mb-2">
-                                                <label>TIN
-                                                    Number</label>
-                                                <input type="text"
-                                                       class="form-control"
-                                                       placeholder="TIN Number"
-                                                       name="tin_no"
-                                                       value="{{ $personal_info->tin_no }}">
+                                            <div class="row">
+                                                <div class="form-group col-md-6 mb-2">
+                                                    <label>SSS
+                                                        Number</label>
+                                                    <input type="text"
+                                                           class="form-control"
+                                                           placeholder="SSS Number"
+                                                           name="sss_no"
+                                                           value="{{ $personal_info->sss_no }}">
+                                                </div>
+                                                <div class="form-group col-md-6 mb-2">
+                                                    <label>Philhealth
+                                                        Number</label>
+                                                    <input type="text"
+                                                           class="form-control"
+                                                           placeholder="Philhealth Number"
+                                                           name="philhealth_no"
+                                                           value="{{ $personal_info->philhealth_no }}">
+                                                </div>
+                                                <div class="form-group col-md-6 mb-2">
+                                                    <label>Pagibig
+                                                        Number</label>
+                                                    <input type="text"
+                                                           class="form-control"
+                                                           placeholder="Pagibig Number"
+                                                           name="pagibig_no"
+                                                           value="{{ $personal_info->pagibig_no }}">
+                                                </div>
+                                                <div class="form-group col-md-6 mb-2">
+                                                    <label>TIN
+                                                        Number</label>
+                                                    <input type="text"
+                                                           class="form-control"
+                                                           placeholder="TIN Number"
+                                                           name="tin_no"
+                                                           value="{{ $personal_info->tin_no }}">
+                                                </div>
                                             </div>
 
                                         </div>
-                                    </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <button type="submit" class="btn btn-info btn-block btn-elevate-air"><i class="la la-save"></i> Save All</button>
+                                            </div>
+                                        </div>
+                                    </form>
                                 </div>
                             </div>
                             <div class="tab-pane" id="salary">
-                                Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled.
+                                <h1>to be implemented after Finalizing the payslip module</h1>
                             </div>
-                            <div class="tab-pane" id="kt_portlet_tab_2_3">
-                                Lorem Ipsum is simply dummy text of the printing and typesetting industry. printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled.
+                            <div class="tab-pane" id="contactDetails">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="kt-portlet__head kt-portlet__head--lg">
+                                            <div class="kt-portlet__head-toolbar">
+                                                <div class="kt-portlet__head-wrapper">
+                                                    <div class="kt-portlet__head-actions float-right">
+                                                        <a href="#" data-target="#createContacts" data-toggle="modal" class="btn btn-brand btn-elevate btn-icon-sm float-right">
+                                                            <i class="la la-plus"></i>
+                                                            New Record
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="kt-portlet__body">
+                                            <table class="table table-striped- table-bordered table-hover table-checkable responsive no-wrap" id="customTable">
+                                                <thead>
+                                                <tr>
+                                                    <th>Relationship</th>
+                                                    <th>Contact Name</th>
+                                                    <th>Mobile Number</th>
+                                                    <th>Email Address</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                @foreach($employee_contacts as $contacts)
+                                                    <tr>
+                                                        <td>{{ $contacts->relation }}</td>
+                                                        <td>{{ $contacts->contact_name }}</td>
+                                                        <td>{{ $contacts->mobile_phone }}</td>
+                                                        <td>{{ $contacts->personal_email }}</td>
+                                                        <td>
+                                                        <span class="dropdown">
+                                                            <a href="#" class="btn btn-sm btn btn-info btn-elevate btn-elevate-air btn-icon btn-icon-md" data-toggle="dropdown" aria-expanded="true">
+                                                              <i class="la la-ellipsis-h"></i>
+                                                            </a>
+                                                            <div class="dropdown-menu dropdown-menu-right">
+                                                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#editContacts{{ $contacts->id }}"><i class="la la-edit"></i> Edit Details</a>
+                                                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#deleteContacts{{ $contacts->id }}"><i class="la la-trash"></i> Delete Record</a>
+                                                            </div>
+                                                        </span>
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+                                                </tbody>
+                                                <tfoot>
+                                                <tr>
+                                                    <th>Relationship</th>
+                                                    <th>Contact Name</th>
+                                                    <th>Mobile Number</th>
+                                                    <th>Email Address</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                                </tfoot>
+                                            </table>
+                                            <!--end: Datatable -->
+                                        </div>
+                                        <div class="modal fade" id="createContacts" role="dialog">
+                                            <div class="modal-dialog modal-md" role="document">
+                                                <div class="modal-content">
+                                                    <form action="/employee-contacts" method="POST" enctype="multipart/form-data">
+                                                        <div class="modal-header">
+                                                            <h4 class="title" id="defaultModalLabel">New Record</h4>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            @csrf
+                                                            <div class="col-md-12">
+                                                                <input type="hidden" name="employee_id" value="{{ $personal_info->id }}" />
+                                                                <div class="form-group">
+                                                                    <label>Relationship</label>
+                                                                    <input type="text" name="relation" class="form-control" />
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label>Contact Name</label>
+                                                                    <input type="text" name="contact_name" class="form-control" />
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label>Mobile Number</label>
+                                                                    <input type="text" name="mobile_phone" class="form-control" />
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label>Personal Email</label>
+                                                                    <input type="email" name="personal_email" class="form-control" />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button class="btn btn-danger" data-dismiss="modal" type="button">Cancel</button>
+                                                            <button type="submit" class="btn btn-info">Save Record</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        @foreach($employee_contacts as $row)
+                                            <div class="modal fade" id="editContacts{{ $row->id }}" tabindex="-1" role="dialog">
+                                                <div class="modal-dialog modal-md" role="document">
+                                                    <div class="modal-content">
+                                                        <form action="/employee-contacts/{{ $row->id }}" method="POST" enctype="multipart/form-data">
+                                                            <div class="modal-header">
+                                                                <h4 class="title" id="defaultModalLabel">Edit Record</h4>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                @csrf
+                                                                @method('PATCH')
+                                                                <div class="col-md-12">
+                                                                    <div class="form-group">
+                                                                        <label>Relationship</label>
+                                                                        <input type="text" name="relation" class="form-control" value="{{ $row->relation }}" />
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label>Contact Name</label>
+                                                                        <input type="text" name="contact_name" class="form-control" value="{{ $row->contact_name }}" />
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label>Mobile Number</label>
+                                                                        <input type="text" name="mobile_phone" class="form-control" value="{{ $row->mobile_phone }}" />
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label>Personal Email</label>
+                                                                        <input type="email" name="personal_email" class="form-control" value="{{ $row->personal_email }}" />
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button class="btn btn-danger" data-dismiss="modal" type="button">Cancel</button>
+                                                                <button type="submit" class="btn btn-info">Update Record</button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                        @foreach($employee_contacts as $row)
+                                            <div class="modal fade" id="deleteContacts{{ $row->id }}" tabindex="-1" role="dialog">
+                                                <div class="modal-dialog modal-sm" role="document">
+                                                    <div class="modal-content">
+                                                        <form action="/employee-contacts/{{ $row->id }}" method="POST" enctype="multipart/form-data">
+                                                            <div class="modal-header">
+                                                                <h4 class="title" id="defaultModalLabel">Delete Record</h4>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                                <p>Are you sure you want to delete this record?</p>
+
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button class="btn btn-danger" data-dismiss="modal" type="button">Cancel</button>
+                                                                <button type="submit" class="btn btn-warning">Delete Record</button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane" id="educationalBackground">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="kt-portlet__head kt-portlet__head--lg">
+                                            <div class="kt-portlet__head-toolbar">
+                                                <div class="kt-portlet__head-wrapper">
+                                                    <div class="kt-portlet__head-actions float-right">
+                                                        <a href="#" data-target="#createEducation" data-toggle="modal" class="btn btn-brand btn-elevate btn-icon-sm float-right">
+                                                            <i class="la la-plus"></i>
+                                                            New Record
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="kt-portlet__body">
+                                            <table class="table table-striped- table-bordered table-hover table-checkable responsive no-wrap" id="customTable">
+                                                <thead>
+                                                <tr>
+                                                    <th>Education Level</th>
+                                                    <th>School</th>
+                                                    <th>Attended From</th>
+                                                    <th>Attended Until</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                @foreach($employee_educations as $education)
+                                                    <tr>
+                                                        <td>{{ $education->value }}</td>
+                                                        <td>{{ $education->school }}</td>
+                                                        <td>{{ $education->attended_from }}</td>
+                                                        <td>{{ $education->attended_until }}</td>
+                                                        <td>
+                                                        <span class="dropdown">
+                                                            <a href="#" class="btn btn-sm btn btn-info btn-elevate btn-elevate-air btn-icon btn-icon-md" data-toggle="dropdown" aria-expanded="true">
+                                                              <i class="la la-ellipsis-h"></i>
+                                                            </a>
+                                                            <div class="dropdown-menu dropdown-menu-right">
+                                                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#editContacts{{ $contacts->id }}"><i class="la la-edit"></i> Edit Details</a>
+                                                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#deleteContacts{{ $contacts->id }}"><i class="la la-trash"></i> Delete Record</a>
+                                                            </div>
+                                                        </span>
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+                                                </tbody>
+                                                <tfoot>
+                                                <tr>
+                                                    <th>Relationship</th>
+                                                    <th>Contact Name</th>
+                                                    <th>Mobile Number</th>
+                                                    <th>Email Address</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                                </tfoot>
+                                            </table>
+                                            <!--end: Datatable -->
+                                        </div>
+                                        <div class="modal fade" id="createEducation" role="dialog">
+                                            <div class="modal-dialog modal-md" role="document">
+                                                <div class="modal-content">
+                                                    <form action="/employee-education" method="POST" enctype="multipart/form-data">
+                                                        <div class="modal-header">
+                                                            <h4 class="title" id="defaultModalLabel">New Record</h4>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            @csrf
+                                                            <div class="col-md-12">
+                                                                <input type="hidden" name="employee_id" value="{{ $personal_info->id }}" />
+                                                                <div class="form-group">
+                                                                    <label>Education Level</label>
+                                                                    <select name="education_level" class="form-control">
+                                                                        @foreach($education_constants as $education_constant)
+                                                                            <option value="{{ $education_constant->id }}">{{ $education_constant->value }}</option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label>School</label>
+                                                                    <input type="text" class="form-control" name="school" />
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label>Description</label>
+                                                                    <textarea name="description" class="form-control"></textarea>
+                                                                </div>
+                                                                <div class="form-group row">
+                                                                    <div class="col-6">
+                                                                        <label>From</label>
+                                                                        <input type="date" class="form-control" name="attended_from" />
+                                                                    </div>
+                                                                    <div class="col-6">
+                                                                        <label>to</label>
+                                                                        <input type="date" class="form-control" name="attended_until" />
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button class="btn btn-danger" data-dismiss="modal" type="button">Cancel</button>
+                                                            <button type="submit" class="btn btn-info">Save Record</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        @foreach($employee_educations as $row)
+                                            <div class="modal fade" id="editEducation{{ $row->id }}" tabindex="-1" role="dialog">
+                                                <div class="modal-dialog modal-md" role="document">
+                                                    <div class="modal-content">
+                                                        <form action="/employee-education/{{ $row->id }}" method="POST" enctype="multipart/form-data">
+                                                            <div class="modal-header">
+                                                                <h4 class="title" id="defaultModalLabel">Edit Record</h4>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                @csrf
+                                                                @method('PATCH')
+                                                                <div class="col-md-12">
+                                                                    <div class="form-group">
+                                                                        <label>Education Level</label>
+                                                                        <select name="education_level" class="form-control">
+                                                                            @foreach($education_constants as $education_constant)
+                                                                                <option value="{{ $education_constant->id }}"{{ $row->education_level == $education_constant->id? "Selected": "" }}>{{ $education_constant->value }}</option>
+                                                                            @endforeach
+                                                                        </select>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label>School</label>
+                                                                        <input type="text" class="form-control" name="school" value="{{ $row->school }}" />
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label>Description</label>
+                                                                        <textarea name="description" class="form-control">{{ $row->description }}</textarea>
+                                                                    </div>
+                                                                    <div class="form-group row">
+                                                                        <div class="col-6">
+                                                                            <label>From</label>
+                                                                            <input type="date" class="form-control" name="attended_from" value="{{ $row->attended_from}}" />
+                                                                        </div>
+                                                                        <div class="col-6">
+                                                                            <label>to</label>
+                                                                            <input type="date" class="form-control" name="attended_until" value="{{ $row->attended_until }}" />
+                                                                        </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button class="btn btn-danger" data-dismiss="modal" type="button">Cancel</button>
+                                                                <button type="submit" class="btn btn-info">Update Record</button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                        @foreach($employee_educations as $row)
+                                            <div class="modal fade" id="deleteEducation{{ $row->id }}" tabindex="-1" role="dialog">
+                                                <div class="modal-dialog modal-sm" role="document">
+                                                    <div class="modal-content">
+                                                        <form action="/employee-education/{{ $row->id }}" method="POST" enctype="multipart/form-data">
+                                                            <div class="modal-header">
+                                                                <h4 class="title" id="defaultModalLabel">Delete Record</h4>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                                <p>Are you sure you want to delete this record?</p>
+
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button class="btn btn-danger" data-dismiss="modal" type="button">Cancel</button>
+                                                                <button type="submit" class="btn btn-warning">Delete Record</button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -588,5 +935,6 @@
 @endsection
 
 @section('script')
+    <script src="{{ asset('assets') }}/app/custom/general/crud/datatables/extensions/responsive.js" type="text/javascript"></script>
 
 @endsection
