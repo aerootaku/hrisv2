@@ -80,6 +80,8 @@ Route::post('generatePayslip', 'PayslipController@generatePayslip');
 Route::post('savePayslip', 'PayslipController@savePayslip');
 Route::resource('payroll', 'PayrollController');
 Route::post('generatePayroll', 'PayrollController@generatePayroll');
+Route::get('generatePayrollMemo/{company_id}/{cutoff_id}', 'PayrollController@generatePayrollMemo');
+
 Route::resource('payroll-cutoff', 'PayrollCutOffController');
 Route::resource('rate-template', 'RateTemplateController');
 Route::resource('tax-day-template', 'TaxDayTemplateController');

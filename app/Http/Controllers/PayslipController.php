@@ -161,10 +161,10 @@ class PayslipController extends Controller
 
     public function savePayslip(Request $request)
     {
-
         $cutoff_id = $request->input('cutoff_id');
         $loan_paid = $request->input('loan_paid');
         $loan_id = $request->input('loan_id');
+
 
         $total_loan = 0;
         for ($i = 0; $i < count($loan_id); $i++) {
