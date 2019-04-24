@@ -113,7 +113,7 @@ class EmployeeProfileController extends Controller
             ->join('rate_template', 'rate_template.id', '=', 'employment.rate_id')
             ->where('employment.employee_id' ,'=', $employee_id)
             ->first();
-
+//dd($employment_info);
         $employee_contacts = EmployeeContact::all()->where('employee_id', $employee_id);
         $employee_educations = DB::table('settings_constants')
             ->join('employee_educations', 'employee_educations.education_level', '=', 'settings_constants.id')

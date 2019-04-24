@@ -92,7 +92,7 @@
                             <div class="form-group row">
                                 <div class="col-md-4">
                                     <label>Email</label>
-                                    <input type="text" name="email" class="form-control" id="emailMask">
+                                    <input type="text" name="mail" class="form-control" id="emailMask">
                                 </div>
                                 <div class="col-md-4">
                                     <label>Mobile No</label>

@@ -91,7 +91,6 @@ class EmployeeController extends Controller
                 $request->only('username', 'password', 'employee_id', 'company_id', 'role_id')
             );
 
-
             $this->LeaveCode($employee_id);
         });
 
