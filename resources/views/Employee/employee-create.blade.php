@@ -15,7 +15,8 @@
                             </h3>
                         </div>
                     </div>
-                    <div class="kt-portlet__body">
+                    <form action="/employee" method="POST" enctype="multipart/form-data">
+                        <div class="kt-portlet__body">
                         <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
                         <div class="col-md-12">
                             <h4><strong>Company Designation</strong></h4>
@@ -23,6 +24,7 @@
                                 <div class="col-md-6">
                                     <label>Company</label>
                                     <select name="company_id" id="company_id" class="form-control company">
+                                        <option value="">-- Select Company -- </option>
                                         @foreach($company as $companies)
                                             <option value="{{ $companies->id }}">{{ $companies->name }}</option>
                                         @endforeach
@@ -38,18 +40,20 @@
                             <div class="form-group row">
                                 <div class="col-md-4">
                                     <label>Department</label>
-                                    <select name="department" class="form-control">
-                                        @foreach($department as $departments)
-                                            <option value="{{ $departments->id }}">{{ $departments->department_name }}</option>
-                                        @endforeach
+                                    <select name="department" class="form-control" id="department">
+                                        <option value=""> -- Select Department --</option>
+                                        {{--@foreach($department as $departments)--}}
+                                            {{--<option value="{{ $departments->id }}">{{ $departments->department_name }}</option>--}}
+                                        {{--@endforeach--}}
                                     </select>
                                 </div>
                                 <div class="col-md-4">
                                     <label>Designation</label>
-                                    <select name="designation" class="form-control">
-                                        @foreach($designation as $designations)
-                                            <option value="{{ $designations->id }}">{{ $designations->designation_name }}</option>
-                                        @endforeach
+                                    <select name="designation" class="form-control" id="designation">
+                                        <option value=""></option>
+                                        {{--@foreach($designation as $designations)--}}
+                                            {{--<option value="{{ $designations->id }}">{{ $designations->designation_name }}</option>--}}
+                                        {{--@endforeach--}}
                                     </select>
                                 </div>
                                 <div class="col-md-4">
@@ -88,11 +92,11 @@
                             <div class="form-group row">
                                 <div class="col-md-4">
                                     <label>Email</label>
-                                    <input type="email" name="email" class="form-control">
+                                    <input type="text" name="email" class="form-control" id="emailMask">
                                 </div>
                                 <div class="col-md-4">
                                     <label>Mobile No</label>
-                                    <input type="tel" name="mobile_no" class="form-control">
+                                    <input type="text" name="mobile_no" class="form-control" id="kt_inputmask_3">
                                 </div>
                                 <div class="col-md-4">
                                     <label>Telephone No</label>
@@ -110,13 +114,14 @@
                                 <div class="col-md-4">
                                     <label>Birthdate</label>
                                     <input type="date" class="form-control" id="birthdate" max="{{ date("Y-m-d") }}" onfocusout='dateToAge()' name="birthdate">
-                                    <input class="form-control" type="text" name="age" id="age" hidden>
+                                    <input class="form-control" type="hidden" name="age" id="age" />
                                 </div>
                                 <div class="col-md-5">
                                     <label>Birth Place</label>
                                     <input type="text" class="form-control" name="birthplace" />
                                 </div>
                             </div>
+                            <h4><strong>Employment Information</strong></h4>
                             <div class="form-group row">
                                 <div class="col-md-4">
                                     <label>Date Hired</label>
@@ -178,6 +183,7 @@
                             </div>
                         </div>
                     </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -187,7 +193,7 @@
     <div class="modal fade" id="create" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
-                <form action="employee" method="POST" enctype="multipart/form-data">
+                <form action="/employee" method="POST" enctype="multipart/form-data">
                     <div class="modal-header">
                         <h4 class="title" id="defaultModalLabel">New Employee Record</h4>
                     </div>
@@ -207,25 +213,27 @@
                                 <div class="col-md-6">
                                     <label>Branch</label>
                                     <select name="branch" id="branch" class="form-control">
-                                        <option value=""></option>
+                                        <option value="">-- Select Branch --</option>
                                     </select>
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <div class="col-md-4">
                                     <label>Department</label>
-                                    <select name="department" class="form-control">
-                                        @foreach($department as $departments)
-                                            <option value="{{ $departments->id }}">{{ $departments->department_name }}</option>
-                                        @endforeach
+                                    <select name="department" class="form-control" id="department">
+                                        <option value=""> -- Select Department -- </option>
+                                        {{--@foreach($department as $departments)--}}
+                                            {{--<option value="{{ $departments->id }}">{{ $departments->department_name }}</option>--}}
+                                        {{--@endforeach--}}
                                     </select>
                                 </div>
                                 <div class="col-md-4">
                                     <label>Designation</label>
                                     <select name="designation" class="form-control">
-                                        @foreach($designation as $designations)
-                                            <option value="{{ $designations->id }}">{{ $designations->designation_name }}</option>
-                                        @endforeach
+                                        <option value=""> -- Select Designation -- </option>
+                                        {{--@foreach($designation as $designations)--}}
+                                            {{--<option value="{{ $designations->id }}">{{ $designations->designation_name }}</option>--}}
+                                        {{--@endforeach--}}
                                     </select>
                                 </div>
                                 <div class="col-md-4">
@@ -312,7 +320,15 @@
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <div class="col-md-6">
+                                <div class="col-md-4">
+                                    <label>Employee Rate</label>
+                                    <select name="rate_id" class="form-control">
+                                        @foreach($rate as $rates)
+                                            <option value="{{ $rates->id }}">{{ $rates->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="col-md-4">
                                     <label>Employment Status</label>
                                     <select name="employment_status" class="form-control">
                                         @foreach($constants as $constant)
@@ -322,7 +338,7 @@
                                         @endforeach
                                     </select>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <label>Employment Type</label>
                                     <select name="employee_type" class="form-control">
                                         @foreach($constants as $constant)
@@ -387,9 +403,8 @@
 
     <script>
 
-        //get branch
-        $("#company_id").on("change", function (e) {
-            e.preventDefault();
+
+        function getBranch(){
             let company_id = $("#company_id").val();
             let branch = $("#branch").empty();
             $.ajax({
@@ -398,10 +413,9 @@
                 type: 'POST',
                 success: function (response) {
                     console.log(response);
+                    $('<option value="">' + "-- Select Record --" + '</option>').appendTo(branch);
                     $.each(response, function(i, item) {
-                        console.log(item.value);
-                        console.log(response.value);
-                        $('<option value="' + response.value + '">' + response.name + '</option>').
+                        $('<option value="' + item.value + '">' + item.name + '</option>').
                         appendTo(branch);
                     });
                 },
@@ -409,24 +423,65 @@
 
                 }
             });
+        }
 
-        });
-
-        $("#branch").on("change", function (e) {
-            e.preventDefault();
-            let branch_id = $("#prnumber").val();
+        function getDepartment(){
+            let branch_id = $("#branch").val();
+            let department = $("#department").empty();
             $.ajax({
-                url: '/prFetch',
+                url: '/getDepartment',
                 data: {'branch_id': branch_id, "_token": $('#token').val()},
                 type: 'POST',
 
                 success: function (response) {
                     console.log(response);
+                    $.each(response, function(i, item) {
+                        console.log(item.value);
+                        $('<option value="' + item.value + '">' + item.name + '</option>').
+                        appendTo(department);
+                    });
                 },
                 error: function (response) {
 
                 }
             });
+        }
+
+        function getDesignation(){
+            let department = $("#department").val();
+            let designation = $("#designation").empty();
+            $.ajax({
+                url: '/getDesignation',
+                data: {'department_id': department, "_token": $('#token').val()},
+                type: 'POST',
+
+                success: function (response) {
+                    console.log(response);
+                    $.each(response, function(i, item) {
+                        console.log(item.value);
+                        $('<option value="' + item.value + '">' + item.name + '</option>').
+                        appendTo(designation);
+                    });
+                },
+                error: function (response) {
+
+                }
+            });
+        }
+        //get branch
+        $("#company_id").on("change", function (e) {
+            e.preventDefault();
+            getBranch();
+        });
+
+
+
+        $("#branch").on("change", function (e) {
+            getDepartment();
+        });
+
+        $("#department").on("change", function (e) {
+            getDesignation();
         });
     </script>
 

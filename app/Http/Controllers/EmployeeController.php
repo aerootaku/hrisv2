@@ -11,6 +11,7 @@ use App\EmployeeEmployment;
 use App\LeaveCredits;
 use App\LeaveType;
 use App\OfficeShift;
+use App\RateTemplate;
 use App\SettingsConstants;
 use App\User;
 use function foo\func;
@@ -49,6 +50,7 @@ class EmployeeController extends Controller
         $department = department::all()->sortByDesc('id');
         $designation = designation::all()->sortByDesc('id');
         $constants = SettingsConstants::all()->sortByDesc('id');
+        $rate = RateTemplate::all()->sortByDesc('id');
 
         $data = array(
             "company"=>$company,
@@ -56,7 +58,8 @@ class EmployeeController extends Controller
             "schedule"=>$schedule,
             "department"=>$department,
             "designation"=>$designation,
-            "constants"=>$constants
+            "constants"=>$constants,
+            "rate"=>$rate
         );
 
         return view('Employee.employee-create', $data);
@@ -65,19 +68,7 @@ class EmployeeController extends Controller
     public function store(Request $request)
     {
 
-//        dd($request->all());
-
-//        try{
-//            DB::beginTransaction();
-//
-//            DB::commit();
-//        }
-//        catch (\Exception $e){
-//            DB::rollBack();
-//        }
-
         DB::transaction(function () use ($request){
-
 
             $request->validate([
                'email'=>'required|unique:employee',
@@ -101,7 +92,7 @@ class EmployeeController extends Controller
             );
 
 
-           // $this->LeaveCode($employee_id);
+            $this->LeaveCode($employee_id);
         });
 
 
@@ -144,48 +135,74 @@ class EmployeeController extends Controller
     public function getDepartment(Request $request){
 
         $data = department::all()->where('branch_id', $request->branch_id)->sortByDesc('id');
-        foreach ($data as $row)
-            $resp = array(
-                'id'=>$row->id,
-                "department_name"=>$row->department_name,
-            );
-//        echo json_encode($resp);
+        if($data->count() > 0){
+            foreach ($data as $row){
 
-        return response()->json($resp);
+                $resp[] = array(
+                    'value'=>$row->id,
+                    "name"=>$row->department_name,
+                );
+
+            }
+            return response()->json($resp);
+        }
+        else{
+
+            $result[] = array(
+                'name'=> "No record"
+            );
+            return response()->json($result);
+        }
     }
+
+
 
     public function getBranch(Request $request){
 
         $data = Branch::all()->where('company_id', $request->company_id)->sortByDesc('id');
 
-        foreach ($data as $row){
+        if($data->count() > 0){
+            foreach ($data as $row){
 
-            $resp = array(
-                'value'=>$row->id,
-                "name"=>$row->location_name,
-            );
+                $resp[] = array(
+                    'value'=>$row->id,
+                    "name"=>$row->location_name,
+                );
 
+            }
+            return response()->json($resp);
         }
+        else{
 
-        return response()->json($resp);
-
+            $result[] = array(
+                'name'=> "No record"
+            );
+            return response()->json($result);
+        }
     }
 
     public function getDesignation(Request $request)
     {
 
-        $data = Branch::all()->where('company_id', $request->company_id)->sortByDesc('id');
+        $data = designation::all()->where('department_id', $request->department_id)->sortByDesc('id');
+        if($data->count() > 0){
+            foreach ($data as $row){
 
-        foreach ($data as $row) {
+                $resp[] = array(
+                    'value'=>$row->id,
+                    "name"=>$row->designation_name,
+                );
 
-            $resp = array(
-                'id' => $row->id,
-                "branch_name" => $row->location_name,
-            );
-
+            }
+            return response()->json($resp);
         }
+        else{
 
-        return response()->json($resp);
+            $result[] = array(
+                'name'=> "No record"
+            );
+            return response()->json($result);
+        }
     }
 
     /**

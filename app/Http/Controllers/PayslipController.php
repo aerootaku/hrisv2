@@ -161,9 +161,6 @@ class PayslipController extends Controller
 
     public function savePayslip(Request $request)
     {
-//        $this->validate(request(), [
-//
-//        ]);
 
         $cutoff_id = $request->input('cutoff_id');
         $loan_paid = $request->input('loan_paid');
@@ -172,16 +169,17 @@ class PayslipController extends Controller
         $total_loan = 0;
         for ($i = 0; $i < count($loan_id); $i++) {
             $total_loan += $loan_paid[$i];
-            self::minusLoan($loan_paid[$i], $loan_id[$i], $cutoff_id);
+
+            $this->minusLoan($loan_paid[$i], $loan_id[$i], $cutoff_id);
         }
         $request->input($total_loan);
         MakePayment::create(
             $request->only('cutoff_id', 'employee_id', 'department_id', 'company_id', 'location_id', 'designation_id', 'payment_method_id',
-                'per_day', 'per_hour', 'per_month', 'work_hours', 'work_days', 'overtime_hours', 'undertime_hours', 'nightdiff_hours', 'absences', 'basic_pay', 'overtime_pay', 'holiday_pay', 'nightdiff_pay', 'allowance', 'gross_pay', 'sss_cont', 'pagibig_cont', 'philhealth_cont', 'taxable_income', 'withholding_tax', 'undertime_deduc', 'absences_deduc', 'overall_deduc', 'net_pay', 'comments',
-                'total_loan')
+                'per_day', 'per_hour', 'per_month', 'work_hours', 'work_days', 'overtime_hours', 'undertime_hours', 'nightdiff_hours',
+                'absences', 'basic_pay', 'overtime_pay', 'holiday_pay', 'nightdiff_pay', 'allowance', 'gross_pay', 'sss_cont',
+                'pagibig_cont', 'philhealth_cont', 'taxable_income', 'withholding_tax', 'undertime_deduc', 'absences_deduc',
+                'overall_deduc', 'net_pay', 'comments', 'total_loan')
         );
-
-
         $notification = array(
             'message' => 'Employee Payslip Created Successfully',
             'alert-type' => 'success'
