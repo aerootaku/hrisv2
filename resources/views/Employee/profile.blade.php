@@ -266,7 +266,7 @@
                         <div class="title">
                             <a target="_blank">{{ $personal_info->firstname . " " . $personal_info->lastname }}</a>
                         </div>
-                        <div class="desc">{{ $employment_info->designation_name }}</div>
+                        {{--<div class="desc">{{ $employment_info->designation_name }}</div>--}}
                     </div>
                     <div class="bottom">
                         <div class="kt-section kt-section__content">
