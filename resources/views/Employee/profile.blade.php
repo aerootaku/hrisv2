@@ -898,7 +898,108 @@
                                 </div>
                             </div>
                             <div class="tab-pane" id="officeShift">
-                                office
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="kt-portlet__head kt-portlet__head--lg">
+                                            <div class="kt-portlet__head-toolbar">
+                                                <div class="kt-portlet__head-wrapper">
+                                                    <div class="kt-portlet__head-actions float-right">
+                                                        <a href="#" data-target="#createShift" data-toggle="modal" class="btn btn-brand btn-elevate btn-icon-sm float-right">
+                                                            <i class="la la-plus"></i>
+                                                            New Record
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="kt-portlet__body">
+                                            <table class="table table-striped- table-bordered table-hover table-checkable responsive no-wrap" id="customTable">
+                                                <thead>
+                                                <tr>
+                                                    <th>Date Start</th>
+                                                    <th>Date End</th>
+                                                    <th>Shift Name</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                @foreach($employee_shift as $shift)
+                                                    <tr>
+                                                        <td>{{ $shift->from_date }}</td>
+                                                        <td>{{ $shift->to_date }}</td>
+                                                        <td>{{ $shift->shift_name }}</td>
+                                                        {{--<td>{{ $shift->monday_in_time }}</td>--}}
+                                                        {{--<td>{{ $shift->monday_out_time }}</td>--}}
+                                                        {{--<td>{{ $shift->tuesday_in_time }}</td>--}}
+                                                        {{--<td>{{ $shift->tuesday_out_time }}</td>--}}
+                                                        <td>
+                                                        <span class="dropdown">
+                                                            <a href="#" class="btn btn-sm btn btn-info btn-elevate btn-elevate-air btn-icon btn-icon-md" data-toggle="dropdown" aria-expanded="true">
+                                                              <i class="la la-ellipsis-h"></i>
+                                                            </a>
+                                                            <div class="dropdown-menu dropdown-menu-right">
+                                                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#editShift{{ $shift->id }}"><i class="la la-edit"></i> Edit Details</a>
+                                                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#deleteShift{{ $shift->id }}"><i class="la la-trash"></i> Delete Record</a>
+                                                            </div>
+                                                        </span>
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+                                                </tbody>
+                                                <tfoot>
+                                                <tr>
+                                                    <th>Date Start</th>
+                                                    <th>Date End</th>
+                                                    <th>Shift Name</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                                </tfoot>
+                                            </table>
+                                            <!--end: Datatable -->
+                                        </div>
+                                    </div>
+
+                                    <div class="modal fade" id="createShift" role="dialog">
+                                        <div class="modal-dialog modal-md" role="document">
+                                            <div class="modal-content">
+                                                <form action="/employee-shift" method="POST" enctype="multipart/form-data">
+                                                    <div class="modal-header">
+                                                        <h4 class="title" id="defaultModalLabel">New Record</h4>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        @csrf
+                                                        <div class="col-md-12">
+                                                            <input type="hidden" name="employee_id" value="{{ $personal_info->id }}" />
+
+                                                            <div class="form-group">
+                                                                <label>Shift Name</label>
+                                                                <select name="shift_id" class="form-control" id="shift_id"  required  >
+                                                                    @foreach($office_shift as $row)
+                                                                        <option value="{{ $row->id }}">{{  $row->shift_name }}</option>
+                                                                    @endforeach
+                                                                </select>
+                                                            </div>
+                                                            <div class="form-group row">
+                                                                <div class="col-6">
+                                                                    <label>Date From</label>
+                                                                    <input type="date" class="form-control" name="from_date" />
+                                                                </div>
+                                                                <div class="col-6">
+                                                                    <label>Date To</label>
+                                                                    <input type="date" class="form-control" name="to_date" />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button class="btn btn-danger" data-dismiss="modal" type="button">Cancel</button>
+                                                        <button type="submit" class="btn btn-info">Save Record</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             <div class="tab-pane" id="reportTo">
                                 report
@@ -1259,5 +1360,11 @@
 
 @section('script')
     <script src="{{ asset('assets') }}/app/custom/general/crud/datatables/extensions/responsive.js" type="text/javascript"></script>
-
+    <script>
+        $("#shift_id").select2({
+            width:"100%",
+            placeholder: "Select",
+            maximumSelectionSize: 1
+        });
+    </script>
 @endsection

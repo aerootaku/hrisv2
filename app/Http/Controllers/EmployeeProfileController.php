@@ -124,10 +124,17 @@ class EmployeeProfileController extends Controller
             ->get();
         $education_constants = SettingsConstants::all()->where('type', 'Education Level');
 
-
-
+        $employee_shift = DB::table('office_shifts')
+            ->join('employee_shift', 'employee_shift.shift_id', '=', 'office_shifts.id')
+            //->whereNull('employee_shift.deleted_at')
+            ->where('employee_shift.employee_id', $employee_id)
+            ->orderByDesc('employee_shift.id')
+            ->get();
+//dd($employee_shift);
         $employee_work_experience = EmployeeWorkExperience::all()->where('employee_id', $employee_id);
         $employee_last_cutoff_salary = MakePayment::all()->where('employee_id', $employee_id)->sortByDesc('created_at')->first()->take(1)->get();
+
+        $office_shift = OfficeShift::all();
 
         //dd($employee_last_cutoff_salary);
         $data = array(
@@ -138,7 +145,9 @@ class EmployeeProfileController extends Controller
             "employee_educations"=>$employee_educations,
             "education_constants"=>$education_constants,
             "employee_work_experience"=>$employee_work_experience,
-            "employee_last_cutoff_salary"=>$employee_last_cutoff_salary
+            "employee_last_cutoff_salary"=>$employee_last_cutoff_salary,
+            "employee_shift"=>$employee_shift,
+            "office_shift"=>$office_shift
         );
 
         return view('Employee.profile', $data);

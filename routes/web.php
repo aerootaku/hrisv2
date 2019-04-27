@@ -56,6 +56,7 @@ Route::resource('employee-profile', 'EmployeeProfileController');
 Route::resource('employee-document', 'EmployeeDocumentController');
 Route::resource('employee-contacts', 'EmployeeContactController');
 Route::resource('employee-education', 'EmployeeEducationController');
+Route::resource('employee-shift', 'EmployeeEducationController');
 Route::resource('employee-work-experience', 'EmployeeWorkExperienceController');
 Route::resource('settingsConstant', 'SettingsConstantsController');
 
