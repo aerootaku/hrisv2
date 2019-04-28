@@ -989,6 +989,16 @@
                                                                     <input type="date" class="form-control" name="to_date" />
                                                                 </div>
                                                             </div>
+                                                            <div class="form-group row">
+                                                                <div class="col-6">
+                                                                    <label>Status</label>
+                                                                    <select name="status" class="form-control">
+                                                                        <option value="0">Record</option>
+                                                                        <option value="1">Primary</option>
+                                                                    </select>
+
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                     <div class="modal-footer">
@@ -999,6 +1009,84 @@
                                             </div>
                                         </div>
                                     </div>
+
+
+
+                                    @foreach($employee_shift as $row)
+                                        <div class="modal fade" id="editShift{{ $row->id }}" tabindex="-1" role="dialog">
+                                            <div class="modal-dialog modal-md" role="document">
+                                                <div class="modal-content">
+                                                    <form action="/employee-shift/{{ $row->id }}" method="POST" enctype="multipart/form-data">
+                                                        <div class="modal-header">
+                                                            <h4 class="title" id="defaultModalLabel">Edit Record</h4>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            @csrf
+                                                            @method('PATCH')
+                                                            <div class="col-md-12">
+                                                                <div class="form-group">
+                                                                    <label>Shift Name</label>
+                                                                    <select name="shift_id" class="form-control" id="shift_id"  required  >
+                                                                        @foreach($office_shift as $shifts)
+                                                                            <option value="{{ $shifts->id }}" {{ $shifts->id == $row->shift_id? "Selected": "" }}>{{  $shifts->shift_name }}</option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                </div>
+                                                                <div class="form-group row">
+                                                                    <div class="col-6">
+                                                                        <label>Date From</label>
+                                                                        <input type="date" class="form-control" name="from_date" value="{{$row->from_date}}" />
+                                                                    </div>
+                                                                    <div class="col-6">
+                                                                        <label>Date To</label>
+                                                                        <input type="date" class="form-control" name="to_date" value="{{$row->to_date}}"/>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group row">
+                                                                    <div class="col-6">
+                                                                        <label>Status</label>
+                                                                        <select name="status" class="form-control">
+                                                                            <option value="0">Record</option>
+                                                                            <option value="1">Primary</option>
+                                                                        </select>
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button class="btn btn-danger" data-dismiss="modal" type="button">Cancel</button>
+                                                                <button type="submit" class="btn btn-info">Update Record</button>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                    @foreach($employee_shift as $row)
+                                        <div class="modal fade" id="deleteShift{{ $row->id }}" tabindex="-1" role="dialog">
+                                            <div class="modal-dialog modal-sm" role="document">
+                                                <div class="modal-content">
+                                                    <form action="/employee-shift/{{ $row->id }}" method="POST" enctype="multipart/form-data">
+                                                        <div class="modal-header">
+                                                            <h4 class="title" id="defaultModalLabel">Delete Record</h4>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <p>Are you sure you want to delete this record?</p>
+
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button class="btn btn-danger" data-dismiss="modal" type="button">Cancel</button>
+                                                            <button type="submit" class="btn btn-warning">Delete Record</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endforeach
+
                                 </div>
                             </div>
                             <div class="tab-pane" id="reportTo">

@@ -126,7 +126,7 @@ class EmployeeProfileController extends Controller
 
         $employee_shift = DB::table('office_shifts')
             ->join('employee_shift', 'employee_shift.shift_id', '=', 'office_shifts.id')
-            //->whereNull('employee_shift.deleted_at')
+            ->whereNull('employee_shift.deleted_at')
             ->where('employee_shift.employee_id', $employee_id)
             ->orderByDesc('employee_shift.id')
             ->get();
