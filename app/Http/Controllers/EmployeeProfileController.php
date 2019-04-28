@@ -13,6 +13,7 @@ use App\EmployeeEmployment;
 use App\EmployeeProfile;
 use App\EmployeeWorkExperience;
 use App\LeaveType;
+use App\MakePayment;
 use App\OfficeShift;
 use App\RateTemplate;
 use App\SettingsConstants;
@@ -123,14 +124,30 @@ class EmployeeProfileController extends Controller
             ->get();
         $education_constants = SettingsConstants::all()->where('type', 'Education Level');
 
+        $employee_shift = DB::table('office_shifts')
+            ->join('employee_shift', 'employee_shift.shift_id', '=', 'office_shifts.id')
+            ->whereNull('employee_shift.deleted_at')
+            ->where('employee_shift.employee_id', $employee_id)
+            ->orderByDesc('employee_shift.id')
+            ->get();
+//dd($employee_shift);
+        $employee_work_experience = EmployeeWorkExperience::all()->where('employee_id', $employee_id);
+        $employee_last_cutoff_salary = MakePayment::all()->where('employee_id', $employee_id)->sortByDesc('created_at')->first()->take(1)->get();
 
+        $office_shift = OfficeShift::all();
+
+        //dd($employee_last_cutoff_salary);
         $data = array(
             "constant"=>SettingsConstants::all(),
             "personal_info"=>$personal_info,
             "employment_info"=>$employment_info,
             "employee_contacts"=>$employee_contacts,
             "employee_educations"=>$employee_educations,
-            "education_constants"=>$education_constants
+            "education_constants"=>$education_constants,
+            "employee_work_experience"=>$employee_work_experience,
+            "employee_last_cutoff_salary"=>$employee_last_cutoff_salary,
+            "employee_shift"=>$employee_shift,
+            "office_shift"=>$office_shift
         );
 
         return view('Employee.profile', $data);
