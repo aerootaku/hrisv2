@@ -71,7 +71,6 @@ class EmployeeController extends Controller
         DB::transaction(function () use ($request){
 
             $request->validate([
-               'email'=>'required|unique:employee',
                 'username'=>'unique:users',
                 'employee_no'=>'unique:employee'
             ]);
@@ -84,7 +83,7 @@ class EmployeeController extends Controller
 
             EmployeeEmployment::create($request->only(
                 'employee_id', 'department', 'branch', 'designation', 'date_hired', 'contract_start', 'schedule_type', 'employee_type',
-                'employment_status'
+                'employment_status', 'monthly_salary', 'per_day_salary'
             ));
 
             User::create(
