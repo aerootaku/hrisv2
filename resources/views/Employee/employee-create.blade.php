@@ -20,6 +20,7 @@
                         <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
                         <div class="col-md-12">
                             <h4><strong>Company Designation</strong></h4>
+                            <input type="hidden" name="rate_id" value="1" />
                             <div class="form-group row">
                                 <div class="col-md-6">
                                     <label>Company</label>
@@ -141,7 +142,7 @@
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <label>Employment Status</label>
                                     <select name="employment_status" class="form-control">
                                         @foreach($constants as $constant)
@@ -151,7 +152,7 @@
                                         @endforeach
                                     </select>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <label>Employment Type</label>
                                     <select name="employee_type" class="form-control">
                                         @foreach($constants as $constant)
@@ -160,6 +161,21 @@
                                             @endif
                                         @endforeach
                                     </select>
+                                </div>
+                                <div class="col-md-4">
+                                    <label>Gross Pay</label>
+                                    <input type="number" id="monthly_salary" class="form-control" name="monthly_salary" />
+                                </div>
+                            </div>
+                            <h4><Strong>Employee Salary</Strong></h4>
+                            <div class="form-group row">
+                                <div class="col-md-6">
+                                    <label>Bank Account</label>
+                                    <input type="text" id="monthly_salary" class="form-control" name="bank_account" />
+                                </div>
+                                <div class="col-md-6">
+                                    <label>Gross Pay</label>
+                                    <input type="number" id="monthly_salary" class="form-control" name="monthly_salary" />
                                 </div>
                             </div>
                             <h4><strong>Credentials</strong></h4>
@@ -190,191 +206,6 @@
         <!--End::Dashboard 1-->
     </div>
 
-    <div class="modal fade" id="create" tabindex="-1" role="dialog">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <form action="/employee" method="POST" enctype="multipart/form-data">
-                    <div class="modal-header">
-                        <h4 class="title" id="defaultModalLabel">New Employee Record</h4>
-                    </div>
-                    <div class="modal-body">
-                        <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
-                        <div class="col-md-12">
-                            <h4><strong>Company Designation</strong></h4>
-                            <div class="form-group row">
-                                <div class="col-md-6">
-                                    <label>Company</label>
-                                    <select name="company_id" id="company_id" class="form-control company">
-                                        @foreach($company as $companies)
-                                            <option value="{{ $companies->id }}">{{ $companies->name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="col-md-6">
-                                    <label>Branch</label>
-                                    <select name="branch" id="branch" class="form-control">
-                                        <option value="">-- Select Branch --</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <div class="col-md-4">
-                                    <label>Department</label>
-                                    <select name="department" class="form-control" id="department">
-                                        <option value=""> -- Select Department -- </option>
-                                        {{--@foreach($department as $departments)--}}
-                                            {{--<option value="{{ $departments->id }}">{{ $departments->department_name }}</option>--}}
-                                        {{--@endforeach--}}
-                                    </select>
-                                </div>
-                                <div class="col-md-4">
-                                    <label>Designation</label>
-                                    <select name="designation" class="form-control">
-                                        <option value=""> -- Select Designation -- </option>
-                                        {{--@foreach($designation as $designations)--}}
-                                            {{--<option value="{{ $designations->id }}">{{ $designations->designation_name }}</option>--}}
-                                        {{--@endforeach--}}
-                                    </select>
-                                </div>
-                                <div class="col-md-4">
-                                    <label>Role</label>
-                                    <select name="role_id" class="form-control">
-                                        <option value="1">System Administrator</option>
-                                        <option value="2">Employee</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <div class="col-md-6 offset-3">
-                                    <label>Employee No</label>
-                                    <input type="text" class="form-control" name="employee_no" />
-                                </div>
-                            </div>
-                            <h4><strong>Personal Information</strong></h4>
-                            <div class="form-group row">
-                                <div class="col-md-4">
-                                    <label>First Name</label>
-                                    <input type="text" class="form-control"  name="firstname">
-                                </div>
-                                <div class="col-md-3">
-                                    <label>Last Name</label>
-                                    <input type="text" class="form-control"  name="lastname">
-                                </div>
-                                <div class="col-md-3">
-                                    <label>Middle Name</label>
-                                    <input type="text" class="form-control"  name="middlename">
-                                </div>
-                                <div class="col-md-2">
-                                    <label>Suffix</label>
-                                    <input type="text" class="form-control" name="suffix">
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <div class="col-md-4">
-                                    <label>Email</label>
-                                    <input type="email" name="email" class="form-control">
-                                </div>
-                                <div class="col-md-4">
-                                    <label>Mobile No</label>
-                                    <input type="tel" name="mobile_no" class="form-control">
-                                </div>
-                                <div class="col-md-4">
-                                    <label>Telephone No</label>
-                                    <input type="tel" name="telephone_no" class="form-control">
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <div class="col-md-3">
-                                    <label>Gender</label>
-                                    <select name="gender" class="form-control">
-                                        <option value="Male">Male</option>
-                                        <option value="Female">Female</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-4">
-                                    <label>Birthdate</label>
-                                    <input type="date" class="form-control" id="birthdate" max="{{ date("Y-m-d") }}" onfocusout='dateToAge()' name="birthdate">
-                                    <input class="form-control" type="text" name="age" id="age" hidden>
-                                </div>
-                                <div class="col-md-5">
-                                    <label>Birth Place</label>
-                                    <input type="text" class="form-control" name="birthplace" />
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <div class="col-md-4">
-                                    <label>Date Hired</label>
-                                    <input type="date" class="form-control"  name="date_hired">
-                                </div>
-                                <div class="col-md-4">
-                                    <label>Contract Start</label>
-                                    <input type="date" class="form-control" name="contract_start">
-                                </div>
-                                <div class="col-md-4">
-                                    <label>Schedule</label>
-                                    <select name="schedule_type" class="form-control">
-                                        @foreach($schedule as $schedules)
-                                            <option value="{{ $schedules->id }}">{{ $schedules->shift_name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <div class="col-md-4">
-                                    <label>Employee Rate</label>
-                                    <select name="rate_id" class="form-control">
-                                        @foreach($rate as $rates)
-                                            <option value="{{ $rates->id }}">{{ $rates->name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="col-md-4">
-                                    <label>Employment Status</label>
-                                    <select name="employment_status" class="form-control">
-                                        @foreach($constants as $constant)
-                                            @if ($constant->type == 'Employment Status')
-                                                <option value="{{ $constant->id }}">{{ $constant->value }}</option>
-                                            @endif
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="col-md-4">
-                                    <label>Employment Type</label>
-                                    <select name="employee_type" class="form-control">
-                                        @foreach($constants as $constant)
-                                            @if ($constant->type == 'Employment Type')
-                                                <option value="{{ $constant->id }}">{{ $constant->value }}</option>
-                                            @endif
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                            <h4><strong>Credentials</strong></h4>
-                            <div class="form-group row">
-                                <div class="col-md-4">
-                                    <label>Username</label>
-                                    <input type="text" class="form-control"  name="username">
-                                </div>
-                                <div class="col-md-4">
-                                    <label>Password</label>
-                                    <input type="password" class="form-control"  name="password">
-                                </div>
-                                <div class="col-md-4">
-                                    <label>Confirm Password</label>
-                                    <input type="password" class="form-control"  name="confirm-password">
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="modal-footer">
-                        <button class="btn btn-danger" data-dismiss="modal" type="button">Cancel</button>
-                        <button type="submit" class="btn btn-info">Save Record</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
 
 @endsection
 
@@ -483,6 +314,7 @@
         $("#department").on("change", function (e) {
             getDesignation();
         });
+
     </script>
 
 @endsection

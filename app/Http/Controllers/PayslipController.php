@@ -8,14 +8,41 @@ use App\PayrollCutOff;
 use App\Payslip;
 use App\Company;
 use App\TaxPagibig;
+use function Couchbase\defaultDecoder;
+use Hamcrest\Thingy;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
-
+use Exception;
 
 class PayslipController extends Controller
 {
+
+    protected $employeeUtil;
+
+    public $overtime_hours=0;
+    public $overtime_pay=0;
+    public $absences_no=0;
+    public $absences_deduc=0;
+    public $undertime_hours=0;
+    public $undertime_deduc=0;
+    public $holiday=0;
+    public $holiday_pay=0;
+    public $allowance=0;
+    public $per_day = 0;
+    public $tardiness=0;
+    public $sss_cont = 0;
+    public $withholding_tax=0;
+    public $rate_name=0;
+
+
+    public function __construct(EmployeeUtil $employeeUtil)
+    {
+        $this->employeeUtil = $employeeUtil;
+    }
+
+
     public function index()
     {
         $employee = Employee::all()->sortByDesc('id');
@@ -30,7 +57,7 @@ class PayslipController extends Controller
     public function generatePayslip(Request $request)
     {
         //DB::select('call myStoredProcedure("p1", "p2")');
-        //No Computation
+//        //No Computation
         $overtime_hours=0;
         $overtime_pay=0;
         $absences_no=0;
@@ -148,6 +175,42 @@ class PayslipController extends Controller
     }
 // total_loan
 
+    public function generateNewPayslip($id){
+
+        //dummy data
+        $cutoff_from = "2019-02-03";
+        $cutoff_to = "2019-03-07";
+        //end of dummy data
+
+
+        $employee = $this->employeeUtil->getEmployee($id);
+        $employment = $this->employeeUtil->getEmployment($employee->id);
+        $totalDays = $this->employeeUtil->cutoffWorkingDays('', '');
+        $employeeWorkingHours = $this->employeeUtil->employeeCutoffAttendance(1, $cutoff_from, $cutoff_to);
+        $cutoffWorkingHours = $this->employeeUtil->cutoffWorkingHours('', '');
+        $cutoffWorkingDay = $this->employeeUtil->cutoffWorkingDays('', '');
+        $absentCount = $this->employeeUtil->generateAbsences($employeeWorkingHours->days_work, $cutoff_from, $cutoff_to);
+
+        //process salary according to attendance
+        $monthly_salary = $employment->monthly_salary;
+        $cutoffSalary = $monthly_salary / 2;
+        $cutoffDailySalary = $cutoffSalary / $totalDays;
+        $grosspay = $cutoffDailySalary * $employeeWorkingHours->days_work;
+
+        //compute deduction
+        $deductions = $this->compute_sss_philhealth_pagibig($monthly_salary);
+        $totalDeductions = array_sum($deductions);
+
+
+        dd($cutoffDailySalary, $grosspay, $deductions, $totalDeductions);
+        $data = array(
+            "employee_info"=>$employee,
+            "totalWorkingHours"=>$cutoffWorkingHours,
+            "cutoffWorkingHours"=>$employeeWorkingHours,
+            "totalAbsent"=>$absentCount
+        );
+        return view('Payroll.payslipnew', $data);
+    }
     public function create()
     {
         //
@@ -155,9 +218,6 @@ class PayslipController extends Controller
 
     public function savePayslip(Request $request)
     {
-        $this->validate(request(), [
-
-        ]);
 
         $cutoff_id = $request->input('cutoff_id');
         $loan_paid = $request->input('loan_paid');
@@ -261,8 +321,8 @@ class PayslipController extends Controller
             ->get();
         if ($overtime->count()>0) {
             foreach ($overtime as $row) {
-                $output['absences_no'] = +$row->absences_no;
-                $output['absences_deduc'] = +$row->absences_no * $per_day;
+                $output['absences_no'] =+ $row->absences_no;
+                $output['absences_deduc'] =+ $row->absences_no * $per_day;
             }
         }else{
             $output['overtime']=0;
@@ -271,7 +331,6 @@ class PayslipController extends Controller
 
         return $output;
     }
-
 
     public function show(Payslip $payslip)
     {

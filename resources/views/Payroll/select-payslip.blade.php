@@ -33,8 +33,8 @@
                                     <div class="col-md-12">
                                         <label>Select Employee</label>
                                         <select name="employee_id" class="form-control" id="employee_id"  required >
-                                            @foreach($employee as $employees):
-                                            <option value="{{ $employees->id }}">{{  $employees->id . " " . $employees->lastname }}</option>
+                                            @foreach($employee as $employees)
+                                            <option value="{{ $employees->id }}">{{  $employees->firstname . " " . $employees->lastname }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -43,8 +43,8 @@
                                     <div class="col-md-12">
                                         <label>Cut off</label>
                                         <select name="cutoff_id" class="form-control" id="cutoff_id"  required >
-                                            @foreach($cutoff as $cut):
-                                            <option value="{{ $cut->id }}">{{  $cut->cutoff_name . " " .$cut->cutoff_from . " " . $cut->cutoff_to }}</option>
+                                            @foreach($cutoff as $cut)
+                                            <option value="{{ $cut->id }}">{{  $cut->cutoff_from . " " . $cut->cutoff_to }}</option>
                                             @endforeach
                                         </select>
                                     </div>
