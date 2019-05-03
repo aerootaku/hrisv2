@@ -189,7 +189,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <label>Telephone Number</label>
-                                    <input type="tel" class="form-control" name="phone" />
+                                    <input type="tel" class="form-control" id="telephoneNumber" name="phone" />
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -271,7 +271,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <label>Telephone Number</label>
-                                        <input type="tel" class="form-control" name="phone" value="{{ $row->phone }}" />
+                                        <input type="tel" class="form-control" id="telephoneNumberE" name="phone" value="{{ $row->phone }}" />
                                     </div>
                                 </div>
                                 <div class="form-group row">

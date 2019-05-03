@@ -59,6 +59,12 @@
     <link href="{{ asset('assets') }}/vendors/custom/vendors/flaticon2/flaticon.css" rel="stylesheet" type="text/css" />
     <link href="{{ asset('assets') }}/vendors/custom/vendors/fontawesome5/css/all.min.css" rel="stylesheet" type="text/css" />
 
+
+    <link href="{{ asset('assets') }}/vendors/general/vendors/inputmask/dist/jquery.inputmask.bundle.js" type="text/javascript" />
+    <link href="{{ asset('assets') }}/vendors/general/vendors/inputmask/dist/inputmask.date.extensions.js" type="text/javascript" />
+    <link href="{{ asset('assets') }}/vendors/general/vendors/inputmask/dist/inputmask.numeric.extensions.js" type="text/javascript" />
+    <link href="{{ asset('assets') }}/vendors/general/vendors/inputmask/dist/inputmask.phone.extensions.js" type="text/javascript" />
+
     <!--end:: Global Optional Vendors -->
 
     <!--begin::Global Theme Styles(used by all pages) -->
@@ -1524,6 +1530,35 @@
             break;
     }
     @endif
+
+    $("#mobileNumber").inputmask({"mask": "+639999999999"});
+    $("#telephoneNumber").inputmask({"mask": "(999) 999-9999"});
+
+    $("#mobileNumberE").inputmask({"mask": "+639999999999"});
+    $("#telephoneNumberE").inputmask({"mask": "(999) 999-9999"});
+
+
+    $("#tinId").inputmask({"mask": "999-999-999-999"});
+    $("#sssId").inputmask({"mask": "99-9999999-9"});
+    $("#pagibigId").inputmask({"mask": "9999-9999-9999"});
+    $("#philhealthId").inputmask({"mask": "99-9999-99999-9"});
+
+//    $('#multipleDate').datepicker({
+//        multidate: true,
+//        format: 'dd-mm-yyyy'
+//    });
+
+    $('#currency').inputmask("numeric", {
+        radixPoint: ".",
+        groupSeparator: ",",
+        digits: 2,
+        autoGroup: true,
+        //  prefix: '$',
+        rightAlign: true,
+        oncleared: function () { self.Value(''); }
+    });
+
+
 </script>
 @if ($errors->any())
     @foreach ($errors->all() as $error)
