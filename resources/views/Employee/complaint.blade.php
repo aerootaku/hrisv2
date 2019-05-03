@@ -156,7 +156,7 @@
                                 <div class="form-group row">
                                     <div class="col-md-12">
                                         <label>Complaint From</label>
-                                        <select name="complaint_from" class="form-control" id="complaint_fromU"  required >
+                                        <select name="complaint_from" class="form-control complaint_fromU"  required >
                                             @foreach($employee as $employees):
                                             <option value="{{ $employees->id }}" {{ $employees->id == $row->complaint_from? "Selected": "" }}>{{  $employees->firstname . " " . $employees->lastname }}</option>
                                             @endforeach
@@ -176,7 +176,7 @@
                                 <div class="form-group row">
                                     <div class="col-md-12">
                                         <label>Complaint Against</label>
-                                        <select name="complaint_against" class="form-control" id="complaint_againstU"  required >
+                                        <select name="complaint_against" class="form-control complaint_againstU"  required >
                                             @foreach($employee as $employees):
                                             <option value="{{ $employees->id }}" {{ $employees->id == $row->complaint_against? "Selected": "" }}>{{  $employees->firstname . " " . $employees->lastname }}</option>
                                             @endforeach
@@ -247,7 +247,7 @@
             placeholder: "Select",
             maximumSelectionSize: 1
         });
-        $("#complaint_fromU, #complaint_againstU").select2({
+        $(".complaint_fromU, .complaint_againstU").select2({
             width:"100%",
             placeholder: "Select",
             maximumSelectionSize: 1

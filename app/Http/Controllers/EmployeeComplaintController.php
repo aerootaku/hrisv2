@@ -28,7 +28,7 @@ class EmployeeComplaintController extends Controller
     {
         EmployeeComplaint::create($request->all());
         $notification = array(
-            'message' => 'EmployeeComplaint Created Successfully',
+            'message' => 'Employee Complaint Created Successfully',
             'alert-type' => 'success'
         );
         return redirect()->back()->with($notification);
