@@ -150,8 +150,8 @@
                             </div>
                             <div class="form-group row">
                                 <div class="col-md-6">
-                                    <label>Expected Travel Budget</label>
-                                    <input type="number" class="form-control" name="expected_budget"   required>
+                                   <label>Expected Travel Budget</label>  {{--id="currency"--}}
+                                    <input type="text" class="form-control"  name="expected_budget"   required>
                                 </div>
                                 <div class="col-md-6">
                                     <label>Actual Travel Budget</label>
@@ -186,7 +186,7 @@
                                 <div class="form-group row">
                                     <div class="col-md-12">
                                         <label>Employee</label>
-                                        <select name="employee_id" class="form-control" id="employee_idU"  required >
+                                        <select name="employee_id" class="form-control employee_idU"  required >
                                             @foreach($employee as $employees)
                                                 <option value="{{ $employees->id }}" {{ $employees->id == $row->employee_id? "Selected": "" }}>{{  $employees->firstname . " " . $employees->lastname }}</option>
                                             @endforeach
@@ -216,7 +216,7 @@
                                 <div class="form-group row">
                                     <div class="col-md-6">
                                         <label>Travel Mode</label>
-                                        <select name="travel_mode_id" class="form-control" id="travel_mode_idU"  required  >
+                                        <select name="travel_mode_id" class="form-control travel_mode_idU"  required  >
                                             @foreach($travel_mode as $travel_modes):
                                             <option value="{{ $travel_modes->id }}" {{ $travel_modes->id == $row->travel_mode_id? "Selected": "" }}>{{  $travel_modes->value }}</option>
                                             @endforeach
@@ -224,7 +224,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <label>Arrangement Type</label>
-                                        <select name="arrangement_type_id" class="form-control" id="arrangement_type_idU"  required  >
+                                        <select name="arrangement_type_id" class="form-control arrangement_type_idU"  required  >
                                             @foreach($travel_arrangement as $travel_arrangements):
                                             <option value="{{ $travel_arrangements->id }}" {{ $travel_arrangements->id == $row->arrangement_type_id? "Selected": "" }}>{{  $travel_arrangements->value }}</option>
                                             @endforeach
@@ -299,7 +299,7 @@
             placeholder: "Select",
             maximumSelectionSize: 1,
         });
-        $("#travel_mode_idU,#arrangement_type_idU, #employee_idU").select2({
+        $(".travel_mode_idU,.arrangement_type_idU, .employee_idU").select2({
             width:"100%",
             placeholder: "Select",
             maximumSelectionSize: 1,

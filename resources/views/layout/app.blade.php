@@ -1553,7 +1553,7 @@
         groupSeparator: ",",
         digits: 2,
         autoGroup: true,
-        //  prefix: '$',
+        //prefix: '$',
         rightAlign: true,
         oncleared: function () { self.Value(''); }
     });

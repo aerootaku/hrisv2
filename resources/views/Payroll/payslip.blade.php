@@ -45,8 +45,6 @@
                                                 <td> {{number_format($per_day,2)}} </td>
                                                 <td style="width: 20%; vertical-align: middle;">Per Hour</td>
                                                 <td> {{number_format($per_hour,2)}} </td>
-                                                <td style="width: 20%; vertical-align: middle;">Per Semi-Month</td>
-                                                <td> {{number_format($per_semi_month,2)}} </td>
                                                 <td style="width: 20%; vertical-align: middle;">Per Month</td>
                                                 <td> {{number_format($per_month,2)}} </td>
                                             </tr>
@@ -324,15 +322,15 @@
                                             <tbody>
                                             <tr>
                                                 <td style="width: 40%; vertical-align: middle;color:red;font-weight:bold;">TAXABLE</td>
-                                                <td> {{ max(number_format($taxable_income,2), 0)}} </td>
+                                                <td> {{number_format($taxable_income,2)}} </td>
                                             </tr>
                                             <tr>
                                                 <td style="width: 40%; vertical-align: middle;color:red;font-weight:bold;">OVERALL DEDUCTIONS</td>
-                                                <td> {{ max(number_format($overall_deduc,2), 0)}} </td>
+                                                <td> {{number_format($overall_deduc,2)}} </td>
                                             </tr>
                                             <tr>
                                                 <td style="width: 40%; vertical-align: middle;color:red;font-weight:bold;">NET PAY</td>
-                                                <td> {{ max(number_format($net_pay,2), 0)}} </td>
+                                                <td> {{number_format($net_pay,2)}} </td>
                                             </tr>
                                             </tbody>
                                         </table>
@@ -341,7 +339,7 @@
                                                 <div class="form-group">
                                                     <label class="danger">OVERALL DEDUCTIONS</label>
                                                     <input type="number" class="form-control" placeholder="00.00"
-                                                           value="{{$overall_deduc}}" name="overall_deduc">
+                                                           value="{{ max(number_format($overall_deduc, 2),0)}}" name="overall_deduc">
                                                 </div>
                                             </div>
                                             <br/>
@@ -350,7 +348,7 @@
                                                 <div class="form-group">
                                                     <label class="danger">NET PAY</label>
                                                     <input type="number" class="form-control" placeholder="00.00"
-                                                           value="{{$net_pay}}" name="net_pay">
+                                                           value="{{ max(number_format($net_pay, 2), 0)}}" name="net_pay">
                                                 </div>
                                             </div>
                                         </div>
@@ -459,4 +457,7 @@
     </script>
 
 @endsection
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/aldrin
