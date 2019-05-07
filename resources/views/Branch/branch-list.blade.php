@@ -189,7 +189,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <label>Telephone Number</label>
-                                    <input type="tel" class="form-control" name="phone" />
+                                    <input type="tel" class="form-control" id="telephoneNumber" name="phone" />
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -243,7 +243,7 @@
                                 <div class="form-group row">
                                     <div class="col-md-12">
                                         <label>Company</label>
-                                        <select name="company_id" class="form-control" id="company">
+                                        <select name="company_id" class="form-control company">
                                             @foreach($company as $companies)
                                                 <option value="{{ $companies->id }}" {{ $companies->id == $row->company_id? "Selected": "" }}>{{ $companies->name }}</option>
                                             @endforeach
@@ -257,7 +257,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <label>Branch Head</label>
-                                        <select name="location_head" class="form-control" id="location_head">
+                                        <select name="location_head" class="form-control location_head">
                                             @foreach($employee as $employees)
                                                 <option value="{{ $employees->id }}" {{ $employees->id == $row->employee_id? "Selected": "" }}>{{ $employees->firstname . " " .  $employees->lastname }}</option>
                                             @endforeach
@@ -271,7 +271,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <label>Telephone Number</label>
-                                        <input type="tel" class="form-control" name="phone" value="{{ $row->phone }}" />
+                                        <input type="tel" class="form-control" id="telephoneNumberE" name="phone" value="{{ $row->phone }}" />
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -340,8 +340,14 @@
     <script src="{{ asset('assets') }}/app/custom/general/crud/datatables/extensions/responsive.js" type="text/javascript"></script>
 
     <script>
-        $('#company').select2();
-        $("#location_head").select2();
+        $("#company,#location_head").select2();
+        $(".company,.location_head").select2({
+            width:"100%",
+            placeholder: "Select",
+            maximumSelectionSize: 1,
+        });
     </script>
+
+
 
 @endsection

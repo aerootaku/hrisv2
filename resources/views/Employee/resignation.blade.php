@@ -148,7 +148,7 @@
                                 <div class="form-group row">
                                     <div class="col-md-12">
                                         <label>Resigning Employee</label>
-                                        <select name="employee_id" class="form-control" id="employee_idU"  required >
+                                        <select name="employee_id" class="form-control employee_id"  required >
                                             @foreach($employee as $employees):
                                             <option value="{{ $employees->id }}" {{ $employees->id == $row->employee_id? "Selected": "" }}>{{  $employees->firstname . " " . $employees->lastname }}</option>
                                             @endforeach
@@ -216,7 +216,7 @@
 @section('script')
     <script src="{{ asset('assets') }}/app/custom/general/crud/datatables/extensions/responsive.js" type="text/javascript"></script>
     <script>
-        $("#employee_id, #employee_idU").select2({
+        $("#employee_id, .employee_id").select2({
             width:"100%",
             placeholder: "Select",
             maximumSelectionSize: 1,

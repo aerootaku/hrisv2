@@ -176,7 +176,7 @@
                                 <div class="form-group row">
                                     <div class="col-md-12">
                                         <label>Employee</label>
-                                        <select name="employee_id" class="form-control" id="employee_idU"  required >
+                                        <select name="employee_id" class="form-control employee_idU"  required >
                                             @foreach($employee as $employees):
                                             <option value="{{ $employees->id }}" {{ $employees->id == $row->employee_id? "Selected": "" }}>{{  $employees->firstname . " " . $employees->lastname }}</option>
                                             @endforeach
@@ -190,7 +190,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <label>Type of Exit</label>
-                                        <select name="exit_type_id" class="form-control" id="exit_type_idU"  required  >
+                                        <select name="exit_type_id" class="form-control exit_type_idU"  required  >
                                             @foreach($exit_type as $exit_types):
                                             <option value="{{ $exit_types->id }}" {{ $exit_types->id == $row->exit_type_id? "Selected": "" }}>{{  $exit_types->value }}</option>
                                             @endforeach
@@ -201,7 +201,7 @@
                                 <div class="form-group row">
                                     <div class="col-md-6">
                                         <label>Conducted Exit Interview</label>
-                                        <select name="exit_interview" class="form-control" id="exit_interviewU"  required  >
+                                        <select name="exit_interview" class="form-control exit_interviewU"  required  >
                                             @foreach($yes_no as $yes_nos):
                                             <option value="{{ $yes_nos->value }}"  {{ $yes_nos->id == $row->exit_interview? "Selected": "" }}>{{  $yes_nos->value }}</option>
                                             @endforeach
@@ -209,7 +209,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <label>Inactive Employee Account</label>
-                                        <select name="is_inactivate_account" class="form-control" id="is_inactivate_accountU"  required  >
+                                        <select name="is_inactivate_account" class="form-control is_inactivate_accountU"  required  >
                                             @foreach($yes_no as $yes_nos):
                                             <option value="{{ $yes_nos->value }} "  {{ $yes_nos->id == $row->is_inactivate_account? "Selected": "" }}>{{  $yes_nos->value }}</option>
                                             @endforeach
@@ -270,7 +270,7 @@
             placeholder: "Select",
             maximumSelectionSize: 1
         });
-        $("#exit_type_idU, #employee_idU,#is_inactivate_accountU,#exit_interviewU").select2({
+        $(".exit_type_idU, .employee_idU,.is_inactivate_accountU,.exit_interviewU").select2({
             width:"100%",
             placeholder: "Select",
             maximumSelectionSize: 1

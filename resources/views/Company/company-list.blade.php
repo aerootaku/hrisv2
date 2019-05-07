@@ -238,7 +238,7 @@
         <div class="modal-content">
             <form action="company/{{ $row->id }}" method="POST" enctype="multipart/form-data">
                 <div class="modal-header">
-                    <h4 class="title" id="defaultModalLabel">New Company Record</h4>
+                    <h4 class="title" id="defaultModalLabel">Edit Company Record</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     </button>
                 </div>
@@ -265,7 +265,7 @@
                             </div>
                             <div class="col-md-4">
                                 <label>Company Type</label>
-                                <select name="company_type_id" class="form-control" id="company_type" style="width: 100%">
+                                <select name="company_type_id" class="form-control company_type" style="width: 100%">
                                     @foreach($constant as $cons)
                                         <option value="{{ $cons->id }}" {{ $cons->id == $row->company_type_id? "Selected": "" }}>{{ $cons->value }}</option>
                                     @endforeach
@@ -345,7 +345,7 @@
     <script src="{{ asset('assets') }}/app/custom/general/crud/datatables/extensions/responsive.js" type="text/javascript"></script>
 
     <script>
-        $("#company_type").select2();
+        $("#company_type,.company_type").select2();
         function getIntials() {
 
             let comCode = $("#company_name").val();
@@ -377,6 +377,7 @@
             }
             $("#age").val(age+'');
         }
+
     </script>
 
 @endsection

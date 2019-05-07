@@ -206,7 +206,7 @@
                             <div class="form-group row">
                                 <div class="col-md-6">
                                     <label>Branch Name</label>
-                                    <select name="branch_id" class="form-control" id="branch" style="width: 100%">
+                                    <select name="branch_id" class="form-control branch" style="width: 100%">
                                         @foreach($branch as $branchs)
                                             <option value="{{ $branchs->id }}" {{ $branchs->id == $row->branch_id? "Selected": "" }}>{{ $branchs->location_name }}</option>
                                         @endforeach
@@ -214,7 +214,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <label>Department Head</label>
-                                    <select name="department_head" class="form-control" id="department" style="width: 100%">
+                                    <select name="department_head" class="form-control department" style="width: 100%">
                                         @foreach($employee as $employees)
                                             <option value="{{ $employees->id }}" {{ $employees->id == $row->employee_id? "Selected": "" }}>{{ $employees->firstname . " " . $employees->lastname }}</option>
                                         @endforeach
@@ -266,5 +266,7 @@
     <script>
         $("#department").select2();
         $("#branch").select2();
+        $(".department").select2();
+        $(".branch").select2();
     </script>
 @endsection

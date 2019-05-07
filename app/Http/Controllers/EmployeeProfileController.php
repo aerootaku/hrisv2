@@ -130,9 +130,13 @@ class EmployeeProfileController extends Controller
             ->where('employee_shift.employee_id', $employee_id)
             ->orderByDesc('employee_shift.id')
             ->get();
-//dd($employee_shift);
+        //dd($employee_shift);
         $employee_work_experience = EmployeeWorkExperience::all()->where('employee_id', $employee_id);
-        $employee_last_cutoff_salary = MakePayment::all()->where('employee_id', $employee_id)->sortByDesc('created_at')->first()->take(1)->get();
+
+        $employee_last_cutoff_salary= MakePayment::all()
+            ->where('employee_id', $employee_id)
+            ->sortByDesc('created_at')
+            ->first()->get();
 
         $office_shift = OfficeShift::all();
 

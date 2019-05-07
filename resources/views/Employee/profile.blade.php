@@ -477,7 +477,7 @@
                                             <div class="row">
                                                 <div class="form-group col-md-4 mb-2">
                                                     <label>Birthdate</label>
-                                                    <input type="text"
+                                                    <input type="date"
                                                            class="form-control"
                                                            placeholder="Birthdate"
                                                            name="birthdate"
@@ -538,7 +538,7 @@
                                                     <input type="text"
                                                            class="form-control"
                                                            placeholder="SSS Number"
-                                                           name="sss_no"
+                                                           name="sss_no" id="sssId"
                                                            value="{{ $personal_info->sss_no }}">
                                                 </div>
                                                 <div class="form-group col-md-6 mb-2">
@@ -547,16 +547,33 @@
                                                     <input type="text"
                                                            class="form-control"
                                                            placeholder="Philhealth Number"
-                                                           name="philhealth_no"
+                                                           name="philhealth_no" id="philhealthId"
                                                            value="{{ $personal_info->philhealth_no }}">
                                                 </div>
+                                                {{--<h4><strong>Employment Information</strong></h4><br/>--}}
+                                                    {{--<div class="form-group col-md-6 mb-2">--}}
+                                                        {{--<label>Date Hired</label>--}}
+                                                        {{--<input type="date" class="form-control"  name="date_hired">--}}
+                                                    {{--</div>--}}
+                                                    {{--<div class="form-group col-md-6 mb-2">--}}
+                                                        {{--<label>Contract Start</label>--}}
+                                                        {{--<input type="date" class="form-control" name="contract_start" value="{{$personal_info->contract_start}}" >--}}
+                                                    {{--</div>--}}
+                                                    {{--<div class="form-group col-md-6 mb-2">--}}
+                                                        {{--<label>Schedule</label>--}}
+                                                        {{--<select name="schedule_type" class="form-control">--}}
+                                                            {{--@foreach($schedule as $schedules)--}}
+                                                                {{--<option value="{{ $schedules->id }}">{{ $schedules->shift_name }}</option>--}}
+                                                            {{--@endforeach--}}
+                                                        {{--</select>--}}
+                                                    {{--</div>--}}
                                                 <div class="form-group col-md-6 mb-2">
                                                     <label>Pagibig
                                                         Number</label>
                                                     <input type="text"
                                                            class="form-control"
                                                            placeholder="Pagibig Number"
-                                                           name="pagibig_no"
+                                                           name="pagibig_no" id="pagibigId"
                                                            value="{{ $personal_info->pagibig_no }}">
                                                 </div>
                                                 <div class="form-group col-md-6 mb-2">
@@ -565,7 +582,7 @@
                                                     <input type="text"
                                                            class="form-control"
                                                            placeholder="TIN Number"
-                                                           name="tin_no"
+                                                           name="tin_no" id="tinId"
                                                            value="{{ $personal_info->tin_no }}">
                                                 </div>
                                             </div>
@@ -580,6 +597,7 @@
                                 </div>
                             </div>
                             <div class="tab-pane" id="salary">
+                                @if(count($employee_last_cutoff_salary) > 0)
                                 @foreach($employee_last_cutoff_salary as $salaries)
                                 <div class="row">
                                     <div class="col-md-12">
@@ -719,6 +737,7 @@
                                         </table>
                                     </div>
                                 @endforeach
+                                    @endif
 
 
 
@@ -919,6 +938,7 @@
                                                     <th>Date Start</th>
                                                     <th>Date End</th>
                                                     <th>Shift Name</th>
+                                                    <th>Primary</th>
                                                     <th>Action</th>
                                                 </tr>
                                                 </thead>
@@ -928,6 +948,14 @@
                                                         <td>{{ $shift->from_date }}</td>
                                                         <td>{{ $shift->to_date }}</td>
                                                         <td>{{ $shift->shift_name }}</td>
+                                                        <td>
+                                                            @if($shift->is_primary == '1')
+                                                              Primary
+                                                            @endif
+                                                            @if($shift->is_primary == '0')
+                                                             Secondary
+                                                            @endif
+                                                        </td>
                                                         {{--<td>{{ $shift->monday_in_time }}</td>--}}
                                                         {{--<td>{{ $shift->monday_out_time }}</td>--}}
                                                         {{--<td>{{ $shift->tuesday_in_time }}</td>--}}
@@ -951,6 +979,7 @@
                                                     <th>Date Start</th>
                                                     <th>Date End</th>
                                                     <th>Shift Name</th>
+                                                    <th>Primary</th>
                                                     <th>Action</th>
                                                 </tr>
                                                 </tfoot>
@@ -990,11 +1019,11 @@
                                                                 </div>
                                                             </div>
                                                             <div class="form-group row">
-                                                                <div class="col-6">
-                                                                    <label>Status</label>
-                                                                    <select name="status" class="form-control">
-                                                                        <option value="0">Record</option>
-                                                                        <option value="1">Primary</option>
+                                                                <div class="col-12">
+                                                                    <label>Primary</label>
+                                                                    <select name="is_primary" class="form-control">
+                                                                        <option value="1">Yes</option>
+                                                                        <option value="0">No</option>
                                                                     </select>
 
                                                                 </div>
@@ -1044,10 +1073,10 @@
                                                                 </div>
                                                                 <div class="form-group row">
                                                                     <div class="col-6">
-                                                                        <label>Status</label>
-                                                                        <select name="status" class="form-control">
-                                                                            <option value="0">Record</option>
-                                                                            <option value="1">Primary</option>
+                                                                        <label>Primary</label>
+                                                                        <select name="is_primary" class="form-control">
+                                                                            <option value="0" {{ $row->is_primary == 0? "Selected": "" }}>No</option>
+                                                                            <option value="1"  {{ $row->is_primary == 1? "Selected": "" }}>Yes</option>
                                                                         </select>
 
                                                                     </div>
@@ -1172,7 +1201,7 @@
                                                                 </div>
                                                                 <div class="form-group">
                                                                     <label>Mobile Number</label>
-                                                                    <input type="text" name="mobile_phone" class="form-control" />
+                                                                    <input type="text" name="mobile_phone" id="mobileNumber" class="form-control" />
                                                                 </div>
                                                                 <div class="form-group">
                                                                     <label>Personal Email</label>

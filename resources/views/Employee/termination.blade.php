@@ -154,7 +154,7 @@
                                 <div class="form-group row">
                                     <div class="col-md-12">
                                         <label>Employee</label>
-                                        <select name="employee_id" class="form-control" id="employee_idU"  required >
+                                        <select name="employee_id" class="form-control employee_idU"  required >
                                             @foreach($employee as $employees):
                                             <option value="{{ $employees->id }}" {{ $employees->id == $row->employee_id? "Selected": "" }}>{{  $employees->firstname . " " . $employees->lastname }}</option>
                                             @endforeach
@@ -174,7 +174,7 @@
                                 <div class="form-group row">
                                     <div class="col-md-12">
                                         <label> Type of Termination</label>
-                                        <select name="termination_type_id" class="form-control" id="termination_type_idU"  required  >
+                                        <select name="termination_type_id" class="form-control termination_type_idU"  required  >
                                             @foreach($termination_type as $termination_types):
                                             <option value="{{ $termination_types->id }}" {{ $termination_types->id == $row->termination_type_id? "Selected": "" }}>{{  $termination_types->value }}</option>
                                             @endforeach
@@ -241,7 +241,7 @@
             placeholder: "Select",
             maximumSelectionSize: 1
         });
-        $("#termination_type_idU, #employee_idU").select2({
+        $(".termination_type_idU, .employee_idU").select2({
             width:"100%",
             placeholder: "Select",
             maximumSelectionSize: 1

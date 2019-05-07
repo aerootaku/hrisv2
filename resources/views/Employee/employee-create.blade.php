@@ -163,8 +163,8 @@
                                     </select>
                                 </div>
                                 <div class="col-md-4">
-                                    <label>Gross Pay</label>
-                                    <input type="number" id="monthly_salary" class="form-control" name="monthly_salary" />
+                                    {{--<label>Gross Pay</label>--}}
+                                    {{--<input type="number" id="monthly_salary" class="form-control" name="monthly_salary" />--}}
                                 </div>
                             </div>
                             <h4><strong>Credentials</strong></h4>
@@ -255,6 +255,7 @@
 
                 success: function (response) {
                     console.log(response);
+                    $('<option value="">' + "-- Select Record --" + '</option>').appendTo(department);
                     $.each(response, function(i, item) {
                         console.log(item.value);
                         $('<option value="' + item.value + '">' + item.name + '</option>').
@@ -277,6 +278,7 @@
 
                 success: function (response) {
                     console.log(response);
+                    $('<option value="">' + "-- Select Record --" + '</option>').appendTo(designation);
                     $.each(response, function(i, item) {
                         console.log(item.value);
                         $('<option value="' + item.value + '">' + item.name + '</option>').

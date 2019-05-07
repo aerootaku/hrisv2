@@ -191,7 +191,7 @@
                             <div class="form-group row">
                                 <div class="col-md-12">
                                     <label>Department</label>
-                                    <select name="department_id" class="form-control" id="department_id" style="width: 100%">
+                                    <select name="department_id" class="form-control department_id" style="width: 100%">
                                         @foreach($department as $departments)
                                             <option value="{{ $departments->id }}"  {{ $departments->id == $row->department_id? "Selected": "" }}>{{ $departments->department_name }}</option>
                                         @endforeach
@@ -247,7 +247,7 @@
     <script src="{{ asset('assets') }}/app/custom/general/crud/datatables/extensions/responsive.js" type="text/javascript"></script>
 
     <script>
-        $('#department_id').select2();
+        $('#department_id,.department_id').select2();
     </script>
 
 @endsection

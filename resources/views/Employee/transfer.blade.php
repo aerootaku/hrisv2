@@ -54,8 +54,8 @@
                                               <i class="la la-ellipsis-h"></i>
                                             </a>
                                             <div class="dropdown-menu dropdown-menu-right">
-                                               <a class="dropdown-item" href="#" data-toggle="modal" data-title="Edit" data-target="#edit{{ $row->id }}"><i class="la la-edit"></i> Edit</a>
-                                                <a class="dropdown-item" href="#" data-toggle="modal" data-title="Delete" data-target="#delete{{ $row->id }}"><i class="la la-trash"></i> Delete</a>
+                                               <a class="dropdown-item" href="#" data-toggle="modal" data-title="Edit" data-target="#edit{{ $row->id }}"><i class="la la-edit"></i> Edit Details</a>
+                                                <a class="dropdown-item" href="#" data-toggle="modal" data-title="Delete" data-target="#delete{{ $row->id }}"><i class="la la-trash"></i> Delete Record</a>
                                             </div>
                                         </span>
                                     </td>
@@ -164,7 +164,7 @@
                                 <div class="form-group row">
                                     <div class="col-md-12">
                                         <label>Employee</label>
-                                        <select name="employee_id" class="form-control" id="employee_idU"  required >
+                                        <select name="employee_id" class="form-control employee_idU"  required >
                                             @foreach($employee as $employees)
                                                 <option value="{{ $employees->id }}" {{ $employees->id == $row->employee_id? "Selected": "" }}>{{  $employees->firstname . " " . $employees->lastname }}</option>
                                             @endforeach
@@ -181,7 +181,7 @@
                                 <div class="form-group row">
                                     <div class="col-md-6">
                                         <label>Transfer To (Department)</label>
-                                        <select name="transfer_department_id" class="form-control" id="transfer_department_idU"  required  >
+                                        <select name="transfer_department_id" class="form-control transfer_department_idU"  required  >
                                             @foreach($department as $departments)
                                                 <option value="{{ $departments->id }}"  {{ $departments->id == $row->tdId? "Selected": "" }}>{{  $departments->department_name }}</option>
                                             @endforeach
@@ -189,7 +189,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <label>Transfer To (Location)</label>
-                                        <select name="transfer_branch_id" class="form-control" id="transfer_branch_idU"  required  >
+                                        <select name="transfer_branch_id" class="form-control transfer_branch_idU"  required  >
                                             @foreach($branch as $branchs)
                                                 <option value="{{ $branchs->id }}"  {{ $branchs->id == $row->bId? "Selected": "" }} >{{  $branchs->location_name }}</option>
                                             @endforeach
@@ -261,7 +261,7 @@
             placeholder: "Select",
             maximumSelectionSize: 1,
         });
-        $("#transfer_department_idU,#transfer_branch_idU, #employee_idU").select2({
+        $(".transfer_department_idU,.transfer_branch_idU, .employee_idU").select2({
             width:"100%",
             placeholder: "Select",
             maximumSelectionSize: 1,
