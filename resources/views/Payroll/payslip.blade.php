@@ -338,8 +338,7 @@
                                             <div class="col-md-12">
                                                 <div class="form-group">
                                                     <label class="danger">OVERALL DEDUCTIONS</label>
-                                                    <input type="number" class="form-control" placeholder="00.00"
-                                                           value="{{ max(number_format($overall_deduc, 2),0)}}" name="overall_deduc">
+                                                    <input type="number" class="form-control" placeholder="00.00" value="{{ max(number_format($overall_deduc, 2),0)}}" name="overall_deduc">
                                                 </div>
                                             </div>
                                             <br/>
@@ -457,7 +456,3 @@
     </script>
 
 @endsection
-<<<<<<< HEAD
-
-=======
->>>>>>> origin/aldrin
