@@ -140,7 +140,15 @@ class EmployeeProfileController extends Controller
 
         $office_shift = OfficeShift::all();
 
-        //dd($employee_last_cutoff_salary);
+        $employee_groups = DB::table('employee_groups')
+            ->select('employee_groups.id as id','firstname','lastname','report_method','employee_id')
+            ->join('employee', 'employee_groups.report_to', '=', 'employee.id')
+            ->whereNull('employee_groups.deleted_at')
+            ->where('employee_groups.employee_id', $employee_id)
+            ->orderByDesc('employee_groups.id')
+            ->get();
+
+        //dd($employee_groups);
         $data = array(
             "constant"=>SettingsConstants::all(),
             "personal_info"=>$personal_info,
@@ -151,7 +159,9 @@ class EmployeeProfileController extends Controller
             "employee_work_experience"=>$employee_work_experience,
             "employee_last_cutoff_salary"=>$employee_last_cutoff_salary,
             "employee_shift"=>$employee_shift,
-            "office_shift"=>$office_shift
+            "office_shift"=>$office_shift,
+            "employee_groups"=>$employee_groups,
+            "employee"=>Employee::all()
         );
 
         return view('Employee.profile', $data);
