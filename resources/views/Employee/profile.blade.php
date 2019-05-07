@@ -1119,7 +1119,166 @@
                                 </div>
                             </div>
                             <div class="tab-pane" id="reportTo">
-                                report
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="kt-portlet__head kt-portlet__head--lg">
+                                            <div class="kt-portlet__head-toolbar">
+                                                <div class="kt-portlet__head-wrapper">
+                                                    <div class="kt-portlet__head-actions float-right">
+                                                        <a href="#" data-target="#createReportTo" data-toggle="modal" class="btn btn-brand btn-elevate btn-icon-sm float-right">
+                                                            <i class="la la-plus"></i>
+                                                            New Record
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="kt-portlet__body">
+                                            <table class="table table-striped- table-bordered table-hover table-checkable responsive no-wrap" id="customTable">
+                                                <thead>
+                                                <tr>
+                                                    <th>Name</th>
+                                                    <th>Reporting Method</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                @foreach($employee_groups as $group)
+                                                    <tr>
+                                                        <td>{{ $group->firstname.''.$group->lastname }}</td>
+                                                        <td>{{ $group->report_method }}</td>
+                                                        <td>
+                                                        <span class="dropdown">
+                                                            <a href="#" class="btn btn-sm btn btn-info btn-elevate btn-elevate-air btn-icon btn-icon-md" data-toggle="dropdown" aria-expanded="true">
+                                                              <i class="la la-ellipsis-h"></i>
+                                                            </a>
+                                                            <div class="dropdown-menu dropdown-menu-right">
+                                                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#editReportTo{{ $group->id }}"><i class="la la-edit"></i> Edit Details</a>
+                                                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#deleteReportTo{{ $group->id }}"><i class="la la-trash"></i> Delete Record</a>
+                                                            </div>
+                                                        </span>
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+                                                </tbody>
+                                                <tfoot>
+                                                <tr>
+                                                    <th>Name</th>
+                                                    <th>Reporting Method</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                                </tfoot>
+                                            </table>
+                                            <!--end: Datatable -->
+                                        </div>
+                                        <div class="modal fade" id="createReportTo" role="dialog">
+                                            <div class="modal-dialog modal-md" role="document">
+                                                <div class="modal-content">
+                                                    <form action="/employee-groups" method="POST" enctype="multipart/form-data">
+                                                        <div class="modal-header">
+                                                            <h4 class="title" id="defaultModalLabel">New Record</h4>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            @csrf
+                                                            <div class="col-md-12">
+                                                                <input type="hidden" name="employee_id" value="{{ $personal_info->id }}" />
+                                                                <div class="form-group">
+                                                                    <label>Name</label>
+                                                                    <select name="report_to" class="form-control" id="report_to"  required >
+                                                                        @foreach($employee as $employees)
+                                                                            <option value="{{ $employees->id }}">{{  $employees->firstname . " " . $employees->lastname }}</option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label>Report Method</label>
+                                                                    <select name="report_method" class="form-control" onchange='CheckMethod(this.value);' required>
+                                                                        <option value="Direct">Direct</option>
+                                                                        <option value="Indirect">Indirect</option>
+                                                                        <option value="Other">Other</option>
+                                                                    </select>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <input type="text" name="report_method1" class="form-control" id="report_method" style='display:none;' required/>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button class="btn btn-danger" data-dismiss="modal" type="button">Cancel</button>
+                                                            <button type="submit" class="btn btn-info">Save Record</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        @foreach($employee_groups as $row)
+                                            <div class="modal fade" id="editReportTo{{ $row->id }}" tabindex="-1" role="dialog">
+                                                <div class="modal-dialog modal-md" role="document">
+                                                    <div class="modal-content">
+                                                        <form action="/employee-groups/{{ $row->id }}" method="POST" enctype="multipart/form-data">
+                                                            <div class="modal-header">
+                                                                <h4 class="title" id="defaultModalLabel">Edit Record</h4>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                @csrf
+                                                                @method('PATCH')
+                                                                <div class="col-md-12">
+                                                                    <div class="form-group">
+                                                                        <label>Name</label>
+                                                                        <select name="report_to" class="form-control report_to"  required >
+                                                                            @foreach($employee as $employees)
+                                                                                <option value="{{ $employees->id }}" {{ $employees->id == $row->employee_id? "Selected": "" }}>{{  $employees->firstname . " " . $employees->lastname }}</option>
+                                                                            @endforeach
+                                                                        </select>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label>Report Method</label>
+                                                                        <select name="report_method" class="form-control" required>
+                                                                            <option value="Direct" {{ $row->report_method == 'Direct'? "Selected": "" }}>Direct</option>
+                                                                            <option value="Indirect" {{ $row->report_method == 'Indirect'? "Selected": "" }}>Indirect</option>
+                                                                            <option value="Other" {{ $row->report_method == 'Other'? "Selected": "" }}>Other</option>
+                                                                        </select>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <input type="text" name="report_method1" class="form-control" id="report_method" style='display:none;' required/>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button class="btn btn-danger" data-dismiss="modal" type="button">Cancel</button>
+                                                                <button type="submit" class="btn btn-info">Update Record</button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                        @foreach($employee_groups as $row)
+                                            <div class="modal fade" id="deleteReportTo{{ $row->id }}" tabindex="-1" role="dialog">
+                                                <div class="modal-dialog modal-sm" role="document">
+                                                    <div class="modal-content">
+                                                        <form action="/employee-groups/{{ $row->id }}" method="POST" enctype="multipart/form-data">
+                                                            <div class="modal-header">
+                                                                <h4 class="title" id="defaultModalLabel">Delete Record</h4>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                                <p>Are you sure you want to delete this record?</p>
+
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button class="btn btn-danger" data-dismiss="modal" type="button">Cancel</button>
+                                                                <button type="submit" class="btn btn-warning">Delete Record</button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                </div>
                             </div>
                             <div class="tab-pane" id="contactDetails">
                                 <div class="row">
@@ -1478,10 +1637,19 @@
 @section('script')
     <script src="{{ asset('assets') }}/app/custom/general/crud/datatables/extensions/responsive.js" type="text/javascript"></script>
     <script>
-        $("#shift_id").select2({
+        $("#shift_id,#report_to,.report_to").select2({
             width:"100%",
             placeholder: "Select",
             maximumSelectionSize: 1
         });
+
+        function CheckMethod(val){
+            var element=document.getElementById('report_method');
+            if(val=='Other')
+                element.style.display='block';
+            else
+                element.style.display='none';
+        }
+
     </script>
 @endsection
