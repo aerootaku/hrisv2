@@ -167,17 +167,6 @@
                                     <input type="number" id="monthly_salary" class="form-control" name="monthly_salary" />
                                 </div>
                             </div>
-                            <h4><Strong>Employee Salary</Strong></h4>
-                            <div class="form-group row">
-                                <div class="col-md-6">
-                                    <label>Bank Account</label>
-                                    <input type="text" id="monthly_salary" class="form-control" name="bank_account" />
-                                </div>
-                                <div class="col-md-6">
-                                    <label>Gross Pay</label>
-                                    <input type="number" id="monthly_salary" class="form-control" name="monthly_salary" />
-                                </div>
-                            </div>
                             <h4><strong>Credentials</strong></h4>
                             <div class="form-group row">
                                 <div class="col-md-4">

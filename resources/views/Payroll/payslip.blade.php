@@ -341,7 +341,7 @@
                                                 <div class="form-group">
                                                     <label class="danger">OVERALL DEDUCTIONS</label>
                                                     <input type="number" class="form-control" placeholder="00.00"
-                                                           value="{{$overall_deduc}}" name="overall_deduc">
+                                                           value="{{ max($overall_deduc, 0)}}" name="overall_deduc">
                                                 </div>
                                             </div>
                                             <br/>
@@ -350,7 +350,7 @@
                                                 <div class="form-group">
                                                     <label class="danger">NET PAY</label>
                                                     <input type="number" class="form-control" placeholder="00.00"
-                                                           value="{{$net_pay}}" name="net_pay">
+                                                           value="{{ max($net_pay, 0)}}" name="net_pay">
                                                 </div>
                                             </div>
                                         </div>

@@ -60,7 +60,7 @@ Route::resource('employee-education', 'EmployeeEducationController');
 Route::resource('employee-shift', 'EmployeeShiftController');
 Route::resource('employee-work-experience', 'EmployeeWorkExperienceController');
 Route::resource('settingsConstant', 'SettingsConstantsController');
-
+Route::resource('employee-salary', 'EmployeeSalaryController');
 
 //Today
 Route::resource('employee-undertime', 'AttendanceTimeController@listUT');

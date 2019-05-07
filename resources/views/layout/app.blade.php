@@ -143,6 +143,7 @@
             <!-- end:: Aside -->
 
             <!-- begin:: Aside Menu -->
+            @if(Auth::user()->role_id != '4')
             <div class="kt-aside-menu-wrapper kt-grid__item kt-grid__item--fluid" id="kt_aside_menu_wrapper">
                 <div id="kt_aside_menu" class="kt-aside-menu " data-ktmenu-vertical="1" data-ktmenu-scroll="1" data-ktmenu-dropdown-timeout="500">
                     <ul class="kt-menu__nav ">
@@ -200,9 +201,8 @@
                             <div class="kt-menu__submenu "><span class="kt-menu__arrow"></span>
                                 <ul class="kt-menu__subnav">
                                     <li class="kt-menu__item  kt-menu__item--parent" aria-haspopup="true"><span class="kt-menu__link"><span class="kt-menu__link-text">Subheaders</span></span></li>
-                                    <li class="kt-menu__item " aria-haspopup="true"><a href="{{ url('employee-attendance') }}" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span class="kt-menu__link-text">Employee Attendance</span></a></li>
+                                    <li class="kt-menu__item " aria-haspopup="true"><a href="{{ url('attendance-time') }}" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span class="kt-menu__link-text">Attendance List</span></a></li>
                                     <li class="kt-menu__item " aria-haspopup="true"><a href="{{ url('attendance-report') }}" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span class="kt-menu__link-text">Attendance Report</span></a></li>
-                                    <li class="kt-menu__item " aria-haspopup="true"><a href="{{ url('update-attendance') }}" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span class="kt-menu__link-text">Update Attendance List</span></a></li>
                                     <li class="kt-menu__item " aria-haspopup="true"><a href="{{ url('employee-leave') }}" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span class="kt-menu__link-text">Employee Leave</span></a></li>
                                     <li class="kt-menu__item " aria-haspopup="true"><a href="{{ url('office-shifts') }}" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span class="kt-menu__link-text">Office Shifts</span></a></li>
                                     <li class="kt-menu__item " aria-haspopup="true"><a href="{{ url('holidays') }}" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span class="kt-menu__link-text">Holidays</span></a></li>
@@ -217,8 +217,9 @@
                             <div class="kt-menu__submenu "><span class="kt-menu__arrow"></span>
                                 <ul class="kt-menu__subnav">
                                     <li class="kt-menu__item  kt-menu__item--parent" aria-haspopup="true"><span class="kt-menu__link"><span class="kt-menu__link-text">Subheaders</span></span></li>
-                                    <li class="kt-menu__item " aria-haspopup="true"><a href="{{ url('attendance-time') }}" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span class="kt-menu__link-text">Attendance List</span></a></li>
                                     <li class="kt-menu__item " aria-haspopup="true"><a href="{{ url('employee-loan') }}" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span class="kt-menu__link-text">Employee Loan</span></a></li>
+                                    <li class="kt-menu__item " aria-haspopup="true"><a href="{{ url('employee-salary') }}" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span class="kt-menu__link-text">Employee Salary</span></a></li>
+
                                     <li class="kt-menu__item " aria-haspopup="true"><a href="{{ url('employee-allowance') }}" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span class="kt-menu__link-text">Employee Allowance</span></a></li>
                                     <li class="kt-menu__item " aria-haspopup="true"><a href="{{ url('employee-overtime') }}" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span class="kt-menu__link-text">Employee Overtime</span></a></li>
                                     <li class="kt-menu__item " aria-haspopup="true"><a href="{{ url('attendance-time') }}" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span class="kt-menu__link-text">Attendance Time</span></a></li>
@@ -237,7 +238,49 @@
                     </ul>
                 </div>
             </div>
+            @endif
+            @if(Auth::user()->role_id == 4)
+                <div class="kt-aside-menu-wrapper kt-grid__item kt-grid__item--fluid" id="kt_aside_menu_wrapper">
+                    <div id="kt_aside_menu" class="kt-aside-menu " data-ktmenu-vertical="1" data-ktmenu-scroll="1" data-ktmenu-dropdown-timeout="500">
+                        <ul class="kt-menu__nav ">
+                            <li class="kt-menu__item  kt-menu__item--active" aria-haspopup="true"><a href="{{ url('dashboard') }}" class="kt-menu__link ">
+                                    <span class="kt-menu__link-icon"><span class="la la-dashboard"></span></span><span class="kt-menu__link-text">Dashboard</span></a></li>
+                            <li class="kt-menu__section ">
+                                <h4 class="kt-menu__section-text">Payroll Master</h4>
+                                <i class="kt-menu__section-icon flaticon-more-v2"></i>
+                            </li>
 
+                            <li class="kt-menu__item  kt-menu__item--submenu" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
+                                <a href="javascript:;" class="kt-menu__link kt-menu__toggle">
+                                    <span class="kt-menu__link-icon"><i class="la la-calculator"></i> </span>
+                                    <span class="kt-menu__link-text">Payroll</span><i class="kt-menu__ver-arrow la la-angle-right"></i>
+                                </a>
+                                <div class="kt-menu__submenu "><span class="kt-menu__arrow"></span>
+                                    <ul class="kt-menu__subnav">
+                                        <li class="kt-menu__item  kt-menu__item--parent" aria-haspopup="true"><span class="kt-menu__link"><span class="kt-menu__link-text">Subheaders</span></span></li>
+                                        <li class="kt-menu__item " aria-haspopup="true"><a href="{{ url('employee-loan') }}" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span class="kt-menu__link-text">Employee Loan</span></a></li>
+                                        <li class="kt-menu__item " aria-haspopup="true"><a href="{{ url('employee-salary') }}" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span class="kt-menu__link-text">Employee Salary</span></a></li>
+
+                                        <li class="kt-menu__item " aria-haspopup="true"><a href="{{ url('employee-allowance') }}" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span class="kt-menu__link-text">Employee Allowance</span></a></li>
+                                        <li class="kt-menu__item " aria-haspopup="true"><a href="{{ url('employee-overtime') }}" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span class="kt-menu__link-text">Employee Overtime</span></a></li>
+                                        <li class="kt-menu__item " aria-haspopup="true"><a href="{{ url('attendance-time') }}" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span class="kt-menu__link-text">Attendance Time</span></a></li>
+                                        <li class="kt-menu__item " aria-haspopup="true"><a href="{{ url('payslip') }}" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span class="kt-menu__link-text">Payslip</span></a></li>
+                                        <li class="kt-menu__item " aria-haspopup="true"><a href="{{ url('payroll') }}" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span class="kt-menu__link-text">Payroll</span></a></li>
+                                        <li class="kt-menu__item " aria-haspopup="true"><a href="{{ url('payroll-cutoff') }}" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span class="kt-menu__link-text">Payroll Cut-off</span></a></li>
+                                        <li class="kt-menu__item " aria-haspopup="true"><a href="{{ url('rate-template') }}" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span class="kt-menu__link-text">Rate Template</span></a></li>
+                                        <li class="kt-menu__item " aria-haspopup="true"><a href="{{ url('tax-day-template') }}" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span class="kt-menu__link-text">Day Template</span></a></li>
+                                        <li class="kt-menu__item " aria-haspopup="true"><a href="{{ url('tax-sss') }}" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span class="kt-menu__link-text">SSS Table</span></a></li>
+                                        <li class="kt-menu__item " aria-haspopup="true"><a href="{{ url('tax-philhealth') }}" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span class="kt-menu__link-text">Philhealth Table</span></a></li>
+                                        <li class="kt-menu__item " aria-haspopup="true"><a href="{{ url('tax-pagibig') }}" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span class="kt-menu__link-text">Pag Ibig Table</span></a></li>
+                                    </ul>
+                                </div>
+                            </li>
+
+                        </ul>
+                    </div>
+                </div>
+
+        @endif
             <!-- end:: Aside Menu -->
         </div>
 
@@ -1267,7 +1310,7 @@
                                     </div>
                                 </a>
                                 <div class="kt-notification__custom">
-                                    <a href="custom_user_login-v2.html" target="_blank" class="btn btn-label-brand btn-sm btn-bold">Sign Out</a>
+                                    <a href="{{ url('logout') }}" class="btn btn-label-brand btn-sm btn-bold">Sign Out</a>
                                 </div>
                             </div>
 
