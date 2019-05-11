@@ -27,7 +27,7 @@ Route::post('getDepartment', 'EmployeeController@getDepartment');
 Route::post('getBranch', 'EmployeeController@getBranch');
 Route::post('getDesignation', 'EmployeeController@getDesignation');
 Route::get('payslip/{id}/{cutoff_id}', 'PayslipController@generatePayslip');
-Route::get('payslipNew/{id}', 'PayslipController@generateNewPayslip');
+Route::get('payslipNew/{id}/{cutoff_id}', 'PayslipController@generateNewPayslip');
 //Route::post('payslip', 'PayslipController@store');
 //
 //Route::get('/user', 'PayslipController@index');

@@ -56,102 +56,8 @@ class PayslipController extends Controller
      */
     public function generatePayslip(Request $request)
     {
-        //DB::select('call myStoredProcedure("p1", "p2")');
-//        //No Computation
-        $overtime_hours=0;
-        $overtime_pay=0;
-        $absences_no=0;
-        $absences_deduc=0;
-        $undertime_hours=0;
-        $undertime_deduc=0;
-        $holiday=0;
-        $holiday_pay=0;
-        $allowance=0;
-        $per_day = 0;
-        $tardiness=0;
-        $sss_cont = 0;
-        $withholding_tax=0;
-        $rate_name=0;
-
-        $employee_id = $request->get('employee_id');
-        $cutoff_id = $request->get('cutoff_id');
-
-        $employee = DB::table('employee')->where('id',$employee_id)->get();
-        $employee_deployment = DB::table('employee_employment as ee')
-            ->select('per_day_salary', 'monthly_salary')
-            ->where('ee.employee_id',$employee_id)
-            ->get();
-        foreach ($employee_deployment as $row) {
-            $per_day = $row->per_day_salary;
-            $per_month= $row->monthly_salary;
-            $per_hour = $row->per_day_salary/8;
-            $per_semi_month= $row->monthly_salary/2;
-        }
-
-        $cutoff = DB::table('payroll_cutoff')->where('id',$cutoff_id)->get();
-        foreach ($cutoff as $row) {
-            $cutoff_from = $row->cutoff_from;
-            $cutoff_to = $row->cutoff_to;
-        }
 
 
-
-        $dt = Carbon::parse($cutoff_from);
-        $dt2 = Carbon::parse($cutoff_to);
-        $totalWorkingDays = $dt->diffInDaysFiltered(function(Carbon $date) {
-            return !$date->isWeekend();
-        }, $dt2)+1;
-
-
-
-        $date1 = Carbon::parse($cutoff_from);
-        $date2 = Carbon::parse($cutoff_to);
-
-        $sundays= $date1->diffForHumans($date2);
-
-
-        $attendance_time = DB::table('attendance_time')
-            ->where('employee_id',$employee_id)
-            ->whereBetween('attendance_date', [$cutoff_from, $cutoff_to])
-            ->get();
-
-        $regular_work_hrs = DB::table('attendance_time')
-            ->select(DB::raw('SUM(hour(total_work) * 60) as work_minutes'),
-                DB::raw('SUM(hour(total_work)) as work_hours'),
-                DB::raw('SUM(hour(total_work)  /8)  as days_work')
-            )
-            ->whereBetween('attendance_date', [$cutoff_from, $cutoff_to])
-            ->where('employee_id',$employee_id)
-            ->get();
-        foreach ($regular_work_hrs as $row){
-            $basic_pay=$per_day*$row->days_work;
-            $monthly=$basic_pay*2;
-        }
-
-        //Overtime
-        $ot=$this->compute_overtime($cutoff_from,$cutoff_to,$employee_id,$per_hour);
-        $overtime_hours=$ot['overtime'];
-        $overtime_pay=$ot['overtime_pay'];
-
-        $gross_pay=$basic_pay+$overtime_pay+$holiday_pay+$allowance;//OK
-
-        //Tax SSS/Philhealth/Pagibig/Wtax
-        $dev_tax=$this->compute_sss_philhealth_pagibig($monthly);
-        $sss_cont=$dev_tax['sss_cont'];
-        $pagibig_cont=$dev_tax['pagibig_cont'];
-        $philhealth_cont=$dev_tax['philhealth_cont'];
-
-        $taxable=($basic_pay+$overtime_pay+$holiday_pay)-($tardiness+$absences_deduc+$sss_cont+$pagibig_cont+$philhealth_cont);//ok
-        $taxable_income= $taxable;
-
-        $tax_withholding = DB::table('tax_withholding')
-            ->where('type','=','Monthly')
-            ->where('range_from','<=',$taxable)
-            ->where('range_to','>=',$taxable)
-            ->get();
-        foreach ($tax_withholding as $row){
-            $withholding_tax=(($taxable - $row->range_from) * $row->percentage) + $row->amount;
-        }
 
         $overall_deduc = $sss_cont + $pagibig_cont + $philhealth_cont;
         $net_pay = $gross_pay - ($overall_deduc + $withholding_tax);
@@ -163,8 +69,11 @@ class PayslipController extends Controller
             ->where('balance','<>','0.00')
             ->get();
 
+
+
         return view('Payroll.payslip', compact(
-            'data','employee','employee_attendance','attendance_time','loan','regular_work_hrs',
+            'data','employee','employee_attendance','attendance_time'
+            ,'loan','work_hrs',
             'rate_name','monthly','basic_pay','per_day','per_hour','per_month',
             'overtime_hours','undertime_hours','holiday','nightdiff_hours','absences_no',
             'absences_deduc','basic_pay','overtime_pay','undertime_pay','undertime_deduc', 'holiday_pay','nightdiff_pay','allowance',
@@ -175,42 +84,67 @@ class PayslipController extends Controller
     }
 // total_loan
 
-    public function generateNewPayslip($id){
-
+    public function generateNewPayslip($id,$cutoff_id){
         //dummy data
-        $cutoff_from = "2019-02-03";
-        $cutoff_to = "2019-03-07";
         //end of dummy data
-
-
         $employee = $this->employeeUtil->getEmployee($id);
-        $employment = $this->employeeUtil->getEmployment($employee->id);
-        $totalDays = $this->employeeUtil->cutoffWorkingDays('', '');
-        $employeeWorkingHours = $this->employeeUtil->employeeCutoffAttendance(1, $cutoff_from, $cutoff_to);
-        $cutoffWorkingHours = $this->employeeUtil->cutoffWorkingHours('', '');
-        $cutoffWorkingDay = $this->employeeUtil->cutoffWorkingDays('', '');
-        $absentCount = $this->employeeUtil->generateAbsences($employeeWorkingHours->days_work, $cutoff_from, $cutoff_to);
+        $cutoff = $this->employeeUtil->getCutOff($cutoff_id);
+        $cutoff_from=$cutoff->cutoff_from;
+        $cutoff_to=$cutoff->cutoff_to;
+        $employment = $this->employeeUtil->getEmployment($id);
+        $totalDays = $this->employeeUtil->cutoffWorkingDays($cutoff_from, $cutoff_to);
+        $employeeWorkingHours = $this->employeeUtil->employeeCutoffAttendance($id,$cutoff_from, $cutoff_to);
 
+        $cutoffWorkingHours = $this->employeeUtil->cutoffWorkingHours($cutoff_from, $cutoff_to);
+        $cutoffWorkingDays = $this->employeeUtil->cutoffWorkingDays($cutoff_from, $cutoff_to);
+        $absentCount = $this->employeeUtil->generateAbsences($employeeWorkingHours->days_work,$cutoff_from, $cutoff_to);
+
+        $overtime=$this->compute_overtime($id,$cutoff_from,$cutoff_to,$employment->per_day_salary);
+       // dd($employeeWorkingHours);
         //process salary according to attendance
         $monthly_salary = $employment->monthly_salary;
-        $cutoffSalary = $monthly_salary / 2;
-        $cutoffDailySalary = $cutoffSalary / $totalDays;
-        $grosspay = $cutoffDailySalary * $employeeWorkingHours->days_work;
 
         //compute deduction
-        $deductions = $this->compute_sss_philhealth_pagibig($monthly_salary);
-        $totalDeductions = array_sum($deductions);
+        $deductions_spp = $this->compute_sss_philhealth_pagibig($monthly_salary,$cutoff->deduction_type);
+        //$totalDeductions = array_sum($deductions);
 
 
-        dd($cutoffDailySalary, $grosspay, $deductions, $totalDeductions);
+        $attendance_time = DB::table('attendance_time')
+            ->where('employee_id',$id)
+            ->whereBetween('attendance_date', [$cutoff->cutoff_from, $cutoff->cutoff_to])
+            ->get();
+        $payslip_input = DB::table('employee_payslip_input')
+            ->where('employee_id',$id)
+            ->where('cutoff_id',$cutoff_id)
+            ->get();
+        $loan = DB::table('employee_loan')
+            ->select('sc.value as loan_type','total_amount','payable','payment_term','paid_amount','balance')
+            ->join('settings_constants as sc', 'employee_loan.loan_type_id', '=', 'sc.id')
+            ->where('employee_id',$id)
+            ->where('balance','<>','0.00')
+            ->get();
+       
+
+       // dd($cutoffDailySalary, $grosspay, $deductions, $totalDeductions);
         $data = array(
             "employee_info"=>$employee,
+            "employment"=>$employment,
             "totalWorkingHours"=>$cutoffWorkingHours,
+            "totalWorkingDays"=>$cutoffWorkingDays,
             "cutoffWorkingHours"=>$employeeWorkingHours,
-            "totalAbsent"=>$absentCount
+            "totalAbsent"=>$absentCount,
+            "attendance_time"=>$attendance_time,
+            "payslip_input"=>$payslip_input,
+            "loan"=>$loan,
+            "deduction_spp"=>$deductions_spp,
+            "overtime"=>$overtime
+            //TAX
+
         );
         return view('Payroll.payslipnew', $data);
+      //  return view('Payroll.payslipnew', compact($data));
     }
+
     public function create()
     {
         //
@@ -218,7 +152,6 @@ class PayslipController extends Controller
 
     public function savePayslip(Request $request)
     {
-
         $cutoff_id = $request->input('cutoff_id');
         $loan_paid = $request->input('loan_paid');
         $loan_id = $request->input('loan_id');
@@ -254,39 +187,49 @@ class PayslipController extends Controller
             DB::insert("insert into employee_loan_payment (employee_loan_id,cutoff_id,paid_amount,previews_balance,new_balance)values($loanId,$cutoff,$amnt,'$row->balance','$new_balance')");
         }
     }
+    //Ok
+    Public function compute_sss_philhealth_pagibig($monthly_salary,$cutoff_deduction){
+       if ($cutoff_deduction==0){
+           $output['sss_cont']=0;
+           $output['pagibig_cont']=0;
+           $output['philhealth_cont']=0;
+       }else{
 
-    Public function compute_sss_philhealth_pagibig($monthly_salary){
-        $sss = DB::table('tax_sss')
-            ->where('range_from','<=',$monthly_salary)
-            ->where('range_to','>=',$monthly_salary)
-            ->get();
-        if ($sss->count()>0){
-            foreach ($sss as $row){
-                $output['sss_cont']=$row->ee_share/2;
-            }
-        }else{
-            $output['sss_cont']=0;
-        }
+           //SSS
+           $sss = DB::table('tax_sss')
+               ->where('range_from','<=',$monthly_salary)
+               ->where('range_to','>=',$monthly_salary)
+               ->get();
+           if ($sss->count()>0){
+               foreach ($sss as $row){
+                   $output['sss_cont']=$row->ee_share/$cutoff_deduction;
+               }
+           }else{
+               $output['sss_cont']=0;
+           }
 
-        $pagibig = DB::table('tax_pagibig')
-            ->where('range_from','<=',$monthly_salary)
-            ->where('range_to','>=',$monthly_salary)
-            ->get();
-        if ($pagibig->count()>0){
-            foreach ($pagibig as $row){
-                $output['pagibig_cont']=$row->share;
-            }
-        }else{
-            $output['pagibig_cont']=0;
-        }
+            //Pagibig
+           $pagibig = DB::table('tax_pagibig')
+               ->where('range_from','<=',$monthly_salary)
+               ->where('range_to','>=',$monthly_salary)
+               ->get();
+           if ($pagibig->count()>0){
+               foreach ($pagibig as $row){
+                   $output['pagibig_cont']=$row->share/$cutoff_deduction;
+               }
+           }else{
+               $output['pagibig_cont']=0;
+           }
 
-        //philhealth_cont
-        $output['philhealth_cont']=50;
-        // $philhealth_cont=($monthly_salary * 0.0275) / 2 ;
+           //philhealth_cont
+           $output['philhealth_cont']=100/$cutoff_deduction;
+           // $philhealth_cont=($monthly_salary * 0.0275) / 2 ;
+       }
+
         return $output;
     }
-
-    public function compute_overtime($cutoff_from,$cutoff_to,$employee_id,$per_hour){
+    //Ok
+    public function compute_overtime($employee_id,$cutoff_from,$cutoff_to,$per_hour){
         $overtime = DB::table('attendance_time as att')
             ->select(
                 DB::raw('hour(overtime) as overtime_hours')
@@ -309,7 +252,6 @@ class PayslipController extends Controller
     }
 
     public function compute_undertime($cutoff_from,$cutoff_to,$employee_id){
-
         $overtime_hours=0;
         $overtime_pay=0;
     }

@@ -4,17 +4,13 @@
 
 
     <div class="kt-content  kt-grid__item kt-grid__item--fluid" id="kt_content">
-        @foreach($employee as $row)
-
-        @endforeach
         <div class="row">
             <div class="col-md-12">
                 <div class="kt-portlet kt-portlet--mobile">
                     <div class="kt-portlet__head kt-portlet__head--lg">
                         <div class="kt-portlet__head-label">
                             <h3 class="kt-portlet__head-title">
-                                    EMPLOYEE INFO ({{$row->firstname . ' '. $row->lastname}})
-                                    - {{$rate_name}}
+                                    EMPLOYEE INFO ({{ $employee_info }}
                                 <br/>
                                 Sundays : {{$sundays}}
                                 <br/>
@@ -42,11 +38,11 @@
                                             <tbody>
                                             <tr>
                                                 <td style="width: 20%; vertical-align: middle;">Per Day</td>
-                                                <td> {{number_format($per_day,2)}} </td>
+                                                <td> {{$per_day}} </td>
                                                 <td style="width: 20%; vertical-align: middle;">Per Hour</td>
-                                                <td> {{number_format($per_hour,2)}} </td>
+                                                <td> {{$per_hour}} </td>
                                                 <td style="width: 20%; vertical-align: middle;">Per Month</td>
-                                                <td> {{number_format($per_month,2)}} </td>
+                                                <td> {{$per_month}} </td>
                                             </tr>
                                             </tbody>
                                         </table>
@@ -66,7 +62,7 @@
                                             <div class="col-md-2">
                                                 <div class="form-group">
                                                     <label>Monthly</label>
-                                                    <input type="number" class="form-control"  placeholder="00.00" name="per_month"  value="{{$monthly}}">
+                                                    <input type="number" class="form-control"  placeholder="00.00" name="per_month"  value="{{$per_month}}">
                                                 </div>
                                             </div>
                                         </div>
@@ -82,48 +78,43 @@
                                         <div class="row">
                                             <table class="table table-bordered">
                                                 <tbody>
-
-                                                @foreach($regular_work_hrs as $row)
                                                 <tr>
                                                     <td style="width: 40%; vertical-align: middle;">Hours Work</td>
-                                                    <td> {{number_format($row->work_hours)}} </td>
+                                                    <td> {{$hrs_work}} </td>
                                                 </tr>
                                                 <tr>
                                                     <td style="width: 40%; vertical-align: middle;">Days Work</td>
-                                                    <td> {{number_format($row->days_work)}} </td>
+                                                    <td> {{$days_work}} </td>
                                                 </tr>
-                                                @endforeach
                                                 <tr>
                                                     <td style="width: 40%; vertical-align: middle;">Overtime Hours</td>
-                                                    <td> {{number_format($overtime_hours)}} </td>
+                                                    <td> {{$overtime_hours}} </td>
                                                 </tr>
                                                 <tr>
                                                     <td style="width: 40%; vertical-align: middle;">Undertime Hours</td>
-                                                    <td> {{number_format($undertime_hours)}} </td>
+                                                    <td> {{$under_time_hours}} </td>
                                                 </tr>
                                                 <tr>
                                                     <td style="width: 40%; vertical-align: middle;">Absences</td>
-                                                    <td> {{number_format($absences_no)}} </td>
+                                                    <td> {{$absences_days}} </td>
                                                 </tr>
                                                 </tbody>
                                             </table>
                                         </div>
 
                                         <div class="row" style="display: none;">
-
-                                            @foreach($regular_work_hrs as $row)
                                                 <div class="col-md-4">
                                                     <div class="form-group">
                                                         <label>Hours Work</label>
                                                         <input type="text" class="form-control" placeholder="0"
-                                                               name="work_hours" value="{{$row->work_hours}}">
+                                                               name="work_hours" value="{{$hrs_work}}">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-4">
                                                     <div class="form-group">
                                                         <label>Days Work</label>
                                                         <input type="text" class="form-control" placeholder="0"
-                                                               name="work_days" value="{{$row->days_work}}">
+                                                               name="work_days" value="{{$days_work}}">
                                                     </div>
                                                 </div>
                                             @endforeach
@@ -158,23 +149,23 @@
 
                                             <tr>
                                                 <td style="width: 40%; vertical-align: middle;">Basic Pay</td>
-                                                <td> {{number_format($basic_pay,2)}} </td>
+                                                <td> {{$basic_pay}} </td>
                                             </tr>
                                             <tr>
                                                 <td style="width: 40%; vertical-align: middle;">Overtime Pay</td>
-                                                <td> {{number_format($overtime_pay,2)}} </td>
+                                                <td> {{$overtime_pay}} </td>
                                             </tr>
                                             <tr>
                                                 <td style="width: 40%; vertical-align: middle;">Holiday Pay</td>
-                                                <td> {{number_format($holiday_pay,2)}} </td>
+                                                <td> {{$holiday_pay}} </td>
                                             </tr>
                                             <tr>
                                                 <td style="width: 40%; vertical-align: middle;">Allowance</td>
-                                                <td> {{number_format($allowance,2)}} </td>
+                                                <td> {{$allowance}} </td>
                                             </tr>
                                             <tr>
                                                 <td style="width: 40%; vertical-align: middle;color:red;font-weight:bold;">GROSS PAY</td>
-                                                <td> {{number_format($gross_pay,2)}} </td>
+                                                <td> {{$gross_pay}} </td>
                                             </tr>
                                             </tbody>
                                         </table>
@@ -225,23 +216,23 @@
                                             <tbody>
                                             <tr>
                                                 <td style="width: 40%; vertical-align: middle;">Undertime Deduction</td>
-                                                <td> {{number_format($undertime_deduc,2)}} </td>
+                                                <td> {{$under_time_deduction}} </td>
                                             </tr>
                                             <tr>
                                                 <td style="width: 40%; vertical-align: middle;">Absences Deduction</td>
-                                                <td> {{number_format($absences_deduc,2)}} </td>
+                                                <td> {{$absences_deduction}} </td>
                                             </tr>
                                             <tr>
                                                 <td style="width: 40%; vertical-align: middle;">SSS Cont.</td>
-                                                <td> {{number_format($sss_cont,2)}} </td>
+                                                <td> {{$sss_cont}} </td>
                                             </tr>
                                             <tr>
                                                 <td style="width: 40%; vertical-align: middle;">Pag-ibig Cont.</td>
-                                                <td> {{number_format($pagibig_cont,2)}} </td>
+                                                <td> {{$pagibig_cont}} </td>
                                             </tr>
                                             <tr>
                                                 <td style="width: 40%; vertical-align: middle;">Philhealth Cont.</td>
-                                                <td> {{number_format($philhealth_cont,2)}} </td>
+                                                <td> {{$philhealth_cont}} </td>
                                             </tr>
 
                                             @foreach($loan as $row)
@@ -308,7 +299,7 @@
                                                 <div class="form-group">
                                                     <label>Undertime</label>
                                                     <input type="number" class="form-control" placeholder="00.00"
-                                                           value="{{$undertime_deduc}}" name="undertime_deduc">
+                                                           value="{{$under_time_deduction}}" name="undertime_deduc">
                                                 </div>
                                             </div>
                                             <div class="col-md-4">
@@ -322,15 +313,15 @@
                                             <tbody>
                                             <tr>
                                                 <td style="width: 40%; vertical-align: middle;color:red;font-weight:bold;">TAXABLE</td>
-                                                <td> {{number_format($taxable_income,2)}} </td>
+                                                <td> {{$taxable_income}} </td>
                                             </tr>
                                             <tr>
                                                 <td style="width: 40%; vertical-align: middle;color:red;font-weight:bold;">OVERALL DEDUCTIONS</td>
-                                                <td> {{number_format($overall_deduc,2)}} </td>
+                                                <td> {{$overall_deduc}} </td>
                                             </tr>
                                             <tr>
                                                 <td style="width: 40%; vertical-align: middle;color:red;font-weight:bold;">NET PAY</td>
-                                                <td> {{number_format($net_pay,2)}} </td>
+                                                <td> {{$net_pay}} </td>
                                             </tr>
                                             </tbody>
                                         </table>
@@ -338,7 +329,7 @@
                                             <div class="col-md-12">
                                                 <div class="form-group">
                                                     <label class="danger">OVERALL DEDUCTIONS</label>
-                                                    <input type="number" class="form-control" placeholder="00.00" value="{{ max(number_format($overall_deduc, 2),0)}}" name="overall_deduc">
+                                                    <input type="number" class="form-control" placeholder="00.00" value="{{ $overall_deduc}}" name="overall_deduc">
                                                 </div>
                                             </div>
                                             <br/>
@@ -347,7 +338,7 @@
                                                 <div class="form-group">
                                                     <label class="danger">NET PAY</label>
                                                     <input type="number" class="form-control" placeholder="00.00"
-                                                           value="{{ max(number_format($net_pay, 2), 0)}}" name="net_pay">
+                                                           value="{{ $net_pay}}" name="net_pay">
                                                 </div>
                                             </div>
                                         </div>
