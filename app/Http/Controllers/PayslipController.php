@@ -58,7 +58,6 @@ class PayslipController extends Controller
     {
 
 
-
         $overall_deduc = $sss_cont + $pagibig_cont + $philhealth_cont;
         $net_pay = $gross_pay - ($overall_deduc + $withholding_tax);
 
@@ -84,9 +83,12 @@ class PayslipController extends Controller
     }
 // total_loan
 
-    public function generateNewPayslip($id,$cutoff_id){
+    public function generateNewPayslip(Request $request){
         //dummy data
         //end of dummy data
+        $id = $request->get('employee_id');
+        $cutoff_id = $request->get('cutoff_id');
+
         $employee = $this->employeeUtil->getEmployee($id);
         $cutoff = $this->employeeUtil->getCutOff($cutoff_id);
         $cutoff_from=$cutoff->cutoff_from;
@@ -123,7 +125,14 @@ class PayslipController extends Controller
             ->where('employee_id',$id)
             ->where('balance','<>','0.00')
             ->get();
-       
+//        $tax_withholding = DB::table('tax_withholding')
+//            ->where('type','=','Monthly')
+//            ->where('range_from','<=',$taxable)
+//            ->where('range_to','>=',$taxable)
+//            ->get();
+//        foreach ($tax_withholding as $row){
+//            $withholding_tax=(($taxable - $row->range_from) * $row->percentage) + $row->amount;
+//        }
 
        // dd($cutoffDailySalary, $grosspay, $deductions, $totalDeductions);
         $data = array(
@@ -138,11 +147,9 @@ class PayslipController extends Controller
             "loan"=>$loan,
             "deduction_spp"=>$deductions_spp,
             "overtime"=>$overtime
-            //TAX
 
         );
         return view('Payroll.payslipnew', $data);
-      //  return view('Payroll.payslipnew', compact($data));
     }
 
     public function create()
@@ -174,6 +181,31 @@ class PayslipController extends Controller
             'alert-type' => 'success'
         );
         return redirect('payslip')->with($notification); //'selec-cutoff'
+    }
+
+    public function savePayslipInput(Request $request)
+    {
+        Employe::unique( array('company_code', 'client_id') );
+//        $request->validate([
+//            'provider_id' => 'unique:items,provider_id,NULL,id,barcode,'.$request->Empl
+//        ]);
+
+        $cutoff_id = $request->input('cutoff_id');
+        $employee_id = $request->input('employee_id');
+        $salary_adjustments = $request->input('salary_adjustments');
+       // $thirteenth_month_pay = $request->input('thirteenth_month_pay');
+        $bonus = $request->input('bonus');
+        $allowance = $request->input('allowance');
+        $other_deduc = $request->input('other_deduc');
+
+        DB::insert("insert into employee_payslip_input(cutoff_id,employee_id,salary_adjustments,bonus,allowance,other_deduc)values(
+        $cutoff_id,$employee_id,$salary_adjustments,$bonus,$allowance,$other_deduc)");
+
+        $notification = array(
+            'message' => 'Employee Payslip Input Created Successfully',
+            'alert-type' => 'success'
+        );
+        return redirect('payslip')->with($notification);
     }
 
     Public function compute_loan($amnt, $loanId, $cutoff)

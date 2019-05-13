@@ -69,13 +69,13 @@
                         <div class="kt-portlet__head-label">
                             <h5 class="kt-portlet__head-title">
                                 Employee Name: {{$employee_info}}
-                                <br />
-                                Expected Total Working hours: {{ $totalWorkingHours }}
-                                <br />
-                                Actual Employee Working hours: {{ $cutoffWorkingHours->work_hours }}
-                                <br />
+                                {{--<br />--}}
+                                {{--Expected Total Working hours: {{ $totalWorkingHours }}--}}
+                                {{--<br />--}}
+                                {{--Actual Employee Working hours: {{ $cutoffWorkingHours->work_hours }}--}}
+                                {{--<br />--}}
 
-                                Total Absences: {{ $totalAbsent }}
+                                {{--Total Absences: {{ $totalAbsent }}--}}
                             </h5>
                         </div>
                     </div>
