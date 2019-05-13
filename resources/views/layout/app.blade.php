@@ -1585,6 +1585,7 @@
     $("#sssId").inputmask({"mask": "99-9999999-9"});
     $("#pagibigId").inputmask({"mask": "9999-9999-9999"});
     $("#philhealthId").inputmask({"mask": "99-9999-99999-9"});
+    $("#drivers_license").inputmask({"mask": "999-99-999999"});
 
 //    $('#multipleDate').datepicker({
 //        multidate: true,

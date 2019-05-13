@@ -27,7 +27,7 @@ Route::post('getDepartment', 'EmployeeController@getDepartment');
 Route::post('getBranch', 'EmployeeController@getBranch');
 Route::post('getDesignation', 'EmployeeController@getDesignation');
 Route::get('payslip/{id}/{cutoff_id}', 'PayslipController@generatePayslip');
-Route::get('payslipNew/{id}', 'PayslipController@generateNewPayslip');
+Route::get('payslipNew/{id}/{cutoff_id}', 'PayslipController@generateNewPayslip');
 //Route::post('payslip', 'PayslipController@store');
 //
 //Route::get('/user', 'PayslipController@index');
@@ -80,7 +80,9 @@ Route::get('employee-overtime', 'AttendanceTimeController@listOT');
 //Route::resource('attendance-time', 'AttendanceTimeController');
 Route::resource('payslip','PayslipController');
 Route::post('generatePayslip', 'PayslipController@generatePayslip');
+Route::post('generateNewPayslip', 'PayslipController@generateNewPayslip');
 Route::post('savePayslip', 'PayslipController@savePayslip');
+Route::post('savePayslipInput', 'PayslipController@savePayslipInput');
 Route::resource('payroll', 'PayrollController');
 Route::post('generatePayroll', 'PayrollController@generatePayroll');
 Route::get('generatePayrollMemo/{company_id}/{cutoff_id}', 'PayrollController@generatePayrollMemo');

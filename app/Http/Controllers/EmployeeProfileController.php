@@ -136,8 +136,9 @@ class EmployeeProfileController extends Controller
         $employee_last_cutoff_salary= MakePayment::all()
             ->where('employee_id', $employee_id)
             ->sortByDesc('created_at')
-            ->first()->get();
-
+            ->first()
+            ->get();
+            //dd($employee_last_cutoff_salary);
         $office_shift = OfficeShift::all();
 
         $employee_groups = DB::table('employee_groups')

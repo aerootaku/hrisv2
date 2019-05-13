@@ -329,6 +329,14 @@
                                         @method('PATCH')
                                         <div class="col-md-12">
                                             <div class="row">
+                                                <div class="form-group col-md-12 mb-12">
+                                                    <label>Employee Id</label>
+                                                    <input type="text"
+                                                           class="form-control"
+                                                           placeholder="Employeee Number"
+                                                           name="employee_no"
+                                                           value="{{ $personal_info->employee_no }}" readonly>
+                                                </div>
                                                 <div class="form-group col-md-6 mb-2">
                                                     <label>First
                                                         Name</label>
@@ -449,19 +457,24 @@
                                                 <div class="form-group col-md-3 mb-2">
                                                     <label>Civil
                                                         Status</label>
-                                                    <input type="text"
-                                                           class="form-control"
-                                                           placeholder="civil Status"
-                                                           name="civil_status"
-                                                           value="{{ $personal_info->civil_status }}">
+                                                    <select name="civil_status" class="form-control">
+                                                    @foreach($constant as $constants)
+                                                        @if($constants->type == 'Civil Status')
+                                                            <option value="{{ $constants->value }}" {{ $constants->value == $personal_info->civil_status? "Selected": "" }}>{{ $constants->value }}</option>
+                                                        @endif;
+                                                    @endforeach
+                                                    </select>
                                                 </div>
                                                 <div class="form-group col-md-3 mb-2">
                                                     <label>Nationality</label>
-                                                    <input type="text"
-                                                           class="form-control"
-                                                           placeholder="nationality"
-                                                           name="nationality"
-                                                           value="{{ $personal_info->nationality }}">
+                                                    <select name="nationality" class="form-control">
+                                                        @foreach($constant as $constants)
+                                                            @if($constants->type == 'Nationality')
+                                                                <option value="{{ $constants->value }}" {{ $constants->value == $personal_info->nationality? "Selected": "" }}>{{ $constants->value }}</option>
+                                                            @endif;
+                                                        @endforeach
+                                                    </select>
+
                                                 </div>
                                                 <div class="form-group col-md-3 mb-2">
                                                     <label>Religion</label>
@@ -550,23 +563,7 @@
                                                            name="philhealth_no" id="philhealthId"
                                                            value="{{ $personal_info->philhealth_no }}">
                                                 </div>
-                                                {{--<h4><strong>Employment Information</strong></h4><br/>--}}
-                                                    {{--<div class="form-group col-md-6 mb-2">--}}
-                                                        {{--<label>Date Hired</label>--}}
-                                                        {{--<input type="date" class="form-control"  name="date_hired">--}}
-                                                    {{--</div>--}}
-                                                    {{--<div class="form-group col-md-6 mb-2">--}}
-                                                        {{--<label>Contract Start</label>--}}
-                                                        {{--<input type="date" class="form-control" name="contract_start" value="{{$personal_info->contract_start}}" >--}}
-                                                    {{--</div>--}}
-                                                    {{--<div class="form-group col-md-6 mb-2">--}}
-                                                        {{--<label>Schedule</label>--}}
-                                                        {{--<select name="schedule_type" class="form-control">--}}
-                                                            {{--@foreach($schedule as $schedules)--}}
-                                                                {{--<option value="{{ $schedules->id }}">{{ $schedules->shift_name }}</option>--}}
-                                                            {{--@endforeach--}}
-                                                        {{--</select>--}}
-                                                    {{--</div>--}}
+
                                                 <div class="form-group col-md-6 mb-2">
                                                     <label>Pagibig
                                                         Number</label>
@@ -585,6 +582,50 @@
                                                            name="tin_no" id="tinId"
                                                            value="{{ $personal_info->tin_no }}">
                                                 </div>
+                                                <div class="form-group col-md-6 mb-2">
+                                                    <label>Driver's License</label>
+                                                    <input type="text"
+                                                           class="form-control"
+                                                           placeholder="Drivers License"
+                                                           name="drivers_license" id="drivers_license"
+                                                           value="{{ $personal_info->drivers_license }}">
+                                                </div>
+                                                <div class="form-group col-md-6 mb-2">
+                                                    <label>Expiry Date
+                                                        Number</label>
+                                                    <input type="date"
+                                                           class="form-control"
+                                                           placeholder="Expiry Date"
+                                                           name="license_expiry_date" id="license_expiry_date"
+                                                           value="{{ $personal_info->license_expiry_date }}">
+                                                </div>
+
+                                                <div class="form-group col-md-12 mb-12">
+                                                <h4><strong>Contact Information</strong></h4>
+                                                </div>
+                                                <div class="form-group col-md-6 mb-2">
+                                                    <label>Home Telephone</label>
+                                                    <input type="text" class="form-control" id="telephoneNumber" name="telephone_no">
+                                                </div>
+                                                <div class="form-group col-md-6 mb-2">
+                                                    <label>Work Telephone</label>
+                                                    <input type="text" class="form-control" id="telephoneNumberE" name="work_telephone">
+                                                </div>
+                                                <div class="form-group col-md-6 mb-2">
+                                                    <label>Mobile Number</label>
+                                                    <input type="text" class="form-control" id="mobileNumber" name="mobile_no">
+                                                </div>
+
+                                                <div class="form-group col-md-6 mb-2">
+                                                    <label>Work Email</label>
+                                                    <input type="email" class="form-control"  name="work_email">
+                                                </div>
+
+                                                <div class="form-group col-md-6 mb-2">
+                                                    <label>Other Email</label>
+                                                    <input type="email" class="form-control"  name="email">
+                                                </div>
+
                                             </div>
 
                                         </div>
@@ -1192,15 +1233,12 @@
                                                                 </div>
                                                                 <div class="form-group">
                                                                     <label>Report Method</label>
-                                                                    <select name="report_method" class="form-control" onchange='CheckMethod(this.value);' required>
+                                                                    <select name="report_method" class="form-control" required>
                                                                         <option value="Direct">Direct</option>
                                                                         <option value="Indirect">Indirect</option>
-                                                                        <option value="Other">Other</option>
                                                                     </select>
                                                                 </div>
-                                                                <div class="form-group">
-                                                                    <input type="text" name="report_method1" class="form-control" id="report_method" style='display:none;' required/>
-                                                                </div>
+
 
                                                             </div>
                                                         </div>
@@ -1237,12 +1275,9 @@
                                                                         <select name="report_method" class="form-control" required>
                                                                             <option value="Direct" {{ $row->report_method == 'Direct'? "Selected": "" }}>Direct</option>
                                                                             <option value="Indirect" {{ $row->report_method == 'Indirect'? "Selected": "" }}>Indirect</option>
-                                                                            <option value="Other" {{ $row->report_method == 'Other'? "Selected": "" }}>Other</option>
                                                                         </select>
                                                                     </div>
-                                                                    <div class="form-group">
-                                                                        <input type="text" name="report_method1" class="form-control" id="report_method" style='display:none;' required/>
-                                                                    </div>
+
                                                                 </div>
                                                             </div>
                                                             <div class="modal-footer">
@@ -1301,6 +1336,7 @@
                                                 <tr>
                                                     <th>Relationship</th>
                                                     <th>Contact Name</th>
+                                                    <th>Telephone Number</th>
                                                     <th>Mobile Number</th>
                                                     <th>Email Address</th>
                                                     <th>Action</th>
@@ -1311,6 +1347,7 @@
                                                     <tr>
                                                         <td>{{ $contacts->relation }}</td>
                                                         <td>{{ $contacts->contact_name }}</td>
+                                                        <td>{{ $contacts->home_phone }}</td>
                                                         <td>{{ $contacts->mobile_phone }}</td>
                                                         <td>{{ $contacts->personal_email }}</td>
                                                         <td>
@@ -1643,13 +1680,7 @@
             maximumSelectionSize: 1
         });
 
-        function CheckMethod(val){
-            var element=document.getElementById('report_method');
-            if(val=='Other')
-                element.style.display='block';
-            else
-                element.style.display='none';
-        }
+
 
     </script>
 @endsection
