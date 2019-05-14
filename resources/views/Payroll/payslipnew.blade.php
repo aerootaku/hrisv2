@@ -16,7 +16,7 @@
     $per_month=$employment->monthly_salary;
     $hrs_work=$cutoffWorkingHours->work_hours;
     $days_work=$cutoffWorkingHours->days_work;
-
+    $allowance=0;$absentCount=0; $bonus=0; $salary_adjustments=0; $thirteenth_month_pay=0;$other_deduction=0;
     foreach($payslip_input as $row){
         $allowance=$row->allowance;
         $bonus=$row->bonus;
