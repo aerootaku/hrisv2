@@ -45,7 +45,7 @@
     $gross_pay=$basic_pay+$overtime_pay+$holiday_pay+$allowance+$bonus+$salary_adjustments+$thirteenth_month_pay;//OK
 
     $late_deduction=$late_hours*$per_hour;
-    $absences_deduction=$employment->per_day_salary;
+    $absences_deduction=$employment->per_day_salary*$absences_days;
 
     $sss_cont=$deduction_spp['sss_cont'];
     $pagibig_cont=$deduction_spp['pagibig_cont'];
@@ -429,9 +429,9 @@
                                 {{--<button type="button" class="btn btn-warning mr-1">--}}
                                 {{--<i class="ft-x"></i> Cancel--}}
                                 {{--</button>--}}
-                                <button type="submit" class="btn btn-primary">
-                                    <i class="la la-check-square-o"></i> Save
-                                </button>
+                                {{--<button type="submit" class="btn btn-primary">--}}
+                                    {{--<i class="la la-check-square-o"></i> Save--}}
+                                {{--</button>--}}
                             </div>
                         </form>
 

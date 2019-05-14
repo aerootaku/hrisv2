@@ -115,7 +115,7 @@ class PayslipController extends Controller
             ->where('employee_id',$id)
             ->whereBetween('attendance_date', [$cutoff->cutoff_from, $cutoff->cutoff_to])
             ->get();
-        $payslip_input = DB::table('employee_payslip_input')
+        $payslip_input = DB::table('employee_salary_adjustment')
             ->where('employee_id',$id)
             ->where('cutoff_id',$cutoff_id)
             ->get();
@@ -181,31 +181,6 @@ class PayslipController extends Controller
             'alert-type' => 'success'
         );
         return redirect('payslip')->with($notification); //'selec-cutoff'
-    }
-
-    public function savePayslipInput(Request $request)
-    {
-        Employe::unique( array('company_code', 'client_id') );
-//        $request->validate([
-//            'provider_id' => 'unique:items,provider_id,NULL,id,barcode,'.$request->Empl
-//        ]);
-
-        $cutoff_id = $request->input('cutoff_id');
-        $employee_id = $request->input('employee_id');
-        $salary_adjustments = $request->input('salary_adjustments');
-       // $thirteenth_month_pay = $request->input('thirteenth_month_pay');
-        $bonus = $request->input('bonus');
-        $allowance = $request->input('allowance');
-        $other_deduc = $request->input('other_deduc');
-
-        DB::insert("insert into employee_payslip_input(cutoff_id,employee_id,salary_adjustments,bonus,allowance,other_deduc)values(
-        $cutoff_id,$employee_id,$salary_adjustments,$bonus,$allowance,$other_deduc)");
-
-        $notification = array(
-            'message' => 'Employee Payslip Input Created Successfully',
-            'alert-type' => 'success'
-        );
-        return redirect('payslip')->with($notification);
     }
 
     Public function compute_loan($amnt, $loanId, $cutoff)

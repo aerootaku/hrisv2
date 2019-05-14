@@ -638,8 +638,9 @@
                                 </div>
                             </div>
                             <div class="tab-pane" id="salary">
-                                @if(count($employee_last_cutoff_salary) > 0)
+
                                 @foreach($employee_last_cutoff_salary as $salaries)
+                                    @if($no == 1)
                                 <div class="row">
                                     <div class="col-md-12">
                                         <table class="table table-bordered">
@@ -659,6 +660,7 @@
                                     </div>
                                 </div>
                                     <br/>
+
                                     <div class="row">
                                         <table class="table table-bordered">
                                             <tbody>
@@ -687,6 +689,7 @@
                                             </tbody>
                                         </table>
                                     </div>
+
                                     <div class="row">
                                         <table class="table table-bordered">
                                             <tbody>
@@ -701,7 +704,7 @@
                                             </tr>
                                             <tr>
                                                 <td style="width: 40%; vertical-align: middle;">Holiday Pay</td>
-                                                <td> {{number_format($salaries->holoday_pay,2)}} </td>
+                                                <td> {{number_format($salaries->holiday_pay,2)}} </td>
                                             </tr>
                                             <tr>
                                                 <td style="width: 40%; vertical-align: middle;">Allowance</td>
@@ -715,7 +718,7 @@
                                         </table>
                                     </div>
 
-                                <div class="row">
+                                    <div class="row">
                                     <table class="table table-bordered">
                                         <tbody>
                                         <tr>
@@ -758,7 +761,6 @@
                                     </table>
                                 </div>
 
-
                                     <div class="row">
                                         <table class="table table-bordered">
                                             <tbody>
@@ -777,8 +779,9 @@
                                             </tbody>
                                         </table>
                                     </div>
-                                @endforeach
+                                      {{$no++}}
                                     @endif
+                                @endforeach
 
 
 

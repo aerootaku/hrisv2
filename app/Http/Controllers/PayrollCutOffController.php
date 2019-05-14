@@ -51,7 +51,6 @@ class PayrollCutOffController extends Controller
 
 
     public function update(Request $request, PayrollCutOff $payrollCutOff)
-
     {
 
         PayrollCutOff::find($payrollCutOff->id)->update($request->all());

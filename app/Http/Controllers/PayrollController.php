@@ -138,7 +138,7 @@ class PayrollController extends Controller
 
 
 
-        $payslip_input = DB::table('employee_payslip_input')
+        $payslip_input = DB::table('employee_salary_adjustment')
             ->where('employee_id',$employee_id)
             ->where('cutoff_id',$cutoff_id)
             ->get();
@@ -439,7 +439,7 @@ class PayrollController extends Controller
 
 
 
-        $payslip_input = DB::table('employee_payslip_input')
+        $payslip_input = DB::table('employee_salary_adjustment')
             ->where('employee_id',$employee_id)
             ->where('cutoff_id',$cutoff_id)
             ->get();

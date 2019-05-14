@@ -62,13 +62,14 @@ Route::resource('employee-work-experience', 'EmployeeWorkExperienceController');
 Route::resource('settingsConstant', 'SettingsConstantsController');
 Route::resource('employee-salary', 'EmployeeSalaryController');
 Route::resource('employee-groups', 'EmployeeGroupsController');
+Route::resource('employee-salary-adjustment', 'EmployeeSalaryAdjustmentController');
 
 //Today
 Route::resource('employee-undertime', 'AttendanceTimeController@listUT');
 
 //Aldrin
 Route::resource('attendance-time', 'AttendanceTimeController');
-Route::resource('attendance-report', 'AttendanceTimeController');
+Route::resource('attendance-report', 'EmployeeAttendanceController');
 //update report, leave, ob
 Route::resource('employee-leave', 'EmployeeLeaveController');
 Route::resource('office-shifts', 'OfficeShiftController');
