@@ -68,6 +68,7 @@ Route::resource('employee-undertime', 'AttendanceTimeController@listUT');
 
 //Aldrin
 Route::resource('attendance-time', 'AttendanceTimeController');
+Route::resource('attendance-report', 'AttendanceTimeController');
 //update report, leave, ob
 Route::resource('employee-leave', 'EmployeeLeaveController');
 Route::resource('office-shifts', 'OfficeShiftController');
