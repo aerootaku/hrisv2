@@ -322,7 +322,7 @@
                                             @endforeach
                                             <tr>
                                                 <td style="width: 40%; vertical-align: middle;">Other Deduction</td>
-                                                <td style="text-align:right"> {{$other_deduction}} </td>
+                                                <td style="text-align:right"> {{number_format($other_deduction,2)}} </td>
                                             </tr>
 
                                             </tbody>
@@ -364,7 +364,7 @@
                                                 <div class="form-group">
                                                     <label>Withholding Tax</label>
                                                     <input type="number" class="form-control" placeholder="00.00"
-                                                           name="withholding_tax" value="{{$withholding_tax}}">
+                                                           name="withholding_tax" value="{{number_format($withholding_tax,2)}}">
                                                 </div>
                                             </div>
                                         </div>
@@ -469,9 +469,9 @@
                             <tbody>
                             @foreach($attendance_time as $row)
                                 <tr>
-                                    <td style="text-align:right">{{ $row->attendance_date }}</td>
-                                    <td style="text-align:right">{{ $row->time_in_work }}</td>
-                                    <td style="text-align:right">{{ $row->time_out_work }}</td>
+                                    <td>{{ $row->attendance_date }}</td>
+                                    <td>{{ date("Y-m-d g:i A", strtotime($row->time_in_work ))}}</td>
+                                    <td>{{ date("Y-m-d g:i A", strtotime($row->time_out_work ))}}</td>
                                     <td style="text-align:right">{{ $row->overtime }}</td>
                                     <td style="text-align:right">{{ $row->undertime }}</td>
                                     <td style="text-align:right">{{ $row->total_work }}</td>

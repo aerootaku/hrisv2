@@ -50,10 +50,10 @@ class PayrollCutOffController extends Controller
 
 
 
-    public function update(Request $request, PayrollCutOff $payrollCutOff)
+    public function update(Request $request)
     {
 
-        PayrollCutOff::find($payrollCutOff->id)->update($request->all());
+        PayrollCutOff::find($request->id)->update($request->all());
 
         $notification = array(
 

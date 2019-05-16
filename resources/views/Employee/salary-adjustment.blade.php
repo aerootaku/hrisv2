@@ -166,6 +166,7 @@
                             @csrf
                             @method('PATCH')
                             <div class="col-md-12">
+                                <input type="hidden" name="id" value="{{$row->id}}" class="form-control"  >
 
                                 <div class="form-group row">
                                     <div class="col-md-12">

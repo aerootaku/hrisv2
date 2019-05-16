@@ -122,7 +122,7 @@
                                         <label>Cut off</label>
                                         <select name="cutoff_id" class="form-control" id="cutoff_id"  required >
                                             @foreach($cutoff as $cut)
-                                                <option value="{{ $cut->id }}">{{  $cut->cutoff_from . " " . $cut->cutoff_to }}</option>
+                                                <option value="{{ $cut->id }}">{{  $cut->cutoff_name . " ". $cut->cutoff_from . " " . $cut->cutoff_to }}</option>
                                             @endforeach
                                         </select>
                                     </div>
