@@ -252,6 +252,7 @@
 
     <div class="kt-content  kt-grid__item kt-grid__itekt--fluid" id="kt_content">
         <!--Begin::Dashboard 1-->
+
         <div class="row">
             <div class="col-lg-4 col-sm-6">
 

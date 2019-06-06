@@ -13,6 +13,12 @@
 
 use Illuminate\Support\Facades\Auth;
 
+//Route::post('login', 'AuthenticationController@login');
+session()->put('client_id','1');
+session()->put('user_type','Admin');
+//{{session()->get('client_id')}}
+
+
 Route::get('/', function () {
     return view('login');
 });

@@ -85,12 +85,12 @@
                                         </span>
                                         {{--@if(Auth::user()->id<>'1')--}}
                                             {{--{{Auth::user()->id}}--}}
-                                            {{--@if( $row->status =='Pending')--}}
+                                            @if( $row->status =='Pending')
                                                 <a class="btn btn-warning btn-icon btn-icon-md " href="#"
                                                    data-toggle="modal" data-title="Approval"
                                                    data-target="#approval{{ $row->id }}"><i
                                                             class="fa flaticon-like"></i></a>
-                                            {{--@endif--}}
+                                            @endif
                                         {{--@endif--}}
                                     </td>
                                 </tr>
@@ -328,7 +328,7 @@
                 <div class="modal-content">
                     <form action="employee-leave/{{ $row->id }}" method="POST" enctype="multipart/form-data">
                         <div class="modal-header">
-                            <h4 class="title" id="defaultModalLabel">Delete Record</h4>
+                            <h4 class="title" id="defaultModalLabel">Approval Record</h4>
                         </div>
                         <div class="modal-body">
                             @csrf
