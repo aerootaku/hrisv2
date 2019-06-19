@@ -133,11 +133,18 @@ class EmployeeProfileController extends Controller
         //dd($employee_shift);
         $employee_work_experience = EmployeeWorkExperience::all()->where('employee_id', $employee_id);
 
-        $employee_last_cutoff_salary= DB::table('make_payment')
+        $employee_last_cutoff_salary= MakePayment::all()
             ->where('employee_id', $employee_id)
+            ->sortByDesc('created_at')
+            ->first();
+
+        $employee_last_cutoff_salary=DB::table('make_payment')
+            ->where('employee_id','=',$employee_id)
             ->orderByDesc('created_at')
+            ->limit('1')
             ->get();
-            //dd($employee_last_cutoff_salary);
+
+           // dd($employee_last_cutoff_salary);
         $office_shift = OfficeShift::all();
 
         $employee_groups = DB::table('employee_groups')
@@ -164,13 +171,13 @@ class EmployeeProfileController extends Controller
             "employee"=>Employee::all()
         );
 
-        return view('Employee.profile', $data)->with('no', 1);
+        return view('Employee.profile', $data);
 
     }
 
     public function showProfile(Request $request, $id)
     {
-        $value = $request->session()->get('key');
+        $employee_id = $request->session()->get('key');
         //SELECTid,company_id,employee_no,profile,firstname,middlename,lastname,mi,suffix,nickname,gender,
         //civil_status,nationality,religion,height,weight,birthday,age,birthplace,blood_type,region,province,
         //ethnicity,current_address,current_city,permanent_address,permanent_city,email,mobile_no,telephone_no,fax_no,

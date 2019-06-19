@@ -13,12 +13,6 @@
 
 use Illuminate\Support\Facades\Auth;
 
-//Route::post('login', 'AuthenticationController@login');
-session()->put('client_id','1');
-session()->put('user_type','Admin');
-//{{session()->get('client_id')}}
-
-
 Route::get('/', function () {
     return view('login');
 });
@@ -68,14 +62,13 @@ Route::resource('employee-work-experience', 'EmployeeWorkExperienceController');
 Route::resource('settingsConstant', 'SettingsConstantsController');
 Route::resource('employee-salary', 'EmployeeSalaryController');
 Route::resource('employee-groups', 'EmployeeGroupsController');
-Route::resource('employee-salary-adjustment', 'EmployeeSalaryAdjustmentController');
-
+Route::resource('employee-ob', 'EmployeeOBController');
 //Today
 Route::resource('employee-undertime', 'AttendanceTimeController@listUT');
 
 //Aldrin
 Route::resource('attendance-time', 'AttendanceTimeController');
-Route::resource('attendance-report', 'EmployeeAttendanceController');
+Route::resource('attendance-report', 'AttendanceTimeController');
 //update report, leave, ob
 Route::resource('employee-leave', 'EmployeeLeaveController');
 Route::resource('office-shifts', 'OfficeShiftController');
@@ -85,6 +78,8 @@ Route::resource('employee-attendance', 'EmployeeAttendanceController');
 Route::resource('employee-loan', 'EmployeeLoanController');
 Route::resource('employee-allowance', 'EmployeeAllowanceController');
 Route::get('employee-overtime', 'AttendanceTimeController@listOT');
+
+
 //Route::resource('attendance-time', 'AttendanceTimeController');
 Route::resource('payslip','PayslipController');
 Route::post('generatePayslip', 'PayslipController@generatePayslip');
@@ -104,6 +99,11 @@ Route::resource('tax-pagibig', 'TaxPagibigController');
 Route::resource('tax-philhealth', 'TaxPhilhealthController');
 Route::resource('tax-wtax', 'TaxWithholdingController');
 
+Route::resource('employee-salary-adjustment', 'EmployeeSalaryAdjustmentController');
+
+//My
+
+Route::get('my-leave/', 'EmployeeLeaveController@showMyLeave');
 
 
 Route::get('logout', function () {

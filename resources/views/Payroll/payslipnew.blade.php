@@ -3,8 +3,7 @@
 @section('content')
 
     <?php
-    $cutoff_id='1';
-    $employee_id='1';
+
     $totalLoan=0;
     $hrs_per_day=8;
     $employee_info=strtoupper($employee_info->lastname . ", " . $employee_info->firstname . " " . $employee_info->middlename . " PAYSLIP");
@@ -27,7 +26,7 @@
     foreach($loan as $row){
         if($row->balance > $row->payable){
             $totalLoan= $totalLoan+$row->payable;
-         }else{
+        }else{
             $totalLoan= $totalLoan+$row->balance;
         }
     }
@@ -47,13 +46,20 @@
     $late_deduction=$late_hours*$per_hour;
     $absences_deduction=$employment->per_day_salary*$absences_days;
 
-    $sss_cont=$deduction_spp['sss_cont'];
-    $pagibig_cont=$deduction_spp['pagibig_cont'];
-    $philhealth_cont=$deduction_spp['philhealth_cont'];
+    if($gov_deduction==1){
+        $sss_cont=$deductions_spp['sss_cont'];
+        $pagibig_cont=$deductions_spp['pagibig_cont'];
+        $philhealth_cont=$deductions_spp['philhealth_cont'];
+    }else{
+        $sss_cont=0;
+        $pagibig_cont=0;
+        $philhealth_cont=0;
+    }
+
     //@foreach($loan as $row)
 
-//    $taxable=($basic_pay+$overtime_pay+$holiday_pay)-($late_deduction+$absences_deduction+$sss_cont+$pagibig_cont+$philhealth_cont);//ok
-//    $taxable_income= $taxable;
+    //    $taxable=($basic_pay+$overtime_pay+$holiday_pay)-($late_deduction+$absences_deduction+$sss_cont+$pagibig_cont+$philhealth_cont);//ok
+    //    $taxable_income= $taxable;
 
     $withholding_tax=0;
 
@@ -83,8 +89,7 @@
 
                         <form class="form" action="savePayslip" method="POST"
                               enctype="multipart/form-data">
-                            <input type="hidden" name="cutoff_id" value="{{$cutoff_id}}">
-                            <input type="hidden" name="employee_id" value="{{$employee_id}}">
+
                             {{--<input type="text" name="department_id" value="{{$department_id}}">--}}
                             <input type="hidden" name="company_id" value="6">
                             {{--<input type="text" name="location_id" value="{{$location_id}}">--}}
@@ -355,9 +360,9 @@
                                         <div class="row" style="display: none;">
                                             <div class="col-md-6">
                                                 {{--<div class="form-group">--}}
-                                                    {{--<label>Taxable Income</label>--}}
-                                                    {{--<input type="number" class="form-control" placeholder="00.00"--}}
-                                                           {{--name="taxable_income" value="{{$taxable_income}}">--}}
+                                                {{--<label>Taxable Income</label>--}}
+                                                {{--<input type="number" class="form-control" placeholder="00.00"--}}
+                                                {{--name="taxable_income" value="{{$taxable_income}}">--}}
                                                 {{--</div>--}}
                                             </div>
                                             <div class="col-md-6">
@@ -390,8 +395,8 @@
                                                 <td style="text-align:right"> {{$withholding_tax}} </td>
                                             </tr>
                                             {{--<tr>--}}
-                                                {{--<td style="width: 40%; vertical-align: middle;color:red;font-weight:bold;">TAXABLE</td>--}}
-                                                {{--<td style="text-align:right"> {{$taxable_income}} </td>--}}
+                                            {{--<td style="width: 40%; vertical-align: middle;color:red;font-weight:bold;">TAXABLE</td>--}}
+                                            {{--<td style="text-align:right"> {{$taxable_income}} </td>--}}
                                             {{--</tr>--}}
                                             <tr>
                                                 <td style="width: 40%; vertical-align: middle;color:red;font-weight:bold;">OVERALL DEDUCTIONS</td>
@@ -430,7 +435,7 @@
                                 {{--<i class="ft-x"></i> Cancel--}}
                                 {{--</button>--}}
                                 {{--<button type="submit" class="btn btn-primary">--}}
-                                    {{--<i class="la la-check-square-o"></i> Save--}}
+                                {{--<i class="la la-check-square-o"></i> Save--}}
                                 {{--</button>--}}
                             </div>
                         </form>

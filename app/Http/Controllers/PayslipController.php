@@ -109,7 +109,7 @@ class PayslipController extends Controller
         //compute deduction
         $deductions_spp = $this->compute_sss_philhealth_pagibig($monthly_salary,$cutoff->deduction_type);
         //$totalDeductions = array_sum($deductions);
-
+        $gov_deduction=$cutoff->sss_philhealth_pagibig_deduction;
 
         $attendance_time = DB::table('attendance_time')
             ->where('employee_id',$id)
@@ -146,7 +146,8 @@ class PayslipController extends Controller
             "payslip_input"=>$payslip_input,
             "loan"=>$loan,
             "deduction_spp"=>$deductions_spp,
-            "overtime"=>$overtime
+            "overtime"=>$overtime,
+            "gov_deduction"=>$gov_deduction
 
         );
         return view('Payroll.payslipnew', $data);
@@ -181,6 +182,38 @@ class PayslipController extends Controller
             'alert-type' => 'success'
         );
         return redirect('payslip')->with($notification); //'selec-cutoff'
+    }
+
+    public function savePayslipInput(Request $request)
+    {
+        Employee::unique( array('company_code', 'client_id') );
+//        $request->validate([
+//            'provider_id' => 'unique:items,provider_id,NULL,id,barcode,'.$request->Empl
+//        ]);
+
+        $cutoff_id = $request->input('cutoff_id');
+        $employee_id = $request->input('employee_id');
+        $salary_adjustments = $request->input('salary_adjustments');
+       // $thirteenth_month_pay = $request->input('thirteenth_month_pay');
+        $bonus = $request->input('bonus');
+        $allowance = $request->input('allowance');
+        $other_deduc = $request->input('other_deduc');
+
+        DB::table('employee_salary_adjustment')
+            ->insert([
+                'cutoff_id'=>$cutoff_id,
+                'employee_id'=>$employee_id,
+                'salary_adjustments'=>$salary_adjustments,
+                'bonus'=>$bonus,
+                'allowance'=>$allowance,
+                'other_deduc'=>$other_deduc
+            ]);
+
+        $notification = array(
+            'message' => 'Employee Payslip Input Created Successfully',
+            'alert-type' => 'success'
+        );
+        return redirect('payslip')->with($notification);
     }
 
     Public function compute_loan($amnt, $loanId, $cutoff)

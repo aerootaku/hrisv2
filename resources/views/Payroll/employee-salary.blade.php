@@ -166,11 +166,12 @@
                                 <div class="form-group row">
                                     <div class="col-md-12">
                                         <label>Daily Salary</label>
-                                        <input type="number" class="form-control" value="{{ $row->per_day_salary }}"  name="per_day_salary">
+                                        <input type="number" step='0.01' class="form-control" value="{{ $row->per_day_salary }}"  name="per_day_salary">
+
                                     </div>
                                     <div class="col-md-12">
                                         <label>Monthly Salary</label>
-                                        <input type="number" class="form-control" value="{{ $row->monthly_salary }}"  name="monthly_salary">
+                                        <input type="number" step='0.01'  class="form-control" value="{{ $row->monthly_salary }}"  name="monthly_salary">
                                     </div>
                                 </div>
                             </div>
@@ -193,6 +194,8 @@
     <script src="{{ asset('assets') }}/app/custom/general/crud/datatables/extensions/responsive.js" type="text/javascript"></script>
 
     <script>
+        $('.amt').inputmask('00000.00', { reverse: true });
+
         function getMiddleInitial(){
             var str     = $("#middlename").val();
             var matches = str.match(/\b(\w)/g);

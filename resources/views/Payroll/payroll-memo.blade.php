@@ -81,28 +81,17 @@
         <!--End::Dashboard 1-->
     </div>
 
-
-
-
-
 @endsection
-
 
 
 @section('script')
 
     <script >
-
         $('#payroll_table').DataTable( {
-
             dom: 'Bfrtip',
-
             buttons: [
-
                 'copy', 'csv', 'excel', 'pdf', 'print'
-
             ]
-
         } );
 
     </script>
@@ -115,7 +104,6 @@
             var originalContents = document.body.innerHTML;
             document.body.innerHTML = printContents;
             window.print();
-
             document.body.innerHTML = originalContents;
         }
     </script>

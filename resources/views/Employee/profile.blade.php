@@ -252,7 +252,6 @@
 
     <div class="kt-content  kt-grid__item kt-grid__itekt--fluid" id="kt_content">
         <!--Begin::Dashboard 1-->
-
         <div class="row">
             <div class="col-lg-4 col-sm-6">
 
@@ -270,15 +269,17 @@
                         {{--<div class="desc">{{ $employment_info->designation_name }}</div>--}}
                     </div>
                     <div class="bottom">
-                        <div class="kt-section kt-section__content">
-                            <button class="btn btn-outline-warning btn-elevated">Reset Password</button>
-                            <button class="btn btn-outline-danger btn-elevated">Disable Account</button>
-                        </div>
-                        <div class="divider"></div>
-                        <div class="kt-section kt-section__content kt-separator--border-solid" style="border: 2px">
-                                <h5 class="font-weight-bold">Last Login</h5>
-                                <span class="text-muted">22-Apr-2019 11:56 AM from 130.105.22.31</span>
-                        </div>
+                        @if(Auth::user()->role_id == '1')
+                            <div class="kt-section kt-section__content">
+                                <button class="btn btn-outline-warning btn-elevated">Reset Password</button>
+                                <button class="btn btn-outline-danger btn-elevated">Disable Account</button>
+                            </div>
+                            <div class="divider"></div>
+                            <div class="kt-section kt-section__content kt-separator--border-solid" style="border: 2px">
+                                    <h5 class="font-weight-bold">Last Login</h5>
+                                    <span class="text-muted">22-Apr-2019 11:56 AM from 130.105.22.31</span>
+                            </div>
+                        @endif
                     </div>
                 </div>
 
@@ -314,7 +315,9 @@
                                         {{--<a class="dropdown-item" data-toggle="tab" href="#kt_portlet_tab_2_2" aria-expanded="true">Dependents</a>--}}
                                         <a class="dropdown-item" data-toggle="tab" href="#educationalBackground" aria-expanded="true">Educational Background</a>
                                         <a class="dropdown-item" data-toggle="tab" href="#workExperience" aria-expanded="true">Work Experience</a>
+                                        @if(Auth::user()->role_id == 1)
                                         <a class="dropdown-item" data-toggle="tab" href="#officeShift" aria-expanded="true">Office Shift</a>
+                                        @endif
                                         <a class="dropdown-item" data-toggle="tab" href="#reportTo" aria-expanded="true">Report to</a>
                                     </div>
                                 </li>
@@ -630,25 +633,27 @@
                                             </div>
 
                                         </div>
+
+                                        @if(Auth::user()->role_id == 1)
                                         <div class="col-md-12">
                                             <div class="form-group">
                                                 <button type="submit" class="btn btn-info btn-block btn-elevate-air"><i class="la la-save"></i> Save All</button>
                                             </div>
                                         </div>
+                                        @endif
                                     </form>
                                 </div>
                             </div>
                             <div class="tab-pane" id="salary">
-
+                                @if(($employee_last_cutoff_salary))
                                 @foreach($employee_last_cutoff_salary as $salaries)
-                                    @if($no == 1)
                                 <div class="row">
                                     <div class="col-md-12">
                                         <table class="table table-bordered">
                                             <tbody>
                                             <tr>
                                                 <td style="width: 20%; vertical-align: middle;">Per Day</td>
-                                                <td> {{number_format($salaries->per_day,2)}} </td>
+                                                <td> {{($salaries->per_day)}} </td>
                                                 <td style="width: 20%; vertical-align: middle;">Per Hour</td>
                                                 <td> {{number_format($salaries->per_hour,2)}} </td>
                                                 {{--<td style="width: 20%; vertical-align: middle;">Per Semi-Month</td>--}}
@@ -661,7 +666,6 @@
                                     </div>
                                 </div>
                                     <br/>
-
                                     <div class="row">
                                         <table class="table table-bordered">
                                             <tbody>
@@ -690,7 +694,6 @@
                                             </tbody>
                                         </table>
                                     </div>
-
                                     <div class="row">
                                         <table class="table table-bordered">
                                             <tbody>
@@ -719,7 +722,7 @@
                                         </table>
                                     </div>
 
-                                    <div class="row">
+                                <div class="row">
                                     <table class="table table-bordered">
                                         <tbody>
                                         <tr>
@@ -762,6 +765,7 @@
                                     </table>
                                 </div>
 
+
                                     <div class="row">
                                         <table class="table table-bordered">
                                             <tbody>
@@ -780,9 +784,8 @@
                                             </tbody>
                                         </table>
                                     </div>
-                                      {{$no++}}
-                                    @endif
                                 @endforeach
+                                    @endif
 
 
 
@@ -1166,6 +1169,7 @@
                             <div class="tab-pane" id="reportTo">
                                 <div class="row">
                                     <div class="col-md-12">
+                                        @if(Auth::user()->role_id == 1)
                                         <div class="kt-portlet__head kt-portlet__head--lg">
                                             <div class="kt-portlet__head-toolbar">
                                                 <div class="kt-portlet__head-wrapper">
@@ -1178,6 +1182,7 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        @endif
                                         <div class="kt-portlet__body">
                                             <table class="table table-striped- table-bordered table-hover table-checkable responsive no-wrap" id="customTable">
                                                 <thead>
@@ -1322,18 +1327,24 @@
                             <div class="tab-pane" id="contactDetails">
                                 <div class="row">
                                     <div class="col-md-12">
+                                        @if(Auth::user()->role_id == 1)
                                         <div class="kt-portlet__head kt-portlet__head--lg">
-                                            <div class="kt-portlet__head-toolbar">
-                                                <div class="kt-portlet__head-wrapper">
-                                                    <div class="kt-portlet__head-actions float-right">
-                                                        <a href="#" data-target="#createContacts" data-toggle="modal" class="btn btn-brand btn-elevate btn-icon-sm float-right">
-                                                            <i class="la la-plus"></i>
-                                                            New Record
-                                                        </a>
+
+                                                <div class="kt-portlet__head-toolbar">
+                                                    <div class="kt-portlet__head-wrapper">
+
+                                                        <div class="kt-portlet__head-actions float-right">
+                                                            <a href="#" data-target="#createContacts" data-toggle="modal" class="btn btn-brand btn-elevate btn-icon-sm float-right">
+                                                                <i class="la la-plus"></i>
+                                                                New Record
+                                                            </a>
+                                                        </div>
+
                                                     </div>
                                                 </div>
-                                            </div>
+
                                         </div>
+                                        @endif
                                         <div class="kt-portlet__body">
                                             <table class="table table-striped- table-bordered table-hover table-checkable responsive no-wrap" id="customTable">
                                                 <thead>
@@ -1372,6 +1383,7 @@
                                                 <tr>
                                                     <th>Relationship</th>
                                                     <th>Contact Name</th>
+                                                    <th>Telephone Number</th>
                                                     <th>Mobile Number</th>
                                                     <th>Email Address</th>
                                                     <th>Action</th>
@@ -1485,6 +1497,7 @@
                             <div class="tab-pane" id="educationalBackground">
                                 <div class="row">
                                     <div class="col-md-12">
+                                        @if(Auth::user()->role_id == 1)
                                         <div class="kt-portlet__head kt-portlet__head--lg">
                                             <div class="kt-portlet__head-toolbar">
                                                 <div class="kt-portlet__head-wrapper">
@@ -1497,6 +1510,7 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        @endif
                                         <div class="kt-portlet__body">
                                             <table class="table table-striped- table-bordered table-hover table-checkable responsive no-wrap" id="customTable">
                                                 <thead>

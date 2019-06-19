@@ -1,1 +1,676 @@
-@extends('layout.app')@section('content')    <div class="kt-content  kt-grid__item kt-grid__item--fluid" id="kt_content">        <!--Begin::Dashboard 1-->        <div class="row">            <div class="col-12">                <div class="kt-portlet kt-portlet--mobile">                    <div class="kt-portlet__head kt-portlet__head--lg">                        <div class="kt-portlet__head-label">                            <h3 class="kt-portlet__head-title">                                Attendance Time List                            </h3>                        </div>                        <div class="kt-portlet__head-toolbar">                            <div class="kt-portlet__head-wrapper">                                <div class="kt-portlet__head-actions">&nbsp;                                    <a  href="#" data-toggle="modal" data-target="#create" class="btn btn-brand btn-elevate btn-icon-sm">                                        <i class="la la-plus"></i>                                        New Record                                    </a>                                </div>                            </div>                        </div>                    </div>                    <div class="kt-portlet__body">                        <!--begin: Search Form -->                        <!--begin: Datatable -->                        <table class="table table-striped- table-bordered table-hover table-checkable responsive no-wrap" id="customTable">                            <thead>                            <tr>                                <th>Date</th>                                <th>Day Type</th>                                <th>Employee ID</th>                                <th>Employee Name</th>                                <th>Time In</th>                                <th>Time Out</th>                                <th>Overtime</th>                                <th>Undertime</th>                                <th>Tardiness</th>                                <th>Total Work Hours</th>                                <th>Overtime Approved</th>                                <th>Actions</th>                            </tr>                            </thead>                            <tbody>                            @foreach($data as $row)                                <tr>                                    <td>{{ $row->attendance_date }}</td>                                    <td>{{ $row->day_type }}</td>                                    <td>{{ $row->employee_no }}</td>                                    <td>{{ $row->firstname . " " . $row->lastname }}</td>                                    <td>{{ $row->time_in_work }}</td>                                    <td>{{ $row->time_out_work }}</td>                                    <td>{{ $row->overtime }}</td>                                    <td>{{ $row->undertime }}</td>                                    <td>{{ $row->tardiness }}</td>                                    <td>{{ $row->total_work }}</td>                                    <td>{{ $row->overtime_approved }}</td>                                    <td>                                        <span class="dropdown">                                            <a href="#" class="btn btn-sm btn btn-info btn-elevate btn-elevate-air btn-icon btn-icon-md" data-toggle="dropdown" aria-expanded="true">                                              <i class="la la-ellipsis-h"></i>                                            </a>                                            <div class="dropdown-menu dropdown-menu-right">                                                <a class="dropdown-item" href="#" data-toggle="modal" data-title="Edit" data-target="#edit{{ $row->id }}"><i class="la la-edit"></i> Edit Details</a>                                                {{--<a class="dropdown-item" href="#" data-toggle="modal" data-title="Delete" data-target="#delete{{ $row->id }}"><i class="la la-trash"></i> Delete Record</a>--}}                                            </div>                                        </span>                                    </td>                                </tr>                            @endforeach                            </tbody>                            <tfoot>                            <tr>                                <th>Date</th>                                <th>Day Type</th>                                <th>Employee ID</th>                                <th>Employee Name</th>                                <th>Time In</th>                                <th>Time Out</th>                                <th>Overtime</th>                                <th>Undertime</th>                                <th>Tardiness</th>                                <th>Total Work Hours</th>                                <th>Overtime Approved</th>                                <th>Actions</th>                            </tr>                            </tfoot>                        </table>                        <!--end: Datatable -->                    </div>                </div>            </div>        </div>        <!--End::Dashboard 1-->    </div>    <div class="modal fade" id="create" role="dialog">        <div class="modal-dialog modal-md" role="document">            <div class="modal-content">                <form action="attendance-time" method="POST" enctype="multipart/form-data">                    <div class="modal-header">                        <h4 class="title" id="defaultModalLabel">Attendance Time In/Out Record</h4>                    </div>                    <div class="modal-body">                        @csrf                        <div class="col-md-12">                            <div class="form-group row">                                <div class="col-md-2">Date: Start Date <br> <input type="text" id="date_picker1" size=9></div>                                <div class="col-md-2">Date: End Date <br> <input type="text" id="date_picker2" size=9></div>                                <div class="col-md-3"><p class="bg-info" id='result'> Result will be displayed here.. <br></p></div>                                Start Date <input type="date" id="FromDate" >                                End Date  <input type="date" id="ToDate" >                                <br />                                <div style="margin:1%;" id="Result"> </div>                                <button type="button" onClick="CalculateDiff();" style="padding:1px; color:#0C6;margin-left:15%;margin-top:5%" >Calculate </button>                                <input type="text" id="date1">                                <input type="text" id="date2">                                <input type="text" id="calculated">                            <input class="form-control datepicker" type="datetime-local" id="fdate" name="fdate">                            <input class="form-control datepicker" type="datetime-local" id="tdate" name="tdate">                            <input class="form-control" type="text" name="days" id="days">                        </div>                            <div class="form-group row">                                <div class="col-md-6">                                    <label>Day Type</label>                                    <select name="day_type_id" class="form-control" id="day_type_id"  required >                                        @foreach($day_type as $day_types):                                        <option value="{{ $day_types->id }}">{{ $day_types->day_type }}</option>                                        @endforeach                                    </select>                                </div>                                <div class="col-md-6">                                    <label>Date</label>                                    <input type="date" class="form-control" name="attendance_date" required>                                </div>                            </div>                            <div class="form-group row">                                <div class="col-md-12">                                    <label>Employee</label>                                    <select name="employee_id" class="form-control" id="employee_id"   required >                                        @foreach($employee as $employees):                                        <option value="{{ $employees->id }}">{{  $employees->firstname . " " . $employees->lastname }}</option>                                        @endforeach                                    </select>                                </div>                            </div>                            <div class="form-group row">                                <div class="col-md-12">                                    <label>Time In</label>                                    <input   type="datetime-local" class="form-control" id="time_in_work" name="time_in_work"  required>                                </div>                            </div>                            <div class="form-group row">                                <div class="col-md-12">                                    <label>Time Out</label>                                    <input onchange="calculate()" type="datetime-local" class="form-control" id="time_out_work" name="time_out_work"  required>                                </div>                            </div>                            <div class="form-group row">                                <div class="col-md-4">                                    <label>Overtime</label>                                    <input type="text" class="form-control" name="overtime"  id="interval" required>                                </div>                                <div class="col-md-4">                                    <label>Undertime</label>                                    <input type="text" class="form-control undertime" name="undertime"  required>                                </div>                                <div class="col-md-4">                                    <label>Tardiness</label>                                    <input type="text" class="form-control tardiness" name="tardiness" required>                                </div>                            </div>                            <div class="form-group row">                                <div class="col-md-4">                                    <label>Work Hours</label>                                    <input type="text" class="form-control total_work" name="total_work" required>                                </div>                                <div class="col-md-4">                                    <label>Rest Hours</label>                                    <input type="text" class="form-control total_rest" name="total_rest" required>                                </div>                                {{--<div class="col-md-4">--}}                                    {{--<label>Night Differential Hours</label>--}}                                    {{--<input type="text" class="form-control" name="total_night_diff" required>--}}                                {{--</div>--}}                            </div>                        </div>                    </div>                    <div class="modal-footer">                        <button class="btn btn-danger" data-dismiss="modal" type="button">Cancel</button>                        <button type="submit" class="btn btn-info">Save Record</button>                    </div>                </form>            </div>        </div>    </div>    @foreach($data as $row)    <div class="modal fade" id="edit{{ $row->id }}" role="dialog">        <div class="modal-dialog modal-md" role="document">            <div class="modal-content">                <form action="attendance-time/{{ $row->id }}" method="POST" enctype="multipart/form-data">                    <div class="modal-header">                        <h4 class="title" id="defaultModalLabel">Edit Record</h4>                    </div>                    <div class="modal-body">                        @csrf                        @method('PATCH')                        <div class="col-md-12">                            <div class="form-group row">                                <div class="col-md-6">                                    <label>Day Type</label>                                    <select name="day_type_id" class="form-control day_type_id"  required >                                        @foreach($day_type as $day_types):                                        <option value="{{ $day_types->id }}  {{ $day_types->id == $row->day_type_id? "Selected": "" }}">{{ $day_types->day_type }}</option>                                        @endforeach                                    </select>                                </div>                                <div class="col-md-6">                                    <label>Date</label>                                    <input type="date" class="form-control" name="attendance_date" value="{{$row->attendance_date}}" required>                                </div>                            </div>                            <div class="form-group row">                                <div class="col-md-12">                                    <label>Employee</label>                                    <select name="employee_id" class="form-control employee_idU"  required >                                        @foreach($employee as $employees):                                        <option value="{{ $employees->id }}" {{ $employees->id == $row->employee_id? "Selected": "" }}>{{  $employees->firstname . " " . $employees->lastname }}</option>                                        @endforeach                                    </select>                                </div>                            </div>                            <div class="form-group row">                                <div class="col-md-12">                                    <label>Time In</label>                                    <input type="datetime-local" class="form-control" name="time_in_work" value="{{strftime('%Y-%m-%dT%H:%M:%S', strtotime($row->time_in_work)) }}" required>                                </div>                            </div>                            <div class="form-group row">                                <div class="col-md-12">                                    <label>Time Out</label>                                    <input type="datetime-local" class="form-control" name="time_out_work" value="{{strftime('%Y-%m-%dT%H:%M:%S', strtotime($row->time_out_work)) }}"  required>                                </div>                            </div>                            <div class="form-group row">                                <div class="col-md-4">                                    <label>Overtime</label>                                    <input type="text" class="form-control overtimeE" name="overtime"  value="{{$row->overtime}}"  >                                </div>                                <div class="col-md-4">                                    <label>Undertime</label>                                    <input type="text" class="form-control undertimeE" name="undertime"   value="{{$row->undertime}}"  >                                </div>                                <div class="col-md-4">                                    <label>Tardiness</label>                                    <input type="text" class="form-control tardinessE" name="tardiness"  value="{{$row->tardiness}}"  >                                </div>                            </div>                            <div class="form-group row">                                <div class="col-md-4">                                    <label>Work Hours</label>                                    <input type="text" class="form-control total_workE" name="total_work"  value="{{$row->total_work}}"  required>                                </div>                                <div class="col-md-4">                                    <label>Rest Hours</label>                                    <input type="text"  class="form-control total_restE" name="total_rest"  value="{{$row->total_rest}}"  >                                </div>                                {{--<div class="col-md-4">--}}                                    {{--<label>Night Differential Hours</label>--}}                                    {{--<input type="text" class="form-control" name="total_night_diff" value="{{$row->total_night_diff}}"  >--}}                                {{--</div>--}}                            </div>                        </div>                    </div>                    <div class="modal-footer">                        <button class="btn btn-danger" data-dismiss="modal" type="button">Cancel</button>                        <button type="submit" class="btn btn-info">Update Record</button>                    </div>                </form>            </div>        </div>    </div>    @endforeach    @foreach($data as $row)    <div class="modal fade" id="delete{{ $row->id }}" tabindex="-1" role="dialog">        <div class="modal-dialog modal-sm" role="document">            <div class="modal-content">                <form action="attendance-time/{{ $row->id }}" method="POST" enctype="multipart/form-data">                    <div class="modal-header">                        <h4 class="title" id="defaultModalLabel">Delete Record</h4>                    </div>                    <div class="modal-body">                        @csrf                        @method('DELETE')                        <p>Are you sure you want to delete this record?</p>                    </div>                    <div class="modal-footer">                        <button class="btn btn-danger" data-dismiss="modal" type="button">Cancel</button>                        <button type="submit" class="btn btn-warning">Delete Record</button>                    </div>                </form>            </div>        </div>    </div>    @endforeach@endsection@section('script')    <script src="{{ asset('assets') }}/app/custom/general/crud/datatables/extensions/responsive.js" type="text/javascript"></script>    <script>        $(".overtime,.undertime,.tardiness,.total_work,.total_rest").inputmask({"mask": "99:99:99"});        $(".overtimeE,.undertimeE,.tardinessE,.total_workE,.total_restE").inputmask({"mask": "99:99:99"});        $("#total_work").inputmask({            mask: "99-9999-99999-9",            placeholder: "XX-XX",        });        $("#day_type_id, #employee_id").select2({            width:"100%",            placeholder: "Select",            maximumSelectionSize: 1        });        // To calulate difference b/w two dates        function CalculateDiff() {            if($("#FromDate").val()!="" && $("#ToDate").val()!=""){                var From_date = new Date($("#FromDate").val());                var To_date = new Date($("#ToDate").val());                var diff_date =  To_date - From_date;              var days = Math.floor(((diff_date % 31536000000) % 2628000000)/86400000);                $("#Result").html(days+" and day(s)");//alert( years+" year(s) "+months+" month(s) "+days+" and day(s)");            }            else{                alert("Please select dates");                return false;            }        }        $("#date1").datepicker({ minDate: new Date(2012, 7 - 1, 8), maxDate: new Date(2012, 7 - 1, 28) });        //$("#date2").datepicker({ minDate: new Date(2012, 7 - 1, 9), maxDate: //new Date(2012, 7 - 1, 28) });        $('#date1, #date2').datepicker({onSelect: function(dateStr) {            var d1 = $('#date1').datepicker('getDate');            var d2 = $('#date2').datepicker('getDate');            var diff = 0;            if (d1 && d2) {                diff = Math.floor((d2.getTime() - d1.getTime()) / 86400000); // ms per day            }            $('#calculated').val(diff);        }        });        $('#fdate').datepicker({            format: 'MM/DD/YYYY HH:mm',        }).on('changeDate', function (ev) {            $('#tdate').datepicker('setStartDate', $("#fdate").val());        });        $('#tdate').datepicker({            format: 'MM/DD/YYYY HH:mm',        }).on('changeDate', function (ev) {            var start = $("#fdate").val();            var end = $("#tdate").val();//            var startD = new Date(start);//            var endD = new Date(end);            var diff = new Date(end - start);            var days = diff/1000/60/60/24;////            var ms = e.date.diff($('#datetimepicker2').data('DateTimePicker').date());//            var d = moment.duration(ms);//            var diff = Math.floor(d.asHours());          //  var diff = parseInt((endD.getTime()-startD.getTime())/(24*3600*1000));            $("#days").val(days);        });        function showDays() {            var start = $('#fdate').datepicker('getDate');            var end   = $('#tdate').datepicker('getDate');            if(!start || !end)                return;            var days = (end - start)/1000/60/60/24;            $('#num_nights').val(days);        }        function diffGetTime(date1, date2) {            return date2.getTime() - date1.getTime();        }        $(".day_type_idU, .employee_idU").select2({            width:"100%",            placeholder: "Select",            maximumSelectionSize: 1        });    </script>    <script>        $(document).ready(function() {///////            var startDate;            var endDate;            $( "#date_picker1" ).datepicker({                dateFormat: 'dd-mm-yy'            })//////////////            $( "#date_picker2" ).datepicker({                dateFormat: 'dd-mm-yy'            });///////            $('#date_picker1').change(function() {                startDate = $(this).datepicker('getDate');                $("#date_picker2").datepicker("option", "minDate", startDate );            })///////            $('#date_picker2').change(function() {                endDate = $(this).datepicker('getDate');                $("#date_picker1").datepicker("option", "maxDate", endDate );////////////////                var t1=$('#date_picker1').val();                t1=t1.split('-');                dt_t1=new Date(t1[2],t1[1]-1,t1[0]); // YYYY,mm,dd format to create date object                dt_t1_tm=dt_t1.getTime(); // time in milliseconds for day 1//alert(dt_t1_tm);                var t2=$('#date_picker2').val();                t2=t2.split('-');                dt_t2=new Date(t2[2],t2[1]-1,t2[0]); // YYYY,mm,dd format to create date object                dt_t2_tm=dt_t2.getTime(); // time in milliseconds for day 2/////////////////                var one_day = 24*60*60*1000; // hours*minutes*seconds*milliseconds                var diff_days=Math.abs((dt_t2_tm-dt_t1_tm)/one_day) // difference in days                $("#result").html("Difference in Days " + diff_days + "");                $("#result").show();            })////////////////        })    </script>@endsection
+@extends('layout.app')
+
+
+
+
+
+
+
+@section('content')
+
+
+
+    <div class="kt-content  kt-grid__item kt-grid__item--fluid" id="kt_content">
+
+
+
+        <!--Begin::Dashboard 1-->
+
+        <div class="row">
+
+            <div class="col-12">
+
+                <div class="kt-portlet kt-portlet--mobile">
+
+                    <div class="kt-portlet__head kt-portlet__head--lg">
+
+                        <div class="kt-portlet__head-label">
+
+                            <h3 class="kt-portlet__head-title">
+
+                                Attendance Time List
+
+                            </h3>
+
+                        </div>
+                        @if(Auth::user()->role_id == 1)
+                        <div class="kt-portlet__head-toolbar">
+
+                            <div class="kt-portlet__head-wrapper">
+
+                                <div class="kt-portlet__head-actions">&nbsp;
+
+                                    <a  href="#" data-toggle="modal" data-target="#create" class="btn btn-brand btn-elevate btn-icon-sm">
+
+                                        <i class="la la-plus"></i>
+
+                                        New Record
+
+                                    </a>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+                        @endif
+
+                    </div>
+
+                    <div class="kt-portlet__body">
+
+                        <!--begin: Search Form -->
+
+                        <!--begin: Datatable -->
+
+                        <table class="table table-striped- table-bordered table-hover table-checkable responsive no-wrap" id="customTable">
+
+                            <thead>
+
+                            <tr>
+
+                                <th>Date</th>
+
+                                <th>Day Type</th>
+                                @if(Auth::user()->role_id == 1)
+                                <th>Employee ID</th>
+
+                                <th>Employee Name</th>
+                                @endif
+
+                                <th>Time In</th>
+
+                                <th>Time Out</th>
+
+                                <th>Overtime</th>
+
+                                <th>Undertime</th>
+
+                                <th>Tardiness</th>
+
+                                <th>Total Work Hours</th>
+
+                                <th>Overtime Approved</th>
+                                @if(Auth::user()->role_id == 1)
+                                <th>Actions</th>
+                                @endif
+
+                            </tr>
+
+                            </thead>
+
+                            <tbody>
+
+                            @foreach($data as $row)
+
+                                <tr>
+
+                                    <td>{{ $row->attendance_date }}</td>
+
+                                    <td>{{ $row->day_type }}</td>
+                                    @if(Auth::user()->role_id == 1)
+                                    <td>{{ $row->employee_no }}</td>
+
+                                    <td>{{ $row->firstname . " " . $row->lastname }}</td>
+                                    @endif
+
+                                    <td>{{ $row->time_in_work }}</td>
+
+                                    <td>{{ $row->time_out_work }}</td>
+
+                                    <td>{{ $row->overtime }}</td>
+
+                                    <td>{{ $row->undertime }}</td>
+
+                                    <td>{{ $row->tardiness }}</td>
+
+                                    <td>{{ $row->total_work }}</td>
+
+                                    <td>{{ $row->overtime_approved }}</td>
+                                    @if(Auth::user()->role_id == 1)
+                                    <td>
+
+                                        <span class="dropdown">
+
+                                            <a href="#" class="btn btn-sm btn btn-info btn-elevate btn-elevate-air btn-icon btn-icon-md" data-toggle="dropdown" aria-expanded="true">
+
+                                              <i class="la la-ellipsis-h"></i>
+
+                                            </a>
+
+                                            <div class="dropdown-menu dropdown-menu-right">
+
+                                                <a class="dropdown-item" href="#" data-toggle="modal" data-title="Edit" data-target="#edit{{ $row->id }}"><i class="la la-edit"></i> Edit Details</a>
+
+                                                {{--<a class="dropdown-item" href="#" data-toggle="modal" data-title="Delete" data-target="#delete{{ $row->id }}"><i class="la la-trash"></i> Delete Record</a>--}}
+
+                                            </div>
+
+                                        </span>
+
+                                    </td>
+                                    @endif
+
+                                </tr>
+
+                            @endforeach
+
+                            </tbody>
+
+                            <tfoot>
+
+                            <tr>
+
+                                <th>Date</th>
+
+                                <th>Day Type</th>
+                                @if(Auth::user()->role_id == 1)
+                                <th>Employee ID</th>
+
+                                <th>Employee Name</th>
+                                @endif
+
+                                <th>Time In</th>
+
+                                <th>Time Out</th>
+
+                                <th>Overtime</th>
+
+                                <th>Undertime</th>
+
+                                <th>Tardiness</th>
+
+                                <th>Total Work Hours</th>
+
+                                <th>Overtime Approved</th>
+                                @if(Auth::user()->role_id == 1)
+                                <th>Actions</th>
+                                @endif
+                            </tr>
+
+                            </tfoot>
+
+                        </table>
+
+                        <!--end: Datatable -->
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!--End::Dashboard 1-->
+
+    </div>
+
+
+
+    <div class="modal fade" id="create" role="dialog">
+
+        <div class="modal-dialog modal-md" role="document">
+
+            <div class="modal-content">
+
+                <form action="attendance-time" method="POST" enctype="multipart/form-data">
+
+                    <div class="modal-header">
+
+                        <h4 class="title" id="defaultModalLabel">Attendance Time In/Out Record</h4>
+
+                    </div>
+
+                    <div class="modal-body">
+
+                        @csrf
+
+
+
+                        <div class="col-md-12">
+
+
+
+                            <div class="form-group row">
+
+                                <div class="col-md-6">
+
+                                    <label>Day Type</label>
+
+                                    <select name="day_type_id" class="form-control" id="day_type_id"  required >
+
+                                        @foreach($day_type as $day_types)
+
+                                        <option value="{{ $day_types->id }}">{{ $day_types->day_type }}</option>
+
+                                        @endforeach
+
+                                    </select>
+
+                                </div>
+
+                                <div class="col-md-6">
+
+                                    <label>Date</label>
+
+                                    <input type="date" class="form-control" name="attendance_date" required>
+
+                                </div>
+
+                            </div>
+
+                            <div class="form-group row">
+
+                                <div class="col-md-12">
+
+                                    <label>Employee</label>
+
+                                    <select name="employee_id" class="form-control" id="employee_id"  required >
+
+                                        @foreach($employee as $employees)
+
+                                        <option value="{{ $employees->id }}">{{  $employees->firstname . " " . $employees->lastname }}</option>
+
+                                        @endforeach
+
+                                    </select>
+
+                                </div>
+
+                            </div>
+
+                            <div class="form-group row">
+
+                                <div class="col-md-12">
+
+                                    <label>Time In</label>
+
+                                    <input type="datetime-local" class="form-control" name="time_in_work" required>
+
+                                </div>
+
+                            </div>
+
+                            <div class="form-group row">
+
+                                <div class="col-md-12">
+
+                                    <label>Time Out</label>
+
+                                    <input type="datetime-local" class="form-control" name="time_out_work" required>
+
+                                </div>
+
+                            </div>
+
+                            <div class="form-group row">
+
+                                <div class="col-md-4">
+
+                                    <label>Overtime</label>
+
+                                    <input type="text" class="form-control overtime" name="overtime" required>
+
+                                </div>
+
+                                <div class="col-md-4">
+
+                                    <label>Undertime</label>
+
+                                    <input type="text" class="form-control undertime" name="undertime" required>
+
+                                </div>
+
+                                <div class="col-md-4">
+
+                                    <label>Tardiness</label>
+
+                                    <input type="text" class="form-control tardiness" name="tardiness" required>
+
+                                </div>
+
+                            </div>
+
+                            <div class="form-group row">
+
+                                <div class="col-md-4">
+
+                                    <label>Work Hours</label>
+
+                                    <input type="text" class="form-control total_work" name="total_work" required>
+
+                                </div>
+
+                                <div class="col-md-4">
+
+                                    <label>Rest Hours</label>
+
+                                    <input type="text" class="form-control total_rest" name="total_rest" required>
+
+                                </div>
+
+
+
+                                {{--<div class="col-md-4">--}}
+
+                                {{--<label>Night Differential Hours</label>--}}
+
+                                {{--<input type="text" class="form-control" name="total_night_diff" required>--}}
+
+                                {{--</div>--}}
+
+                            </div>
+
+
+
+                        </div>
+
+                    </div>
+
+                    <div class="modal-footer">
+
+                        <button class="btn btn-danger" data-dismiss="modal" type="button">Cancel</button>
+
+                        <button type="submit" class="btn btn-info">Save Record</button>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    @foreach($data as $row)
+
+        <div class="modal fade" id="edit{{ $row->id }}" role="dialog">
+
+            <div class="modal-dialog modal-md" role="document">
+
+                <div class="modal-content">
+
+                    <form action="attendance-time/{{ $row->id }}" method="POST" enctype="multipart/form-data">
+
+                        <div class="modal-header">
+
+                            <h4 class="title" id="defaultModalLabel">Edit Record</h4>
+
+                        </div>
+
+                        <div class="modal-body">
+
+                            @csrf
+
+                            @method('PATCH')
+
+                            <div class="col-md-12">
+
+
+
+                                <div class="form-group row">
+
+                                    <div class="col-md-6">
+
+                                        <label>Day Type</label>
+
+                                        <select name="employee_id" class="form-control employee_idU"  required >
+
+                                            @foreach($day_type as $day_types):
+
+                                            <option value="{{ $day_types->id }}  {{ $day_types->id == $row->day_type_id? "Selected": "" }}">{{ $day_types->day_type }}</option>
+
+                                            @endforeach
+
+                                        </select>
+
+                                    </div>
+
+                                    <div class="col-md-6">
+
+                                        <label>Date</label>
+
+                                        <input type="date" class="form-control" name="attendance_date" value="{{$row->attendance_date}}" required>
+
+                                    </div>
+
+                                </div>
+
+                                <div class="form-group row">
+
+                                    <div class="col-md-12">
+
+                                        <label>Employee</label>
+
+                                        <select name="employee_id" class="form-control employee_idU"  required >
+
+                                            @foreach($employee as $employees)
+
+                                            <option value="{{ $employees->id }}" {{ $employees->id == $row->employee_id? "Selected": "" }}>{{  $employees->firstname . " " . $employees->lastname }}</option>
+
+                                            @endforeach
+
+                                        </select>
+
+                                    </div>
+
+                                </div>
+
+                                <div class="form-group row">
+
+                                    <div class="col-md-12">
+
+                                        <label>Time In</label>
+
+                                        <input type="datetime-local" class="form-control" name="time_in_work" value="{{strftime('%Y-%m-%dT%H:%M:%S', strtotime($row->time_in_work)) }}" required>
+
+                                    </div>
+
+                                </div>
+
+                                <div class="form-group row">
+
+                                    <div class="col-md-12">
+
+                                        <label>Time Out</label>
+
+                                        <input type="datetime-local" class="form-control" name="time_out_work" value="{{strftime('%Y-%m-%dT%H:%M:%S', strtotime($row->time_out_work)) }}"  required>
+
+                                    </div>
+
+                                </div>
+
+                                <div class="form-group row">
+
+                                    <div class="col-md-4">
+
+                                        <label>Overtime</label>
+
+                                        <input type="text" class="form-control overtimeE" name="overtime"  value="{{$row->overtime}}"  >
+
+                                    </div>
+
+                                    <div class="col-md-4">
+
+                                        <label>Undertime</label>
+
+                                        <input type="text" class="form-control undertimeE" name="undertime"   value="{{$row->undertime}}"  >
+
+                                    </div>
+
+                                    <div class="col-md-4">
+
+                                        <label>Tardiness</label>
+
+                                        <input type="text" class="form-control tardinessE" name="tardiness"  value="{{$row->tardiness}}"  >
+
+                                    </div>
+
+                                </div>
+
+                                <div class="form-group row">
+
+                                    <div class="col-md-4">
+
+                                        <label>Work Hours</label>
+
+                                        <input type="text" class="form-control total_workE" name="total_work"  value="{{$row->total_work}}"  required>
+
+                                    </div>
+
+                                    <div class="col-md-4">
+
+                                        <label>Rest Hours</label>
+
+                                        <input type="text"  class="form-control total_restE" name="total_rest"  value="{{$row->total_rest}}"  >
+
+                                    </div>
+
+
+
+                                    {{--<div class="col-md-4">--}}
+
+
+
+                                    {{--<label>Night Differential Hours</label>--}}
+
+                                    {{--<input type="text" class="form-control" name="total_night_diff" value="{{$row->total_night_diff}}"  >--}}
+
+                                    {{--</div>--}}
+
+                                </div>
+
+
+
+                            </div>
+
+                        </div>
+
+                        <div class="modal-footer">
+
+                            <button class="btn btn-danger" data-dismiss="modal" type="button">Cancel</button>
+
+                            <button type="submit" class="btn btn-info">Update Record</button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    @endforeach
+
+
+
+    @foreach($data as $row)
+
+        <div class="modal fade" id="delete{{ $row->id }}" tabindex="-1" role="dialog">
+
+            <div class="modal-dialog modal-sm" role="document">
+
+                <div class="modal-content">
+
+                    <form action="attendance-time/{{ $row->id }}" method="POST" enctype="multipart/form-data">
+
+                        <div class="modal-header">
+
+                            <h4 class="title" id="defaultModalLabel">Delete Record</h4>
+
+                        </div>
+
+                        <div class="modal-body">
+
+                            @csrf
+
+                            @method('DELETE')
+
+                            <p>Are you sure you want to delete this record?</p>
+
+
+
+                        </div>
+
+                        <div class="modal-footer">
+
+                            <button class="btn btn-danger" data-dismiss="modal" type="button">Cancel</button>
+
+                            <button type="submit" class="btn btn-warning">Delete Record</button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    @endforeach
+
+
+
+@endsection
+
+
+
+@section('script')
+
+    <script src="{{ asset('assets') }}/app/custom/general/crud/datatables/extensions/responsive.js" type="text/javascript"></script>
+
+    <script>
+
+        $(".overtime,.undertime,.tardiness,.total_work,.total_rest").inputmask({"mask": "99:99:99"});
+
+        $(".overtimeE,.undertimeE,.tardinessE,.total_workE,.total_restE").inputmask({"mask": "99:99:99"});
+
+        $("#total_work").inputmask({
+
+            mask: "99-9999-99999-9", placeholder: "XX-XX"
+
+        });
+
+        $("#day_type_id, #employee_id").select2({
+
+            width:"100%",
+
+            placeholder: "Select",
+
+            maximumSelectionSize: 1
+
+        });
+
+
+
+        function diffGetTime(date1, date2) {
+
+            return date2.getTime() - date1.getTime();
+
+        }
+
+
+
+        $(".day_type_idU, .employee_idU").select2({
+
+            width:"100%",
+
+            placeholder: "Select",
+
+            maximumSelectionSize: 1
+
+        });
+
+    </script>
+
+@endsection
+
+
+

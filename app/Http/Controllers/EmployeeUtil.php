@@ -61,14 +61,14 @@ class EmployeeUtil extends Controller
     }
 
     public function getAttendanceTime($employee_id, $cutoff_from, $cutoff_to){
-    $attendance_time = DB::table('attendance_time')
-        ->select(DB::raw('SUM(hour(total_work) * 60) as work_minutes'),
-            DB::raw('SUM(hour(total_work)) as work_hours'),
-            DB::raw('SUM(hour(total_work)  /8)  as days_work')
-        )
-        ->whereBetween('attendance_date', [$cutoff_from, $cutoff_to])
-        ->where('employee_id',$employee_id)
-        ->get();
+        $attendance_time = DB::table('attendance_time')
+            ->select(DB::raw('SUM(hour(total_work) * 60) as work_minutes'),
+                DB::raw('SUM(hour(total_work)) as work_hours'),
+                DB::raw('SUM(hour(total_work)  /8)  as days_work')
+            )
+            ->whereBetween('attendance_date', [$cutoff_from, $cutoff_to])
+            ->where('employee_id',$employee_id)
+            ->get();
     }
 
     public function employeeCutoffAttendance($employee_id, $cutoff_from, $cutoff_to){
@@ -89,8 +89,8 @@ class EmployeeUtil extends Controller
         $dt = Carbon::parse($cutoff_from);
         $dt2 = Carbon::parse($cutoff_to);
         $totalWorkingDays = $dt->diffInDaysFiltered(function(Carbon $date) {
-                return !$date->isWeekend();
-            }, $dt2);
+            return !$date->isWeekend();
+        }, $dt2);
         return $totalWorkingDays;
     }
 
@@ -105,7 +105,7 @@ class EmployeeUtil extends Controller
 
     public function generateAbsences($employeeWorkingDays, $cutoffWorkingdays_from, $cutoffWorkingDays_to){
         $workingDays = $this->cutoffWorkingDays($cutoffWorkingdays_from, $cutoffWorkingDays_to);
-        $days_absent = $workingDays - $employeeWorkingDays;
+        $days_absent = $employeeWorkingDays -$workingDays;
         return $days_absent;
 
     }

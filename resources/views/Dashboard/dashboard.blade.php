@@ -14,7 +14,7 @@
                     <div class="kt-portlet__head kt-portlet__head--noborder kt-portlet__space-x">
                         <div class="kt-portlet__head-label">
                             <h3 class="kt-portlet__head-title">
-                                Activity
+                                Activity  
                             </h3>
                         </div>
                         <div class="kt-portlet__head-toolbar">
@@ -1481,11 +1481,13 @@
                                         </div>
                                         <div class="kt-widget2__info">
                                             <a href="#" class="kt-widget2__title">
+
                                                 Completa Financial Report For Emirates Airlines
-                                                </p>
+                                                </a>
                                                 <a href="#" class="kt-widget2__username">
                                                     By Sean
                                                 </a>
+                                            </a>
                                         </div>
                                         <div class="kt-widget2__actions">
                                             <a href="#" class="btn btn-clean btn-sm btn-icon btn-icon-md" data-toggle="dropdown">
@@ -1816,7 +1818,7 @@
                                         <div class="kt-widget2__info">
                                             <a href="#" class="kt-widget2__title">
                                                 Make Widgets Great Again.Estudiat Communy Elit
-                                                </p>
+                                                </a>
                                                 <a href="#" class="kt-widget2__username">
                                                     By Aziko
                                                 </a>

@@ -63,20 +63,6 @@ class PayrollController extends Controller
         $cutoff_id = $request->get('cutoff_id');
         $this->selectEmployee($company_id,$cutoff_id);
 
-
-//        MakePayment::create([
-//
-//        ]);
-//
-//
-//        DB::table()
-//            ->where()
-//            ->update([]);
-//
-//        DB::table()
-//            ->where()
-//            ->delete();
-
 //
         $data = DB::table('make_payment')
             ->select('make_payment.id as id','firstname','lastname','employee_no','cutoff_name',
@@ -84,8 +70,8 @@ class PayrollController extends Controller
                 'overtime_hours','undertime_hours','nightdiff_hours','absences','basic_pay','overtime_pay','holiday_pay','nightdiff_pay','allowance','gross_pay','sss_cont','pagibig_cont','philhealth_cont','taxable_income','withholding_tax','undertime_deduc','absences_deduc','total_loan','overall_deduc','net_pay','comments')
             ->join('payroll_cutoff', 'make_payment.cutoff_id', '=', 'payroll_cutoff.id')
             ->join('employee', 'make_payment.employee_id', '=', 'employee.id')
-            ->where('cutoff_id',$cutoff_id)
-            ->where('make_payment.company_id',$company_id)
+            ->where('cutoff_id','=',$cutoff_id)
+            ->where('make_payment.company_id','=',$company_id)
             ->get();
         return view('Payroll.payroll', compact('data','employee','company_id','cutoff_id'));
 
@@ -95,14 +81,14 @@ class PayrollController extends Controller
         $employees = Employee::where('company_id','=', $company_id)->get();
 
         $payment = DB::table('make_payment')
-            ->where('company_id', $company_id)
-            ->where('cutoff_id', $cutoff_id)
+            ->where('company_id', '=', $company_id)
+            ->where('cutoff_id', '=',  $cutoff_id)
             ->first();
-       // dd($payment);
-        if(count($payment)>0){      //update
+        // dd($payment);
+        if($payment){      //update
             foreach ($employees as $employee){
                 $employee_id = $employee->id;
-                $this->computeUpdatePayroll($company_id, $employee_id, $cutoff_id);
+               $this->computeUpdatePayroll($company_id, $employee_id, $cutoff_id);
             }
         }
         else {
@@ -190,9 +176,16 @@ class PayrollController extends Controller
         $late_deduction=$late_hours*$per_hour;
         $absences_deduction=$employment->per_day_salary*$absences_days;
 
-        $sss_cont=$deductions_spp['sss_cont'];
-        $pagibig_cont=$deductions_spp['pagibig_cont'];
-        $philhealth_cont=$deductions_spp['philhealth_cont'];
+
+        if($cutoff->sss_philhealth_pagibig_deduction==1){
+            $sss_cont=$deductions_spp['sss_cont'];
+            $pagibig_cont=$deductions_spp['pagibig_cont'];
+            $philhealth_cont=$deductions_spp['philhealth_cont'];
+        }else{
+            $sss_cont=0;
+            $pagibig_cont=0;
+            $philhealth_cont=0;
+        }
 
 
 
@@ -203,15 +196,13 @@ class PayrollController extends Controller
             ->where('range_from','<=',$taxable)
             ->where('range_to','>=',$taxable)
             ->get();
-        if (count($tax_withholding)>0){
+        if ($tax_withholding){
             foreach ($tax_withholding as $row){
                 $withholding_tax=(($taxable - $row->range_from) * $row->percentage) + $row->amount;
             }
         }else{
             $withholding_tax=0;
         }
-
-
 
         $overall_deduction =$totalLoan+$late_deduction + $absences_deduction+ $sss_cont + $pagibig_cont + $philhealth_cont +$other_deduction;
         $net_pay = $gross_pay - ($overall_deduction + $withholding_tax);
@@ -249,18 +240,161 @@ class PayrollController extends Controller
                 "bonus"=>$bonus
             ]);
     }
-    //Ok
+
+    private function computeUpdatePayroll($company_id, $employee_id, $cutoff_id)
+    {
+        $employee = $this->employeeUtil->getEmployee($employee_id);
+        $cutoff = $this->employeeUtil->getCutOff($cutoff_id);
+        $cutoff_from=$cutoff->cutoff_from;
+        $cutoff_to=$cutoff->cutoff_to;
+
+
+        $employment = $this->employeeUtil->getEmployment($employee_id);
+        $totalDays = $this->employeeUtil->cutoffWorkingDays($cutoff_from, $cutoff_to);
+        $employeeWorkingHours = $this->employeeUtil->employeeCutoffAttendance($employee_id,$cutoff_from, $cutoff_to);
+
+        $cutoffWorkingHours = $this->employeeUtil->cutoffWorkingHours($cutoff_from, $cutoff_to);
+        $cutoffWorkingDays = $this->employeeUtil->cutoffWorkingDays($cutoff_from, $cutoff_to);
+        $absentCount = $this->employeeUtil->generateAbsences($employeeWorkingHours->days_work,$cutoff_from, $cutoff_to);
+
+        $overtime=$this->compute_overtime($employee_id,$cutoff_from,$cutoff_to,$employment->per_day_salary);
+        // dd($employeeWorkingHours);
+        //process salary according to attendance
+        $monthly_salary = $employment->monthly_salary;
+
+        //compute deduction
+        $deductions_spp = $this->compute_sss_philhealth_pagibig($monthly_salary,$cutoff->deduction_type);
+
+
+
+        $payslip_input = DB::table('employee_salary_adjustment')
+            ->where('employee_id',$employee_id)
+            ->where('cutoff_id',$cutoff_id)
+            ->get();
+        $loan = DB::table('employee_loan')
+            ->select('sc.value as loan_type','total_amount','payable','payment_term','paid_amount','balance')
+            ->join('settings_constants as sc', 'employee_loan.loan_type_id', '=', 'sc.id')
+            ->where('employee_id',$employee_id)
+            ->where('balance','<>','0.00')
+            ->get();
+
+
+        $totalLoan=0;
+        $hrs_per_day=8;
+        //Work
+        $per_day=$employment->per_day_salary;
+        $per_hour=$employment->per_day_salary/$hrs_per_day;
+        $per_month=$employment->monthly_salary;
+        $work_hours=$employeeWorkingHours->work_hours;
+        $work_days=$employeeWorkingHours->days_work;
+
+        $allowance=0;$bonus=0; $salary_adjustments=0; $thirteenth_month_pay=0;$other_deduction=0;
+        foreach($payslip_input as $row){
+            $allowance=$row->allowance;
+            $bonus=$row->bonus;
+            $salary_adjustments=$row->salary_adjustments;
+            $thirteenth_month_pay=$row->thirteenth_month_pay;
+            $other_deduction=$row->thirteenth_month_pay;
+        }
+        foreach($loan as $row){
+            if($row->balance > $row->payable){
+                $totalLoan= $totalLoan+$row->payable;
+            }else{
+                $totalLoan= $totalLoan+$row->balance;
+            }
+        }
+
+        $overtime_hours=$overtime['overtime'];
+        $late_hours=$employeeWorkingHours->undertime;
+        $absences_days=$absentCount;
+
+
+        $basic_pay=$employment->monthly_salary/2;
+
+        $overtime_pay=$overtime['overtime']*$per_hour;
+        $holiday_pay=0;
+
+        $gross_pay=$basic_pay+$overtime_pay+$holiday_pay+$allowance+$bonus+$salary_adjustments+$thirteenth_month_pay;//OK
+
+        $late_deduction=$late_hours*$per_hour;
+        $absences_deduction=$employment->per_day_salary*$absences_days;
+
+        if($cutoff->sss_philhealth_pagibig_deduction==1){
+            $sss_cont=$deductions_spp['sss_cont'];
+            $pagibig_cont=$deductions_spp['pagibig_cont'];
+            $philhealth_cont=$deductions_spp['philhealth_cont'];
+        }else{
+            $sss_cont=0;
+            $pagibig_cont=0;
+            $philhealth_cont=0;
+        }
+
+
+        $taxable=($basic_pay+$overtime_pay+$holiday_pay)-($late_deduction+$absences_deduction+$sss_cont+$pagibig_cont+$philhealth_cont);//ok
+        $taxable_income= $taxable;
+
+        $tax_withholding = DB::table('tax_withholding')
+            ->where('type','=','Monthly')
+            ->where('range_from','<=',$taxable)
+            ->where('range_to','>=',$taxable)
+            ->get();
+
+        $withholding_tax = 0;
+        if ($tax_withholding){
+            foreach ($tax_withholding as $row){
+                $withholding_tax=(($taxable - $row->range_from) * $row->percentage) + $row->amount;
+            }
+        }
+
+        $overall_deduction =$totalLoan+$late_deduction + $absences_deduction+ $sss_cont + $pagibig_cont + $philhealth_cont +$other_deduction;
+        $net_pay = $gross_pay - ($overall_deduction + $withholding_tax);
+
+        DB::table('make_payment')
+            ->where('company_id','=', $company_id)
+            ->where('cutoff_id','=', $cutoff_id)
+            ->where('employee_id','=', $employee_id)
+            ->update([
+                "per_day"=>$per_day,
+                "per_hour"=>$per_hour,
+                "per_month"=>$per_month,
+                "work_hours"=>$work_hours,
+                "work_days"=>$work_days,
+                "overtime_hours"=>$overtime_hours,
+                "undertime_hours"=>$late_hours,
+                "absences"=>$absences_days,
+                "basic_pay"=>$basic_pay,
+                "overtime_pay"=>$overtime_pay,
+                "holiday_pay"=>$holiday_pay,
+                "allowance"=>$allowance,
+                "gross_pay"=>$gross_pay,
+                "sss_cont"=>$sss_cont,
+                "pagibig_cont"=>$pagibig_cont,
+                "philhealth_cont"=>$philhealth_cont,
+                "taxable_income"=>$taxable_income,
+                "withholding_tax"=>$withholding_tax,
+                "undertime_deduc"=>$late_deduction,
+                "absences_deduc"=>$absences_deduction,
+                "total_loan"=>$totalLoan,
+                "overall_deduc"=>$overall_deduction,
+                "net_pay"=>$net_pay,
+                "salary_adjustments"=>$salary_adjustments,
+                "thirteenth_month_pay"=>$thirteenth_month_pay,
+                "bonus"=>$bonus
+            ]);
+    }
+
     Public function compute_sss_philhealth_pagibig($monthly_salary,$cutoff_deduction){
         if ($cutoff_deduction==0){
             $output['sss_cont']=0;
             $output['pagibig_cont']=0;
             $output['philhealth_cont']=0;
         }else{
-
             //SSS
+
+//            dd(number_format($monthly_salary, 2));
             $sss = DB::table('tax_sss')
-                ->where('range_from','<=',$monthly_salary)
-                ->where('range_to','>=',$monthly_salary)
+                ->where('range_from','<=',number_format($monthly_salary, 2))
+                ->where('range_to','>=', number_format($monthly_salary, 2))
                 ->get();
             if ($sss->count()>0){
                 foreach ($sss as $row){
@@ -272,8 +406,8 @@ class PayrollController extends Controller
 
             //Pagibig
             $pagibig = DB::table('tax_pagibig')
-                ->where('range_from','<=',$monthly_salary)
-                ->where('range_to','>=',$monthly_salary)
+                ->where('range_from','<=', number_format($monthly_salary, 2))
+                ->where('range_to','>=',number_format($monthly_salary, 2))
                 ->get();
             if ($pagibig->count()>0){
                 foreach ($pagibig as $row){
@@ -413,143 +547,6 @@ class PayrollController extends Controller
 
     }
 
-    private function computeUpdatePayroll($company_id, $employee_id, $cutoff_id)
-    {
-        $employee = $this->employeeUtil->getEmployee($employee_id);
-        $cutoff = $this->employeeUtil->getCutOff($cutoff_id);
-        $cutoff_from=$cutoff->cutoff_from;
-        $cutoff_to=$cutoff->cutoff_to;
-
-
-        $employment = $this->employeeUtil->getEmployment($employee_id);
-        $totalDays = $this->employeeUtil->cutoffWorkingDays($cutoff_from, $cutoff_to);
-        $employeeWorkingHours = $this->employeeUtil->employeeCutoffAttendance($employee_id,$cutoff_from, $cutoff_to);
-
-        $cutoffWorkingHours = $this->employeeUtil->cutoffWorkingHours($cutoff_from, $cutoff_to);
-        $cutoffWorkingDays = $this->employeeUtil->cutoffWorkingDays($cutoff_from, $cutoff_to);
-        $absentCount = $this->employeeUtil->generateAbsences($employeeWorkingHours->days_work,$cutoff_from, $cutoff_to);
-
-        $overtime=$this->compute_overtime($employee_id,$cutoff_from,$cutoff_to,$employment->per_day_salary);
-        // dd($employeeWorkingHours);
-        //process salary according to attendance
-        $monthly_salary = $employment->monthly_salary;
-
-        //compute deduction
-        $deductions_spp = $this->compute_sss_philhealth_pagibig($monthly_salary,$cutoff->deduction_type);
-
-
-
-        $payslip_input = DB::table('employee_salary_adjustment')
-            ->where('employee_id',$employee_id)
-            ->where('cutoff_id',$cutoff_id)
-            ->get();
-        $loan = DB::table('employee_loan')
-            ->select('sc.value as loan_type','total_amount','payable','payment_term','paid_amount','balance')
-            ->join('settings_constants as sc', 'employee_loan.loan_type_id', '=', 'sc.id')
-            ->where('employee_id',$employee_id)
-            ->where('balance','<>','0.00')
-            ->get();
-
-
-        $totalLoan=0;
-        $hrs_per_day=8;
-        //Work
-        $per_day=$employment->per_day_salary;
-        $per_hour=$employment->per_day_salary/$hrs_per_day;
-        $per_month=$employment->monthly_salary;
-        $work_hours=$employeeWorkingHours->work_hours;
-        $work_days=$employeeWorkingHours->days_work;
-
-        $allowance=0;$bonus=0; $salary_adjustments=0; $thirteenth_month_pay=0;$other_deduction=0;
-        foreach($payslip_input as $row){
-            $allowance=$row->allowance;
-            $bonus=$row->bonus;
-            $salary_adjustments=$row->salary_adjustments;
-            $thirteenth_month_pay=$row->thirteenth_month_pay;
-            $other_deduction=$row->thirteenth_month_pay;
-        }
-        foreach($loan as $row){
-            if($row->balance > $row->payable){
-                $totalLoan= $totalLoan+$row->payable;
-            }else{
-                $totalLoan= $totalLoan+$row->balance;
-            }
-        }
-
-        $overtime_hours=$overtime['overtime'];
-        $late_hours=$employeeWorkingHours->undertime;
-        $absences_days=$absentCount;
-
-
-        $basic_pay=$employment->monthly_salary/2;
-
-        $overtime_pay=$overtime['overtime']*$per_hour;
-        $holiday_pay=0;
-
-        $gross_pay=$basic_pay+$overtime_pay+$holiday_pay+$allowance+$bonus+$salary_adjustments+$thirteenth_month_pay;//OK
-
-        $late_deduction=$late_hours*$per_hour;
-        $absences_deduction=$employment->per_day_salary*$absences_days;
-
-        $sss_cont=$deductions_spp['sss_cont'];
-        $pagibig_cont=$deductions_spp['pagibig_cont'];
-        $philhealth_cont=$deductions_spp['philhealth_cont'];
-
-
-
-        $taxable=($basic_pay+$overtime_pay+$holiday_pay)-($late_deduction+$absences_deduction+$sss_cont+$pagibig_cont+$philhealth_cont);//ok
-        $taxable_income= $taxable;
-        $tax_withholding = DB::table('tax_withholding')
-            ->where('type','=','Monthly')
-            ->where('range_from','<=',$taxable)
-            ->where('range_to','>=',$taxable)
-            ->get();
-        if (count($tax_withholding)>0){
-            foreach ($tax_withholding as $row){
-                $withholding_tax=(($taxable - $row->range_from) * $row->percentage) + $row->amount;
-            }
-        }else{
-            $withholding_tax=0;
-        }
-
-
-
-        $overall_deduction =$totalLoan+$late_deduction + $absences_deduction+ $sss_cont + $pagibig_cont + $philhealth_cont +$other_deduction;
-        $net_pay = $gross_pay - ($overall_deduction + $withholding_tax);
-
-        DB::table('make_payment')
-            ->where('company_id', $company_id)
-            ->where('cutoff_id', $cutoff_id)
-            ->where('employee_id', $employee_id)
-            ->update([
-                "per_day"=>$per_day,
-                "per_hour"=>$per_hour,
-                "per_month"=>$per_month,
-                "work_hours"=>$work_hours,
-                "work_days"=>$work_days,
-                "overtime_hours"=>$overtime_hours,
-                "undertime_hours"=>$late_hours,
-                "absences"=>$absences_days,
-                "basic_pay"=>$basic_pay,
-                "overtime_pay"=>$overtime_pay,
-                "holiday_pay"=>$holiday_pay,
-                "allowance"=>$allowance,
-                "gross_pay"=>$gross_pay,
-                "sss_cont"=>$sss_cont,
-                "pagibig_cont"=>$pagibig_cont,
-                "philhealth_cont"=>$philhealth_cont,
-                "taxable_income"=>$taxable_income,
-                "withholding_tax"=>$withholding_tax,
-                "undertime_deduc"=>$late_deduction,
-                "absences_deduc"=>$absences_deduction,
-                "total_loan"=>$totalLoan,
-                "overall_deduc"=>$overall_deduction,
-                "net_pay"=>$net_pay,
-                "salary_adjustments"=>$salary_adjustments,
-                "thirteenth_month_pay"=>$thirteenth_month_pay,
-                "bonus"=>$bonus
-            ]);
-    }
 
 }
 

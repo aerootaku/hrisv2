@@ -9,27 +9,54 @@ use App\LeaveCredits;
 use App\LeaveType;
 use App\SettingsConstants;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+
 
 class EmployeeLeaveController extends Controller
 {
     public function index()
     {
+        $user_id=Auth::user()->employee_id;
         $data = DB::table('employee_leave_applications')
-            ->select('','leave_type.id', 'leave_type.type_name as leave_type', 'leave_type.days_per_year','employee_leave_applications.id as id','leave_type_id',
+            ->select('leave_type.id', 'leave_type.type_name as leave_type', 'leave_type.days_per_year','employee_leave_applications.id as id','leave_type_id',
                 'firstname','lastname','employee_leave_applications.employee_id','employee.employee_no','from_date',
                 'to_date','reason','remarks','employee_leave_applications.created_at as created_at','employee_leave_applications.status as status',
                 'employee_leave_applications.without_pay', 'employee_leave_applications.half_day'
-                )
+            )
             ->join('employee', 'employee_leave_applications.employee_id', '=', 'employee.id')
             ->join('leave_type', 'employee_leave_applications.leave_type_id', '=', 'leave_type.id')
+            ->join('employee_groups', 'employee_groups.employee_id', '=', 'employee.id')
             ->whereNull('employee_leave_applications.deleted_at')
+
+            ->where('report_to','=',$user_id)
+            ->where('report_method','=','Direct')
             ->get();
-// dd($data);
         $employee = Employee::all()->sortByDesc('lastname');
+// dd($data);
         $leave_type=LeaveType::all()->sortByDesc('id');
 
         return view('Employee.leave', compact('data','employee','leave_type'));
+    }
+
+    public function showMyLeave(){
+            $user_id=Auth::user()->employee_id;
+            $data = DB::table('employee_leave_applications')
+                ->select('leave_type.id', 'leave_type.type_name as leave_type', 'leave_type.days_per_year','employee_leave_applications.id as id','leave_type_id',
+                    'firstname','lastname','employee_leave_applications.employee_id','employee.employee_no','from_date',
+                    'to_date','reason','remarks','employee_leave_applications.created_at as created_at','employee_leave_applications.status as status',
+                    'employee_leave_applications.without_pay', 'employee_leave_applications.half_day'
+                )
+                ->join('employee', 'employee_leave_applications.employee_id', '=', 'employee.id')
+                ->join('leave_type', 'employee_leave_applications.leave_type_id', '=', 'leave_type.id')
+                ->leftjoin('employee_groups', 'employee_groups.employee_id', '=', 'employee.id')
+                ->whereNull('employee_leave_applications.deleted_at')
+                ->where('employee_leave_applications.employee_id','=',$user_id)
+                ->get();
+        $employee = Employee::all()->sortByDesc('lastname')->where('id','=',$user_id);
+        $leave_type=LeaveType::all()->sortByDesc('id');
+
+        return view('Employee.my-leave', compact('data','employee','leave_type'));
     }
 
     public function updateApprove(Request $request, EmployeeLeave $employeeLeave)

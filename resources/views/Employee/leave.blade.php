@@ -10,9 +10,11 @@
                     <div class="kt-portlet__head kt-portlet__head--lg">
                         <div class="kt-portlet__head-label">
                             <h3 class="kt-portlet__head-title">
-                                Employee Leave List
+                                Employee Leave List  
                             </h3>
                         </div>
+                        @if (Auth::user()->role_id == '2')
+                            @else
                         <div class="kt-portlet__head-toolbar">
                             <div class="kt-portlet__head-wrapper">
                                 <div class="kt-portlet__head-actions">&nbsp;
@@ -24,6 +26,7 @@
                                 </div>
                             </div>
                         </div>
+                            @endif
                     </div>
                     <div class="kt-portlet__body">
                         <!--begin: Search Form -->
@@ -84,13 +87,12 @@
                                             </div>
                                         </span>
                                         {{--@if(Auth::user()->id<>'1')--}}
-                                            {{--{{Auth::user()->id}}--}}
-                                            @if( $row->status =='Pending')
-                                                <a class="btn btn-warning btn-icon btn-icon-md " href="#"
-                                                   data-toggle="modal" data-title="Approval"
-                                                   data-target="#approval{{ $row->id }}"><i
-                                                            class="fa flaticon-like"></i></a>
-                                            @endif
+                                        @if( $row->status =='Pending')
+                                        <a class="btn btn-warning btn-icon btn-icon-md " href="#"
+                                           data-toggle="modal" data-title="Approval"
+                                           data-target="#approval{{ $row->id }}"><i
+                                                    class="fa flaticon-like"></i></a>
+                                        @endif
                                         {{--@endif--}}
                                     </td>
                                 </tr>
