@@ -334,7 +334,7 @@
                                         <div class="col-md-12">
                                             <div class="row">
                                                 <div class="form-group col-md-12 mb-12">
-                                                    <label>Employee Id</label>
+                                                    <label>Employee Id </label>
                                                     <input type="text"
                                                            class="form-control"
                                                            placeholder="Employeee Number"
@@ -634,7 +634,7 @@
 
                                         </div>
 
-                                        @if(Auth::user()->role_id == 1)
+                                        @if(Auth::user()->role_id == 1 |  $personal_info->id==Auth::user()->employee_id)
                                         <div class="col-md-12">
                                             <div class="form-group">
                                                 <button type="submit" class="btn btn-info btn-block btn-elevate-air"><i class="la la-save"></i> Save All</button>
